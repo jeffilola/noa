@@ -1,6 +1,5 @@
 'use client';
 
-import type { ReactNode } from 'react';
 import Link from 'next/link';
 import { UserButton, useAuth } from '@clerk/nextjs';
 import { marketingRoutes } from './relume/shared/routes';
@@ -12,7 +11,7 @@ function AuthLink({
   variant = 'ghost',
 }: {
   href: string;
-  children: ReactNode;
+  children: string;
   variant?: 'ghost' | 'primary';
 }) {
   const isPrimary = variant === 'primary';
