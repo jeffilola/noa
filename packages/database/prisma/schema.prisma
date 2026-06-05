@@ -1,0 +1,375 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+enum CredentialStatus {
+  active
+  suspended
+  revoked
+  expired
+}
+
+enum CredentialType {
+  corporate_access
+  hotel_key
+  gym_membership
+  event_pass
+  visitor_pass
+}
+
+enum MembershipStatus {
+  active
+  invited
+  suspended
+  removed
+}
+
+enum RoleScope {
+  platform
+  organization
+}
+
+enum PermissionCategory {
+  identity
+  organization
+  credential
+  security
+  compliance
+  integration
+  platform
+}
+
+enum AuditAction {
+  credential_issued
+  credential_revoked
+  credential_suspended
+  credential_activated
+  login
+  logout
+  org_member_invited
+  org_member_removed
+  org_role_assigned
+  user_created
+  user_updated
+  user_disabled
+  data_export
+  data_delete_requested
+  data_anonymized
+  pii_decrypted
+  wallet_pass_issued
+  wallet_pass_updated
+  presentation_token_minted
+  presentation_qr_scanned
+  presentation_nfc_tapped
+  presentation_token_consumed
+  presentation_token_rejected
+  provider_connection_created
+  provider_connection_updated
+  provider_connection_tested
+  provider_connection_disabled
+  provider_api_call
+}
+
+enum ConnectionStatus {
+  draft
+  active
+  error
+  disabled
+}
+
+enum WalletPlatform {
+  apple
+  google
+}
+
+enum WalletPassStatus {
+  active
+  suspended
+  revoked
+}
+
+enum ProviderType {
+  hid
+  brivo
+  lenel_s2
+  hotel
+  event
+  internal
+}
+
+enum IssuanceSource {
+  PACS
+  NOA
+}
+
+model User {
+  id                   String    @id @default(uuid())
+  clerkUserId          String    @unique
+  firstNameEnc         String?
+  firstNameIv          String?
+  lastNameEnc          String?
+  lastNameIv           String?
+  emailEnc             String?
+  emailIv              String?
+  emailHash            String?   @unique
+  phoneNumberEnc       String?
+  phoneNumberIv        String?
+  dateOfBirthEnc       String?
+  dateOfBirthIv        String?
+  encryptionKeyVersion Int       @default(1)
+  isDisabled           Boolean   @default(false)
+  isPlatformAdmin      Boolean   @default(false)
+  anonymizedAt         DateTime?
+  createdAt            DateTime  @default(now())
+  updatedAt            DateTime  @updatedAt
+
+  memberships          Membership[]
+  credentialAssignments CredentialAssignment[]
+  devices              Device[]
+  walletPasses         WalletPass[]
+  auditLogsAsActor     AuditLog[] @relation("AuditActor")
+  userRoles            UserRole[] @relation("UserRoleSubject")
+  grantedUserRoles     UserRole[] @relation("UserRoleGranter")
+}
+
+model Organization {
+  id          String   @id @default(uuid())
+  clerkOrgId  String?  @unique
+  name        String
+  slug        String   @unique
+  settings    Json?
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  memberships         Membership[]
+  credentials         Credential[]
+  assignments         CredentialAssignment[]
+  providerConnections OrganizationProviderConnection[]
+  userRoles           UserRole[]
+}
+
+model Membership {
+  id             String           @id @default(uuid())
+  userId         String
+  organizationId String
+  role           String
+  status         MembershipStatus @default(invited)
+  employeeIdEnc  String?
+  employeeIdIv   String?
+  invitedAt      DateTime?
+  joinedAt       DateTime?
+  removedAt      DateTime?
+
+  user           User             @relation(fields: [userId], references: [id])
+  organization   Organization     @relation(fields: [organizationId], references: [id])
+
+  @@unique([userId, organizationId])
+}
+
+model CredentialProvider {
+  id           String       @id @default(uuid())
+  type         ProviderType
+  name         String
+  adapterKey   String
+  apiSpecUrl   String?
+  isEnabled    Boolean      @default(true)
+  configSchema Json?
+  createdAt    DateTime     @default(now())
+
+  credentials    Credential[]
+  orgConnections OrganizationProviderConnection[]
+}
+
+model OrganizationProviderConnection {
+  id                   String           @id @default(uuid())
+  organizationId       String
+  providerId           String
+  status               ConnectionStatus @default(draft)
+  apiBaseUrl           String
+  credentialsEnc       String
+  credentialsIv        String
+  encryptionKeyVersion Int              @default(1)
+  lastTestedAt         DateTime?
+  lastError            String?
+  createdAt            DateTime         @default(now())
+  updatedAt            DateTime         @updatedAt
+
+  organization Organization       @relation(fields: [organizationId], references: [id])
+  provider     CredentialProvider @relation(fields: [providerId], references: [id])
+
+  @@unique([organizationId, providerId])
+}
+
+model Credential {
+  id                   String           @id @default(uuid())
+  organizationId       String
+  providerId           String
+  type                 CredentialType
+  issuanceSource       IssuanceSource   @default(PACS)
+  status               CredentialStatus @default(active)
+  externalCredentialId String?
+  pacsCardholderId     String?
+  cardNumber           String?
+  label                String?
+  validFrom            DateTime?
+  validUntil           DateTime?
+  revokedAt            DateTime?
+  suspendedAt          DateTime?
+  metadata             Json?
+  payloadEnc           String?
+  payloadIv            String?
+  createdAt            DateTime         @default(now())
+  updatedAt            DateTime         @updatedAt
+
+  organization       Organization         @relation(fields: [organizationId], references: [id])
+  provider           CredentialProvider   @relation(fields: [providerId], references: [id])
+  assignments        CredentialAssignment[]
+  walletPasses       WalletPass[]
+  presentationTokens PresentationToken[]
+
+  @@unique([organizationId, externalCredentialId])
+  @@index([organizationId, cardNumber])
+}
+
+model CredentialAssignment {
+  id             String    @id @default(uuid())
+  credentialId   String
+  userId         String
+  organizationId String
+  assignedAt     DateTime  @default(now())
+  unassignedAt   DateTime?
+
+  credential   Credential   @relation(fields: [credentialId], references: [id])
+  user         User         @relation(fields: [userId], references: [id])
+  organization Organization @relation(fields: [organizationId], references: [id])
+
+  @@unique([credentialId, userId])
+}
+
+model Device {
+  id                String    @id @default(uuid())
+  userId            String
+  name              String
+  platform          String
+  deviceFingerprint String?
+  lastSeenAt        DateTime?
+  isActive          Boolean   @default(true)
+  createdAt         DateTime  @default(now())
+
+  user User @relation(fields: [userId], references: [id])
+}
+
+model AuditLog {
+  id                String      @id @default(uuid())
+  action            AuditAction
+  actorUserId       String?
+  actorUserIdAnon   String?
+  organizationId    String?
+  resourceType      String
+  resourceId        String?
+  ipAddress         String?
+  userAgent         String?
+  metadata          Json?
+  createdAt         DateTime    @default(now())
+
+  actor User? @relation("AuditActor", fields: [actorUserId], references: [id])
+
+  @@index([organizationId, createdAt])
+  @@index([action, createdAt])
+}
+
+model WalletPass {
+  id                   String           @id @default(uuid())
+  userId               String
+  credentialId         String
+  platform             WalletPlatform
+  externalPassId       String
+  passTypeIdentifier   String?
+  status               WalletPassStatus @default(active)
+  lastBarcodeUpdatedAt DateTime?
+  createdAt            DateTime         @default(now())
+  updatedAt            DateTime         @updatedAt
+
+  user       User       @relation(fields: [userId], references: [id])
+  credential Credential @relation(fields: [credentialId], references: [id])
+
+  @@unique([credentialId, platform, userId])
+}
+
+model PresentationToken {
+  id           String    @id @default(uuid())
+  credentialId String
+  userId       String
+  tokenHash    String    @unique
+  windowStart  DateTime
+  expiresAt    DateTime
+  consumedAt   DateTime?
+  consumedBy   String?
+  channel      String?
+  createdAt    DateTime  @default(now())
+
+  credential Credential @relation(fields: [credentialId], references: [id])
+
+  @@index([credentialId, windowStart])
+  @@index([expiresAt])
+}
+
+model Role {
+  id          String    @id @default(uuid())
+  key         String    @unique
+  name        String
+  description String?
+  scope       RoleScope
+  isSystem    Boolean   @default(true)
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+
+  rolePermissions RolePermission[]
+  userRoles       UserRole[]
+}
+
+model Permission {
+  id          String             @id @default(uuid())
+  key         String             @unique
+  name        String
+  description String?
+  category    PermissionCategory
+  createdAt   DateTime           @default(now())
+
+  rolePermissions RolePermission[]
+}
+
+model RolePermission {
+  roleId       String
+  permissionId String
+
+  role       Role       @relation(fields: [roleId], references: [id], onDelete: Cascade)
+  permission Permission @relation(fields: [permissionId], references: [id], onDelete: Cascade)
+
+  @@id([roleId, permissionId])
+}
+
+model UserRole {
+  id              String    @id @default(uuid())
+  userId          String
+  roleId          String
+  organizationId  String?
+  scopeKey        String
+  grantedAt       DateTime  @default(now())
+  grantedByUserId String?
+  revokedAt       DateTime?
+
+  user         User          @relation("UserRoleSubject", fields: [userId], references: [id], onDelete: Cascade)
+  role         Role          @relation(fields: [roleId], references: [id], onDelete: Cascade)
+  organization Organization? @relation(fields: [organizationId], references: [id], onDelete: Cascade)
+  grantedBy    User?         @relation("UserRoleGranter", fields: [grantedByUserId], references: [id])
+
+  @@unique([userId, roleId, scopeKey])
+  @@index([userId, revokedAt])
+  @@index([organizationId])
+}
