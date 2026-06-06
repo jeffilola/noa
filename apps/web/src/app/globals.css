@@ -286,9 +286,15 @@ a:hover {
 }
 
 .callout-success {
-  background: var(--success-soft);
-  border-color: color-mix(in srgb, var(--success) 35%, var(--border));
-  margin-bottom: 1rem;
+  background: color-mix(in srgb, #22c55e 14%, rgb(10 10 10 / 72%));
+  border-color: color-mix(in srgb, #22c55e 50%, var(--border));
+  margin-top: 1rem;
+  margin-bottom: 0;
+}
+
+.callout-success p {
+  color: #bbf7d0;
+  font-weight: 500;
 }
 
 .callout p {

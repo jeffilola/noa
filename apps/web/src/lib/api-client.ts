@@ -66,7 +66,16 @@ export async function clientApiFetch<T>(
     headers.set('Content-Type', 'application/json');
   }
 
-  const res = await fetch(`${API}${path}`, { ...init, headers });
+  let res: Response;
+
+  try {
+    res = await fetch(`${API}${path}`, { ...init, headers });
+  } catch {
+    throw new ApiClientError(
+      'Could not reach the Noa API. Start Postgres and run pnpm --filter @noa/api dev, then try again.',
+    );
+  }
+
   if (!res.ok) {
     const text = await res.text().catch(() => '');
     throw parseApiError(text, res.status, path);

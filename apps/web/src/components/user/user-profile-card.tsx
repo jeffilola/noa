@@ -1,7 +1,8 @@
 'use client';
 
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { useUser } from '@clerk/nextjs';
+import { useRouter } from 'next/navigation';
 import type { ProfileFieldErrors } from '@noa/shared';
 import { validateProfileDateOfBirth, validateProfilePhone } from '@noa/shared';
 import { FormSuccessBanner } from '@/components/user/dashboard-primitives';
@@ -44,8 +45,10 @@ function toDateInputValue(isoDate?: string | null) {
 }
 
 export function UserProfileCard({ noaProfile }: { noaProfile: UserProfile | null }) {
+  const router = useRouter();
   const { user, isLoaded } = useUser();
   const { fetch } = useClientApi();
+  const successRef = useRef<HTMLDivElement>(null);
   const [profile, setProfile] = useState<UserProfile | null>(noaProfile);
   const [phoneNumber, setPhoneNumber] = useState('');
   const [dateOfBirth, setDateOfBirth] = useState('');
@@ -59,7 +62,7 @@ export function UserProfileCard({ noaProfile }: { noaProfile: UserProfile | null
     setProfile(noaProfile);
     setPhoneNumber(noaProfile?.phoneNumber ?? user.primaryPhoneNumber?.phoneNumber ?? '');
     setDateOfBirth(toDateInputValue(noaProfile?.dateOfBirth));
-  }, [isLoaded, noaProfile, user]);
+  }, [isLoaded, noaProfile, user?.id, user?.primaryPhoneNumber?.phoneNumber]);
 
   if (!isLoaded) {
     return (
@@ -132,6 +135,10 @@ export function UserProfileCard({ noaProfile }: { noaProfile: UserProfile | null
       setPhoneNumber(updated.phoneNumber ?? phoneNumber);
       setDateOfBirth(toDateInputValue(updated.dateOfBirth));
       setSuccessMessage('Profile saved. Phone and date of birth are encrypted in Noa.');
+      router.refresh();
+      requestAnimationFrame(() => {
+        successRef.current?.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+      });
     } catch (err) {
       if (err instanceof ApiClientError && err.fieldErrors) {
         setFieldErrors(err.fieldErrors);
@@ -151,8 +158,6 @@ export function UserProfileCard({ noaProfile }: { noaProfile: UserProfile | null
         Name and email come from Clerk. Save phone and date of birth here — they are stored encrypted
         in Noa for audit and GDPR.
       </p>
-
-      {successMessage ? <FormSuccessBanner message={successMessage} /> : null}
 
       <ProfileRows rows={rows} />
 
@@ -199,6 +204,12 @@ export function UserProfileCard({ noaProfile }: { noaProfile: UserProfile | null
         <button type="submit" className="btn btn-primary" disabled={pending}>
           {pending ? 'Saving…' : 'Save profile'}
         </button>
+
+        {successMessage ? (
+          <div ref={successRef}>
+            <FormSuccessBanner message={successMessage} />
+          </div>
+        ) : null}
 
         {apiError ? <p className="form-error">{apiError}</p> : null}
       </form>
