@@ -1,8 +1,56 @@
 'use client';
 
 import { useAuth } from '@clerk/nextjs';
+import type { ApiErrorBody } from '@noa/shared';
+import {
+  normalizeProfilePhone,
+  validateProfileDateOfBirth,
+  validateProfilePhone,
+  type ProfileFieldErrors,
+} from '@noa/shared';
 
 const API = process.env.NEXT_PUBLIC_API_URL ?? 'http://localhost:3001/api/v1';
+
+export class ApiClientError extends Error {
+  fieldErrors?: ProfileFieldErrors;
+
+  constructor(message: string, fieldErrors?: ProfileFieldErrors) {
+    super(message);
+    this.name = 'ApiClientError';
+    this.fieldErrors = fieldErrors;
+  }
+}
+
+function parseApiError(text: string, status: number, path: string): ApiClientError {
+  const fallback = text || `API ${path} failed: ${status}`;
+
+  try {
+    const body = JSON.parse(text) as Record<string, unknown>;
+    let message = fallback;
+    let fieldErrors: ProfileFieldErrors | undefined;
+
+    const rawMessage = body.message;
+    if (typeof rawMessage === 'string') {
+      message = rawMessage;
+    } else if (Array.isArray(rawMessage)) {
+      message = rawMessage.map(String).join(', ');
+    } else if (rawMessage && typeof rawMessage === 'object') {
+      const nested = rawMessage as ApiErrorBody;
+      if (typeof nested.message === 'string') {
+        message = nested.message;
+      }
+      fieldErrors = nested.errors;
+    }
+
+    if (body.errors && typeof body.errors === 'object') {
+      fieldErrors = body.errors as ProfileFieldErrors;
+    }
+
+    return new ApiClientError(message, fieldErrors);
+  } catch {
+    return new ApiClientError(fallback);
+  }
+}
 
 export async function clientApiFetch<T>(
   path: string,
@@ -21,7 +69,7 @@ export async function clientApiFetch<T>(
   const res = await fetch(`${API}${path}`, { ...init, headers });
   if (!res.ok) {
     const text = await res.text().catch(() => '');
-    throw new Error(text || `API ${path} failed: ${res.status}`);
+    throw parseApiError(text, res.status, path);
   }
 
   if (res.status === 204) {

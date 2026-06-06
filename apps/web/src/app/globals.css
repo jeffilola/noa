@@ -285,6 +285,12 @@ a:hover {
   font-size: 0.875em;
 }
 
+.callout-success {
+  background: var(--success-soft);
+  border-color: color-mix(in srgb, var(--success) 35%, var(--border));
+  margin-bottom: 1rem;
+}
+
 .callout p {
   margin: 0;
   font-size: 0.9375rem;
@@ -2709,6 +2715,24 @@ a:hover {
   margin: 0.75rem 0 0;
   color: var(--warning);
   font-size: 0.875rem;
+}
+
+.form-field-error {
+  margin: 0.35rem 0 0;
+  color: var(--warning);
+  font-size: 0.8125rem;
+}
+
+.profile-form {
+  margin-top: 1.5rem;
+  padding-top: 1.5rem;
+  border-top: 1px solid var(--border);
+}
+
+.profile-form__title {
+  margin: 0 0 1rem;
+  font-size: 0.9375rem;
+  font-weight: 600;
 }
 
 @media (max-width: 900px) {

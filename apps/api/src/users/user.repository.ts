@@ -35,6 +35,15 @@ export class UserRepository {
     return this.prisma.user.create({ data: data as never });
   }
 
+  async updateProfile(userId: string, dto: Pick<UpsertUserDto, 'phoneNumber' | 'dateOfBirth'>) {
+    const data: Record<string, unknown> = {};
+    await this.applyPiiFields(data, { clerkUserId: 'unused', ...dto });
+    if (Object.keys(data).length === 0) {
+      return this.prisma.user.findUniqueOrThrow({ where: { id: userId } });
+    }
+    return this.prisma.user.update({ where: { id: userId }, data: data as never });
+  }
+
   private async updateEncrypted(userId: string, dto: UpsertUserDto) {
     const data: Record<string, unknown> = {};
     await this.applyPiiFields(data, dto);

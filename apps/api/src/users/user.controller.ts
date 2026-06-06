@@ -1,4 +1,4 @@
-import { Controller, Get, Req, UseGuards } from '@nestjs/common';
+import { Body, Controller, Get, Patch, Req, UseGuards } from '@nestjs/common';
 import type { Request } from 'express';
 import { AccessService } from '../auth/access.service';
 import { RbacService } from '../auth/rbac.service';
@@ -17,6 +17,14 @@ export class UserController {
   @Get('me')
   getMe(@Req() req: Request) {
     return this.users.getMe(req.auth!.userId);
+  }
+
+  @Patch('me')
+  updateMe(
+    @Req() req: Request,
+    @Body() body: { phoneNumber?: string; dateOfBirth?: string },
+  ) {
+    return this.users.updateMe(req.auth!.userId, body);
   }
 
   @Get('me/memberships')

@@ -24,6 +24,14 @@ export function ApiOfflineBanner() {
   );
 }
 
+export function FormSuccessBanner({ message }: { message: string }) {
+  return (
+    <div className="callout callout-success" role="status">
+      <p>{message}</p>
+    </div>
+  );
+}
+
 export type DashboardStat = {
   label: string;
   value: string | number;
