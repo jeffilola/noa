@@ -20,7 +20,7 @@
     "@noa/shared": "workspace:*",
     "@noa/wallet": "workspace:*",
     "@prisma/client": "^6.1.0",
-    "ioredis": "^5.4.2",
+    "ioredis": "^5.11.1",
     "reflect-metadata": "^0.2.2",
     "rxjs": "^7.8.1"
   },
