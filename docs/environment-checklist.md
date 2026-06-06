@@ -53,6 +53,32 @@ Copy examples and fill in values:
 
 Clerk keys in **web** and **api** must match the same Clerk application.
 
+## Demo holder seed data
+
+After `pnpm db:seed`, a **Demo Organization** membership, sample credentials, and devices are created for the holder account.
+
+| Item | Details |
+|------|---------|
+| Organization | Demo Organization (`demo-org`) |
+| Credentials | HQ Building Access (PACS badge) + Demo Gym Membership |
+| Devices | Demo iPhone (iOS) + Demo Apple Watch (watchOS) |
+
+**Link seed data to your signed-in Clerk user:**
+
+By default, seed reads `CLERK_SECRET_KEY` from `apps/api/.env` and attaches demo data to your most recent Clerk user (or the most recent signed-in user already in Postgres). Re-run `pnpm db:seed`, then refresh `/user`.
+
+In local dev, the API also attaches holder demo data automatically on first sign-in when your account has no memberships yet.
+
+To target a specific account instead, set in `packages/database/.env`:
+
+```
+DEMO_HOLDER_CLERK_USER_ID=user_xxxxxxxx
+```
+
+If neither Clerk nor `DEMO_HOLDER_CLERK_USER_ID` is available, demo data is attached to the synthetic `user_demo_holder` account (used when the API runs without a Clerk bearer token in dev).
+
+Seed uses fictional labels and card numbers only — no real PII or secrets.
+
 ## Optional (not needed for most v1 work)
 
 | Integration | Needed when |

@@ -29,6 +29,11 @@ export type {
   RolePermission,
   UserRole,
 } from '@prisma/client';
+export {
+  ensureHolderDemoForClerkUser,
+  resolveHolderClerkUserId,
+  seedHolderDemoData,
+} from './holder-demo-seed';
 
 import { PrismaClient } from '@prisma/client';
 

@@ -1,5 +1,6 @@
 import { PrismaClient, ProviderType } from '@prisma/client';
 import { NoaRole } from '@noa/domain';
+import { resolveHolderClerkUserId, seedHolderDemoData } from '../src/holder-demo-seed';
 
 const prisma = new PrismaClient();
 
@@ -226,10 +227,20 @@ async function main() {
     },
   });
 
+  const { clerkUserId: holderClerkUserId, source: holderSource } = await resolveHolderClerkUserId(prisma);
+  const holderDemo = await seedHolderDemoData(prisma, org.id, holderClerkUserId);
+
   console.log('Seed complete:', {
     orgId: org.id,
+    demoOrgSlug: org.slug,
     demoUsers: demoUsers.map((entry) => entry.clerkUserId),
     primaryUserId: primaryUser.id,
+    holderDemo,
+    holderSource,
+    holderSeedNote:
+      holderSource === 'default demo holder'
+        ? 'Set DEMO_HOLDER_CLERK_USER_ID or add CLERK_SECRET_KEY (apps/api/.env) so seed links to your signed-in Clerk user'
+        : `Holder demo data linked via ${holderSource}: ${holderClerkUserId}`,
   });
 }
 

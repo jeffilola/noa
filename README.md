@@ -35,6 +35,8 @@ pnpm db:seed
 pnpm dev
 ```
 
+After seed, re-run `pnpm db:seed` whenever you need holder demo data — it auto-links to your Clerk user when `apps/api/.env` has `CLERK_SECRET_KEY`. See [environment-checklist.md](docs/environment-checklist.md).
+
 - API: http://localhost:3001/api/v1
 - Web: http://localhost:3000
 
