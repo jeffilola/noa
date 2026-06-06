@@ -35,7 +35,7 @@ pnpm db:seed
 pnpm dev
 ```
 
-After seed, set `DEMO_HOLDER_CLERK_USER_ID` in `packages/database/.env` to your Clerk user ID and re-run `pnpm db:seed` so the holder dashboard shows demo org, credentials, and devices. See [environment-checklist.md](docs/environment-checklist.md).
+After seed, re-run `pnpm db:seed` whenever you need holder demo data — it auto-links to your Clerk user when `apps/api/.env` has `CLERK_SECRET_KEY`. See [environment-checklist.md](docs/environment-checklist.md).
 
 - API: http://localhost:3001/api/v1
 - Web: http://localhost:3000

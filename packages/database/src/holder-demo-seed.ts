@@ -1,0 +1,276 @@
+import { readFileSync, existsSync } from 'fs';
+import { resolve } from 'path';
+import {
+  CredentialStatus,
+  CredentialType,
+  IssuanceSource,
+  type PrismaClient,
+} from '@prisma/client';
+import { NoaRole } from '@noa/domain';
+
+export const DEFAULT_HOLDER_CLERK_USER_ID = 'user_demo_holder';
+
+const HOLDER_CREDENTIALS = [
+  {
+    externalCredentialId: 'demo-seed-pacs-badge',
+    type: CredentialType.corporate_access,
+    issuanceSource: IssuanceSource.PACS,
+    providerAdapterKey: 'hid_origo',
+    label: 'HQ Building Access',
+    cardNumber: 'DEMO-1001',
+  },
+  {
+    externalCredentialId: 'demo-seed-gym-pass',
+    type: CredentialType.gym_membership,
+    issuanceSource: IssuanceSource.NOA,
+    providerAdapterKey: 'internal',
+    label: 'Demo Gym Membership',
+    cardNumber: 'DEMO-GYM-01',
+  },
+] as const;
+
+const HOLDER_DEVICES = [
+  { name: 'Demo iPhone', platform: 'ios' },
+  { name: 'Demo Apple Watch', platform: 'watchos' },
+] as const;
+
+function seedEmailHash(clerkUserId: string) {
+  return `seed-${clerkUserId.replace(/[^a-zA-Z0-9-]/g, '').slice(-32)}`;
+}
+
+function loadEnvFile(path: string): Record<string, string> {
+  if (!existsSync(path)) return {};
+
+  const vars: Record<string, string> = {};
+  for (const line of readFileSync(path, 'utf8').split('\n')) {
+    const trimmed = line.trim();
+    if (!trimmed || trimmed.startsWith('#')) continue;
+
+    const eq = trimmed.indexOf('=');
+    if (eq === -1) continue;
+
+    const key = trimmed.slice(0, eq).trim();
+    let value = trimmed.slice(eq + 1).trim();
+    if (
+      (value.startsWith('"') && value.endsWith('"')) ||
+      (value.startsWith("'") && value.endsWith("'"))
+    ) {
+      value = value.slice(1, -1);
+    }
+    vars[key] = value;
+  }
+
+  return vars;
+}
+
+function resolveClerkSecretKey(): string | undefined {
+  const fromProcess = process.env.CLERK_SECRET_KEY?.trim();
+  if (fromProcess) return fromProcess;
+
+  const repoRoot = resolve(__dirname, '../..');
+  for (const relPath of ['apps/api/.env', 'apps/web/.env.local']) {
+    const key = loadEnvFile(resolve(repoRoot, relPath)).CLERK_SECRET_KEY?.trim();
+    if (key) return key;
+  }
+
+  return undefined;
+}
+
+function isValidClerkUserId(value: string | undefined): value is string {
+  if (!value?.startsWith('user_')) return false;
+  if (value.includes('<') || value.includes('>')) return false;
+  if (/your-clerk|example|xxxx/i.test(value)) return false;
+  return true;
+}
+
+async function fetchFirstClerkUserId(secretKey: string): Promise<string | undefined> {
+  try {
+    const res = await fetch('https://api.clerk.com/v1/users?limit=1&order_by=-created_at', {
+      headers: { Authorization: `Bearer ${secretKey}` },
+    });
+    if (!res.ok) {
+      console.warn(`[seed] Clerk users API returned ${res.status}`);
+      return undefined;
+    }
+
+    const body = (await res.json()) as { data?: Array<{ id: string }> };
+    if (!body.data?.[0]?.id) {
+      console.warn('[seed] Clerk users API returned no users');
+    }
+    return body.data?.[0]?.id;
+  } catch (error) {
+    console.warn('[seed] Could not reach Clerk users API:', error);
+    return undefined;
+  }
+}
+
+export async function resolveHolderClerkUserId(
+  prisma: PrismaClient,
+): Promise<{ clerkUserId: string; source: string }> {
+  const fromEnv = process.env.DEMO_HOLDER_CLERK_USER_ID?.trim();
+  if (isValidClerkUserId(fromEnv)) {
+    return { clerkUserId: fromEnv, source: 'DEMO_HOLDER_CLERK_USER_ID' };
+  }
+
+  const signedInUser = await prisma.user.findFirst({
+    where: {
+      clerkUserId: {
+        not: { startsWith: 'user_demo' },
+      },
+    },
+    orderBy: { createdAt: 'desc' },
+  });
+  if (signedInUser) {
+    return {
+      clerkUserId: signedInUser.clerkUserId,
+      source: 'most recent signed-in user in database',
+    };
+  }
+
+  const secretKey = resolveClerkSecretKey();
+  if (secretKey) {
+    const clerkUserId = await fetchFirstClerkUserId(secretKey);
+    if (clerkUserId) {
+      return { clerkUserId, source: 'Clerk API (most recent user)' };
+    }
+  }
+
+  return { clerkUserId: DEFAULT_HOLDER_CLERK_USER_ID, source: 'default demo holder' };
+}
+
+export async function seedHolderDemoData(
+  prisma: PrismaClient,
+  organizationId: string,
+  holderClerkUserId: string,
+) {
+  const holder = await prisma.user.upsert({
+    where: { clerkUserId: holderClerkUserId },
+    update: {},
+    create: {
+      clerkUserId: holderClerkUserId,
+      emailHash: seedEmailHash(holderClerkUserId),
+    },
+  });
+
+  await prisma.membership.upsert({
+    where: {
+      userId_organizationId: {
+        userId: holder.id,
+        organizationId,
+      },
+    },
+    update: {
+      status: 'active',
+      role: NoaRole.IDENTITY_HOLDER,
+      joinedAt: new Date(),
+    },
+    create: {
+      userId: holder.id,
+      organizationId,
+      role: NoaRole.IDENTITY_HOLDER,
+      status: 'active',
+      joinedAt: new Date(),
+    },
+  });
+
+  for (const spec of HOLDER_CREDENTIALS) {
+    const provider = await prisma.credentialProvider.findFirstOrThrow({
+      where: { adapterKey: spec.providerAdapterKey },
+    });
+
+    const credential = await prisma.credential.upsert({
+      where: {
+        organizationId_externalCredentialId: {
+          organizationId,
+          externalCredentialId: spec.externalCredentialId,
+        },
+      },
+      update: {
+        label: spec.label,
+        cardNumber: spec.cardNumber,
+        status: CredentialStatus.active,
+        type: spec.type,
+        issuanceSource: spec.issuanceSource,
+        providerId: provider.id,
+      },
+      create: {
+        organizationId,
+        providerId: provider.id,
+        type: spec.type,
+        issuanceSource: spec.issuanceSource,
+        status: CredentialStatus.active,
+        externalCredentialId: spec.externalCredentialId,
+        label: spec.label,
+        cardNumber: spec.cardNumber,
+        validFrom: new Date('2026-01-01T00:00:00.000Z'),
+        validUntil: new Date('2027-12-31T00:00:00.000Z'),
+      },
+    });
+
+    await prisma.credentialAssignment.upsert({
+      where: {
+        credentialId_userId: {
+          credentialId: credential.id,
+          userId: holder.id,
+        },
+      },
+      update: { unassignedAt: null },
+      create: {
+        credentialId: credential.id,
+        userId: holder.id,
+        organizationId,
+      },
+    });
+  }
+
+  for (const device of HOLDER_DEVICES) {
+    const existing = await prisma.device.findFirst({
+      where: { userId: holder.id, name: device.name },
+    });
+
+    if (!existing) {
+      await prisma.device.create({
+        data: {
+          userId: holder.id,
+          name: device.name,
+          platform: device.platform,
+          lastSeenAt: new Date(),
+        },
+      });
+      continue;
+    }
+
+    if (!existing.isActive) {
+      await prisma.device.update({
+        where: { id: existing.id },
+        data: { isActive: true, lastSeenAt: new Date() },
+      });
+    }
+  }
+
+  return {
+    userId: holder.id,
+    clerkUserId: holderClerkUserId,
+    memberships: 1,
+    credentials: HOLDER_CREDENTIALS.length,
+    devices: HOLDER_DEVICES.length,
+  };
+}
+
+export async function ensureHolderDemoForClerkUser(
+  prisma: PrismaClient,
+  clerkUserId: string,
+) {
+  if (process.env.NODE_ENV === 'production') return;
+  if (clerkUserId.startsWith('user_demo_')) return;
+
+  const org = await prisma.organization.findUnique({ where: { slug: 'demo-org' } });
+  if (!org) return;
+
+  const membershipCount = await prisma.membership.count({
+    where: { user: { clerkUserId } },
+  });
+  if (membershipCount > 0) return;
+
+  await seedHolderDemoData(prisma, org.id, clerkUserId);
+}

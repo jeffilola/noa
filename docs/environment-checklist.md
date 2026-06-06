@@ -65,15 +65,17 @@ After `pnpm db:seed`, a **Demo Organization** membership, sample credentials, an
 
 **Link seed data to your signed-in Clerk user:**
 
-1. Sign in once at http://localhost:3000 (creates your user in Postgres), **or** copy your user ID from the [Clerk Dashboard](https://dashboard.clerk.com).
-2. Add to `packages/database/.env`:
-   ```
-   DEMO_HOLDER_CLERK_USER_ID=user_xxxxxxxx
-   ```
-3. Re-run `pnpm db:seed`
-4. Refresh `/user` — overview and identity pages should show org, credentials, and devices.
+By default, seed reads `CLERK_SECRET_KEY` from `apps/api/.env` and attaches demo data to your most recent Clerk user (or the most recent signed-in user already in Postgres). Re-run `pnpm db:seed`, then refresh `/user`.
 
-If `DEMO_HOLDER_CLERK_USER_ID` is unset, demo holder data is attached to the synthetic `user_demo_holder` account (useful for API dev headers only).
+In local dev, the API also attaches holder demo data automatically on first sign-in when your account has no memberships yet.
+
+To target a specific account instead, set in `packages/database/.env`:
+
+```
+DEMO_HOLDER_CLERK_USER_ID=user_xxxxxxxx
+```
+
+If neither Clerk nor `DEMO_HOLDER_CLERK_USER_ID` is available, demo data is attached to the synthetic `user_demo_holder` account (used when the API runs without a Clerk bearer token in dev).
 
 Seed uses fictional labels and card numbers only — no real PII or secrets.
 

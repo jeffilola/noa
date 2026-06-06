@@ -5,6 +5,7 @@ import {
   UnauthorizedException,
 } from '@nestjs/common';
 import type { Request } from 'express';
+import { ensureHolderDemoForClerkUser } from '@noa/database';
 import { AccessService } from '../../auth/access.service';
 import { PrismaService } from '../../prisma/prisma.service';
 import { UserService } from '../../users/user.service';
@@ -59,6 +60,12 @@ export class ClerkAuthGuard implements CanActivate {
           user = await this.syncUserFromClerk(clerkUserId);
         }
 
+        if (process.env.NODE_ENV !== 'production') {
+          await ensureHolderDemoForClerkUser(this.prisma, clerkUserId).catch((error) => {
+            console.warn('[ClerkAuthGuard] Dev holder demo bootstrap failed:', error);
+          });
+        }
+
         const resolved = await this.access.resolveForUser(user.id, {
           clerkOrgId,
           organizationId: req.headers['x-organization-id'] as string | undefined,
@@ -86,7 +93,11 @@ export class ClerkAuthGuard implements CanActivate {
     }
 
     if (process.env.NODE_ENV !== 'production') {
-      const user = await this.prisma.user.findFirst();
+      const devClerkUserId =
+        (req.headers['x-dev-clerk-user-id'] as string | undefined)?.trim() ||
+        process.env.DEV_DEFAULT_CLERK_USER_ID?.trim() ||
+        'user_demo_holder';
+      const user = await this.prisma.user.findUnique({ where: { clerkUserId: devClerkUserId } });
       if (user) {
         const resolved = await this.access.resolveForUser(user.id, {});
         return this.toAuthContext(user.clerkUserId, resolved);
