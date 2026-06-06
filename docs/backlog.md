@@ -11,7 +11,7 @@ Legend: **S** / **M** / **L** size · **Epic** tag · Milestone when scheduled
 | P | Size | Item | Epic | Notes |
 |---|------|------|------|-------|
 | 1 | S | Polish holder overview (`/user`) empty states + API-offline copy | Holder | Quick win |
-| 2 | M | Identity hub: profile save feedback + validation errors | Holder | Phone/DOB already encrypted |
+| 2 | M | Identity hub: profile save feedback + validation errors | Holder | Phone/DOB in contact section; Photo ID via Clerk (upload/PACS later) |
 | 3 | M | Devices panel: register/deactivate with clear success/error toasts | Holder | API must be up |
 | 4 | S | Security page: link privacy + session info stub | Holder | |
 | 5 | M | Seed demo holder data script for local demos | Holder | `pnpm db:seed` extension |
