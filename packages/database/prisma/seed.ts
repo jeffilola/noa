@@ -1,4 +1,10 @@
-import { PrismaClient, ProviderType } from '@prisma/client';
+import {
+  CredentialStatus,
+  CredentialType,
+  IssuanceSource,
+  PrismaClient,
+  ProviderType,
+} from '@prisma/client';
 import { NoaRole } from '@noa/domain';
 
 const prisma = new PrismaClient();
@@ -9,6 +15,32 @@ const DEFAULT_ISSUANCE_POLICY = {
     allowNoaIssuanceForTypes: ['hotel_key', 'gym_membership', 'event_pass', 'visitor_pass'],
   },
 };
+
+const DEFAULT_HOLDER_CLERK_USER_ID = 'user_demo_holder';
+
+const HOLDER_CREDENTIALS = [
+  {
+    externalCredentialId: 'demo-seed-pacs-badge',
+    type: CredentialType.corporate_access,
+    issuanceSource: IssuanceSource.PACS,
+    providerAdapterKey: 'hid_origo',
+    label: 'HQ Building Access',
+    cardNumber: 'DEMO-1001',
+  },
+  {
+    externalCredentialId: 'demo-seed-gym-pass',
+    type: CredentialType.gym_membership,
+    issuanceSource: IssuanceSource.NOA,
+    providerAdapterKey: 'internal',
+    label: 'Demo Gym Membership',
+    cardNumber: 'DEMO-GYM-01',
+  },
+] as const;
+
+const HOLDER_DEVICES = [
+  { name: 'Demo iPhone', platform: 'ios' },
+  { name: 'Demo Apple Watch', platform: 'watchos' },
+] as const;
 
 const providers = [
   {
@@ -119,6 +151,125 @@ async function assignRole(userId: string, roleKey: string, organizationId?: stri
   });
 }
 
+function seedEmailHash(clerkUserId: string) {
+  return `seed-${clerkUserId.replace(/[^a-zA-Z0-9-]/g, '').slice(-32)}`;
+}
+
+async function seedHolderDemoData(organizationId: string, holderClerkUserId: string) {
+  const holder = await prisma.user.upsert({
+    where: { clerkUserId: holderClerkUserId },
+    update: {},
+    create: {
+      clerkUserId: holderClerkUserId,
+      emailHash: seedEmailHash(holderClerkUserId),
+    },
+  });
+
+  await prisma.membership.upsert({
+    where: {
+      userId_organizationId: {
+        userId: holder.id,
+        organizationId,
+      },
+    },
+    update: {
+      status: 'active',
+      role: NoaRole.IDENTITY_HOLDER,
+      joinedAt: new Date(),
+    },
+    create: {
+      userId: holder.id,
+      organizationId,
+      role: NoaRole.IDENTITY_HOLDER,
+      status: 'active',
+      joinedAt: new Date(),
+    },
+  });
+
+  for (const spec of HOLDER_CREDENTIALS) {
+    const provider = await prisma.credentialProvider.findFirstOrThrow({
+      where: { adapterKey: spec.providerAdapterKey },
+    });
+
+    const credential = await prisma.credential.upsert({
+      where: {
+        organizationId_externalCredentialId: {
+          organizationId,
+          externalCredentialId: spec.externalCredentialId,
+        },
+      },
+      update: {
+        label: spec.label,
+        cardNumber: spec.cardNumber,
+        status: CredentialStatus.active,
+        type: spec.type,
+        issuanceSource: spec.issuanceSource,
+        providerId: provider.id,
+      },
+      create: {
+        organizationId,
+        providerId: provider.id,
+        type: spec.type,
+        issuanceSource: spec.issuanceSource,
+        status: CredentialStatus.active,
+        externalCredentialId: spec.externalCredentialId,
+        label: spec.label,
+        cardNumber: spec.cardNumber,
+        validFrom: new Date('2026-01-01T00:00:00.000Z'),
+        validUntil: new Date('2027-12-31T00:00:00.000Z'),
+      },
+    });
+
+    await prisma.credentialAssignment.upsert({
+      where: {
+        credentialId_userId: {
+          credentialId: credential.id,
+          userId: holder.id,
+        },
+      },
+      update: { unassignedAt: null },
+      create: {
+        credentialId: credential.id,
+        userId: holder.id,
+        organizationId,
+      },
+    });
+  }
+
+  for (const device of HOLDER_DEVICES) {
+    const existing = await prisma.device.findFirst({
+      where: { userId: holder.id, name: device.name },
+    });
+
+    if (!existing) {
+      await prisma.device.create({
+        data: {
+          userId: holder.id,
+          name: device.name,
+          platform: device.platform,
+          lastSeenAt: new Date(),
+        },
+      });
+      continue;
+    }
+
+    if (!existing.isActive) {
+      await prisma.device.update({
+        where: { id: existing.id },
+        data: { isActive: true, lastSeenAt: new Date() },
+      });
+    }
+  }
+
+  return {
+    userId: holder.id,
+    clerkUserId: holderClerkUserId,
+    memberships: 1,
+    credentials: HOLDER_CREDENTIALS.length,
+    devices: HOLDER_DEVICES.length,
+  };
+}
+
 async function main() {
   await syncRbacCatalog();
 
@@ -226,10 +377,20 @@ async function main() {
     },
   });
 
+  const holderClerkUserId =
+    process.env.DEMO_HOLDER_CLERK_USER_ID?.trim() || DEFAULT_HOLDER_CLERK_USER_ID;
+  const holderDemo = await seedHolderDemoData(org.id, holderClerkUserId);
+
   console.log('Seed complete:', {
     orgId: org.id,
+    demoOrgSlug: org.slug,
     demoUsers: demoUsers.map((entry) => entry.clerkUserId),
     primaryUserId: primaryUser.id,
+    holderDemo,
+    holderSeedNote:
+      holderClerkUserId === DEFAULT_HOLDER_CLERK_USER_ID
+        ? 'Set DEMO_HOLDER_CLERK_USER_ID in packages/database/.env to your Clerk user ID, then re-run pnpm db:seed'
+        : `Holder demo data linked to Clerk user ${holderClerkUserId}`,
   });
 }
 

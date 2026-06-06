@@ -53,6 +53,30 @@ Copy examples and fill in values:
 
 Clerk keys in **web** and **api** must match the same Clerk application.
 
+## Demo holder seed data
+
+After `pnpm db:seed`, a **Demo Organization** membership, sample credentials, and devices are created for the holder account.
+
+| Item | Details |
+|------|---------|
+| Organization | Demo Organization (`demo-org`) |
+| Credentials | HQ Building Access (PACS badge) + Demo Gym Membership |
+| Devices | Demo iPhone (iOS) + Demo Apple Watch (watchOS) |
+
+**Link seed data to your signed-in Clerk user:**
+
+1. Sign in once at http://localhost:3000 (creates your user in Postgres), **or** copy your user ID from the [Clerk Dashboard](https://dashboard.clerk.com).
+2. Add to `packages/database/.env`:
+   ```
+   DEMO_HOLDER_CLERK_USER_ID=user_xxxxxxxx
+   ```
+3. Re-run `pnpm db:seed`
+4. Refresh `/user` — overview and identity pages should show org, credentials, and devices.
+
+If `DEMO_HOLDER_CLERK_USER_ID` is unset, demo holder data is attached to the synthetic `user_demo_holder` account (useful for API dev headers only).
+
+Seed uses fictional labels and card numbers only — no real PII or secrets.
+
 ## Optional (not needed for most v1 work)
 
 | Integration | Needed when |
