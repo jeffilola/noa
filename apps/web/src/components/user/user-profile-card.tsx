@@ -7,13 +7,11 @@ import type { ProfileFieldErrors } from '@noa/shared';
 import { validateProfileDateOfBirth, validateProfilePhone } from '@noa/shared';
 import { FormSuccessBanner } from '@/components/user/dashboard-primitives';
 import { ApiClientError, useClientApi } from '@/lib/api-client';
-import { formatDateOfBirth, formatPhoneByRegion } from '@/lib/profile-format';
 import type { UserProfile } from '@/lib/user-types';
 
 interface ProfileRow {
   label: string;
   value?: string | null;
-  hint?: string;
 }
 
 function ProfileRows({ rows }: { rows: ProfileRow[] }) {
@@ -22,19 +20,33 @@ function ProfileRows({ rows }: { rows: ProfileRow[] }) {
       {rows.map((row) => (
         <div key={row.label} className="dl-row">
           <dt>{row.label}</dt>
-          <dd>
-            {row.value ? (
-              <>
-                <span>{row.value}</span>
-                {row.hint ? <span className="profile-field-hint">{row.hint}</span> : null}
-              </>
-            ) : (
-              <span className="dashboard-muted">Not provided</span>
-            )}
-          </dd>
+          <dd>{row.value ? <span>{row.value}</span> : <span className="dashboard-muted">Not provided</span>}</dd>
         </div>
       ))}
     </dl>
+  );
+}
+
+function ProfilePhotoId({ imageUrl, name }: { imageUrl?: string | null; name: string }) {
+  return (
+    <div className="profile-photo-id">
+      <div className="profile-photo-id__frame" aria-hidden={!imageUrl}>
+        {imageUrl ? (
+          // eslint-disable-next-line @next/next/no-img-element
+          <img src={imageUrl} alt="" className="profile-photo-id__image" />
+        ) : (
+          <span className="profile-photo-id__placeholder">{name.charAt(0).toUpperCase() || '?'}</span>
+        )}
+      </div>
+      <div className="profile-photo-id__copy">
+        <p className="profile-photo-id__label">Photo ID</p>
+        <p className="dashboard-muted profile-photo-id__hint">
+          {imageUrl
+            ? 'Using your Clerk profile photo for now. Official badge photos from PACS sync are planned.'
+            : 'Add a profile photo in your Clerk account, or wait for official badge photo sync from PACS.'}
+        </p>
+      </div>
+    </div>
   );
 }
 
@@ -42,6 +54,11 @@ function toDateInputValue(isoDate?: string | null) {
   if (!isoDate?.trim()) return '';
   const match = isoDate.trim().match(/^(\d{4}-\d{2}-\d{2})/);
   return match ? match[1] : '';
+}
+
+function displayName(firstName?: string | null, lastName?: string | null, email?: string | null) {
+  const name = [firstName, lastName].filter(Boolean).join(' ');
+  return name || email || 'Holder';
 }
 
 export function UserProfileCard({ noaProfile }: { noaProfile: UserProfile | null }) {
@@ -86,24 +103,11 @@ export function UserProfileCard({ noaProfile }: { noaProfile: UserProfile | null
     );
   }
 
-  const formattedPhone = formatPhoneByRegion(profile?.phoneNumber ?? phoneNumber);
-  const formattedDob = formatDateOfBirth(profile?.dateOfBirth);
+  const holderName = displayName(user.firstName, user.lastName, user.primaryEmailAddress?.emailAddress);
 
   const rows: ProfileRow[] = [
-    { label: 'First name', value: user.firstName },
-    { label: 'Last name', value: user.lastName },
+    { label: 'Full name', value: holderName },
     { label: 'Email', value: user.primaryEmailAddress?.emailAddress },
-    {
-      label: 'Date of birth',
-      value: formattedDob,
-      hint: formattedDob ? 'Encrypted at rest in Noa' : undefined,
-    },
-    {
-      label: 'Phone number',
-      value: formattedPhone?.display,
-      hint: formattedPhone ? `Region: ${formattedPhone.region}` : undefined,
-    },
-    { label: 'Clerk user ID', value: user.id },
   ];
 
   async function handleSave(event: React.FormEvent) {
@@ -134,7 +138,7 @@ export function UserProfileCard({ noaProfile }: { noaProfile: UserProfile | null
       setProfile(updated);
       setPhoneNumber(updated.phoneNumber ?? phoneNumber);
       setDateOfBirth(toDateInputValue(updated.dateOfBirth));
-      setSuccessMessage('Profile saved. Phone and date of birth are encrypted in Noa.');
+      setSuccessMessage('Contact details saved. Phone and date of birth are encrypted in Noa.');
       router.refresh();
       requestAnimationFrame(() => {
         successRef.current?.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
@@ -155,14 +159,17 @@ export function UserProfileCard({ noaProfile }: { noaProfile: UserProfile | null
         User profile
       </h2>
       <p className="dashboard-muted identity-section__lede">
-        Name and email come from Clerk. Save phone and date of birth here — they are stored encrypted
-        in Noa for audit and GDPR.
+        Your visual identity and signed-in details. Contact fields below are stored encrypted in Noa.
       </p>
 
+      <ProfilePhotoId imageUrl={user.imageUrl} name={holderName} />
       <ProfileRows rows={rows} />
 
       <form className="profile-form device-form" onSubmit={handleSave}>
-        <h3 className="profile-form__title">Update encrypted fields</h3>
+        <h3 className="profile-form__title">Contact &amp; verification</h3>
+        <p className="dashboard-muted profile-form__lede">
+          Used for account verification and compliance. Not shown on your Photo ID card.
+        </p>
         <label className="device-form__field">
           <span>Phone number</span>
           <input
@@ -202,7 +209,7 @@ export function UserProfileCard({ noaProfile }: { noaProfile: UserProfile | null
         </label>
 
         <button type="submit" className="btn btn-primary" disabled={pending}>
-          {pending ? 'Saving…' : 'Save profile'}
+          {pending ? 'Saving…' : 'Save contact details'}
         </button>
 
         {successMessage ? (
