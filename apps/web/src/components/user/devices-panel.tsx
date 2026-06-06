@@ -1,49 +1,93 @@
 'use client';
 
-import { useState } from 'react';
+import { useRef, useState } from 'react';
+import { ApiErrorBanner, FormSuccessBanner } from '@/components/user/dashboard-primitives';
+import { ApiClientError, useClientApi } from '@/lib/api-client';
 import type { UserDevice } from '@/lib/user-types';
-import { useClientApi } from '@/lib/api-client';
+
+const PLATFORM_LABELS: Record<string, string> = {
+  ios: 'iOS',
+  android: 'Android',
+  watchos: 'watchOS',
+  wearos: 'Wear OS',
+};
+
+function platformLabel(platform: string) {
+  return PLATFORM_LABELS[platform] ?? platform;
+}
 
 export function DevicesPanel({ initialDevices }: { initialDevices: UserDevice[] }) {
   const { fetch } = useClientApi();
+  const feedbackRef = useRef<HTMLDivElement>(null);
   const [devices, setDevices] = useState(initialDevices);
   const [name, setName] = useState('');
   const [platform, setPlatform] = useState('ios');
   const [pending, setPending] = useState(false);
+  const [confirmDeactivateId, setConfirmDeactivateId] = useState<string | null>(null);
+  const [successMessage, setSuccessMessage] = useState<string | null>(null);
   const [error, setError] = useState<string | null>(null);
+
+  function showFeedback(message: string | null, isError = false) {
+    if (message && !isError) {
+      setSuccessMessage(message);
+      setError(null);
+      requestAnimationFrame(() => {
+        feedbackRef.current?.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+      });
+      return;
+    }
+
+    setSuccessMessage(null);
+    setError(message);
+    if (message) {
+      requestAnimationFrame(() => {
+        feedbackRef.current?.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+      });
+    }
+  }
 
   async function handleRegister(event: React.FormEvent) {
     event.preventDefault();
     setPending(true);
-    setError(null);
+    showFeedback(null);
 
     try {
       const device = await fetch<UserDevice>('/devices', {
         method: 'POST',
-        body: JSON.stringify({ name, platform }),
+        body: JSON.stringify({ name: name.trim(), platform }),
       });
       setDevices((current) => [device, ...current]);
       setName('');
+      showFeedback(`${device.name} registered for ${platformLabel(device.platform)} wallet and NFC presentation.`);
     } catch (err) {
-      setError(err instanceof Error ? err.message : 'Could not register device');
+      const message =
+        err instanceof ApiClientError || err instanceof Error
+          ? err.message
+          : 'Could not register device.';
+      showFeedback(message, true);
     } finally {
       setPending(false);
     }
   }
 
   async function handleDeactivate(deviceId: string) {
+    const device = devices.find((entry) => entry.id === deviceId);
+    if (!device) return;
+
     setPending(true);
-    setError(null);
+    showFeedback(null);
 
     try {
       await fetch(`/devices/${deviceId}`, { method: 'DELETE' });
-      setDevices((current) =>
-        current.map((device) =>
-          device.id === deviceId ? { ...device, isActive: false } : device,
-        ),
-      );
+      setDevices((current) => current.filter((entry) => entry.id !== deviceId));
+      setConfirmDeactivateId(null);
+      showFeedback(`${device.name} deactivated. It will no longer present wallet passes or NFC credentials.`);
     } catch (err) {
-      setError(err instanceof Error ? err.message : 'Could not deactivate device');
+      const message =
+        err instanceof ApiClientError || err instanceof Error
+          ? err.message
+          : 'Could not deactivate device.';
+      showFeedback(message, true);
     } finally {
       setPending(false);
     }
@@ -51,6 +95,11 @@ export function DevicesPanel({ initialDevices }: { initialDevices: UserDevice[] 
 
   return (
     <div className="content-stack">
+      <div ref={feedbackRef}>
+        {successMessage ? <FormSuccessBanner message={successMessage} /> : null}
+        {error ? <ApiErrorBanner message={error} /> : null}
+      </div>
+
       <div className="card">
         <h2 className="dashboard-section-title">Register device</h2>
         <p className="dashboard-muted">
@@ -76,10 +125,9 @@ export function DevicesPanel({ initialDevices }: { initialDevices: UserDevice[] 
             </select>
           </label>
           <button type="submit" className="btn btn-primary" disabled={pending}>
-            {pending ? 'Saving…' : 'Register device'}
+            {pending && !confirmDeactivateId ? 'Registering…' : 'Register device'}
           </button>
         </form>
-        {error ? <p className="form-error">{error}</p> : null}
       </div>
 
       {devices.length === 0 ? (
@@ -93,26 +141,47 @@ export function DevicesPanel({ initialDevices }: { initialDevices: UserDevice[] 
               <div>
                 <strong>{device.name}</strong>
                 <span className="meta">
-                  {device.platform}
+                  {platformLabel(device.platform)}
                   {device.lastSeenAt
                     ? ` · Last seen ${new Date(device.lastSeenAt).toLocaleDateString()}`
                     : ''}
                 </span>
               </div>
               <div className="device-row__actions">
-                <span className={`badge ${device.isActive ? 'badge-active' : 'badge-muted'}`}>
-                  {device.isActive ? 'Active' : 'Inactive'}
-                </span>
-                {device.isActive ? (
+                <span className="badge badge-active">Active</span>
+                {confirmDeactivateId === device.id ? (
+                  <div className="device-confirm">
+                    <span className="device-confirm__text">Deactivate {device.name}?</span>
+                    <button
+                      type="button"
+                      className="btn btn-primary btn-sm"
+                      disabled={pending}
+                      onClick={() => handleDeactivate(device.id)}
+                    >
+                      {pending ? 'Deactivating…' : 'Confirm'}
+                    </button>
+                    <button
+                      type="button"
+                      className="btn btn-ghost btn-sm"
+                      disabled={pending}
+                      onClick={() => setConfirmDeactivateId(null)}
+                    >
+                      Cancel
+                    </button>
+                  </div>
+                ) : (
                   <button
                     type="button"
                     className="btn btn-ghost"
                     disabled={pending}
-                    onClick={() => handleDeactivate(device.id)}
+                    onClick={() => {
+                      setConfirmDeactivateId(device.id);
+                      showFeedback(null);
+                    }}
                   >
                     Deactivate
                   </button>
-                ) : null}
+                )}
               </div>
             </li>
           ))}
