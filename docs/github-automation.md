@@ -26,6 +26,10 @@ Project automation needs write access to your **user** project (the default `GIT
 3. Name: `PROJECT_PAT`
 4. Value: paste token
 
+Until this secret exists, **Project automation** jobs skip automatically (CI still passes).
+
+After adding the secret, re-run a failed workflow or open a new issue to verify board updates.
+
 ### 3. Link repo to the project (recommended)
 
 ```powershell
