@@ -53,6 +53,7 @@ pnpm dev
 ## Docs
 
 - [agile-workflow.md](docs/agile-workflow.md) — Phase 1: board, issues, PRs, DoD
+- [github-automation.md](docs/github-automation.md) — Automate board, PRs, labels, Dependabot
 - [backlog.md](docs/backlog.md) — Prioritized product backlog
 - [sprint-planning.md](docs/sprint-planning.md) — 2-week sprint cadence
 - [definition-of-done.md](docs/definition-of-done.md)

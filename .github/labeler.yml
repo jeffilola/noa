@@ -1,0 +1,33 @@
+'area:web':
+  - changed-files:
+      - any-glob-to-any-file: 'apps/web/**'
+
+'area:api':
+  - changed-files:
+      - any-glob-to-any-file: 'apps/api/**'
+
+'area:database':
+  - changed-files:
+      - any-glob-to-any-file: 'packages/database/**'
+
+'area:domain':
+  - changed-files:
+      - any-glob-to-any-file: 'packages/domain/**'
+
+'area:integrations':
+  - changed-files:
+      - any-glob-to-any-file:
+          - 'packages/integrations/**'
+          - 'docs/hid-origo-integration.md'
+          - 'docs/brivo-integration.md'
+
+'area:infra':
+  - changed-files:
+      - any-glob-to-any-file:
+          - '.github/**'
+          - 'docker-compose.yml'
+          - 'turbo.json'
+
+'area:docs':
+  - changed-files:
+      - any-glob-to-any-file: 'docs/**'
