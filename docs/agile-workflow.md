@@ -86,12 +86,34 @@ On `main`:
 
 Configure at: **Repo → Settings → Branches → Add rule** for `main`.
 
-Or ask a maintainer to apply the rule via GitHub Settings.
+Or from PowerShell (use UTF-8 **without BOM** — `Out-File` breaks GitHub's JSON parser):
 
-## What we are not doing yet (Phase 2+)
+```powershell
+$env:Path = "C:\Program Files\Git\bin;C:\Program Files\GitHub CLI;" + $env:Path
+cd C:\Users\jeffe\Projects\noa
 
-- Fixed sprint ceremonies
-- Story points
+$json = '{"required_status_checks":{"strict":true,"contexts":["build"]},"enforce_admins":false,"required_pull_request_reviews":{"required_approving_review_count":0,"dismiss_stale_reviews":false},"restrictions":null,"allow_force_pushes":false,"allow_deletions":false}'
+[System.IO.File]::WriteAllText("$PWD\branch-protection.json", $json, (New-Object System.Text.UTF8Encoding $false))
+
+gh api --method PUT repos/jeffilola/noa/branches/main/protection --input branch-protection.json
+Remove-Item branch-protection.json
+```
+
+## Phase 2 — Cadence
+
+See dedicated docs:
+
+| Doc | Purpose |
+|-----|---------|
+| [backlog.md](./backlog.md) | Prioritized product backlog by epic |
+| [sprint-planning.md](./sprint-planning.md) | 2-week sprints, milestones, planning checklist |
+| [demos/](./demos/README.md) | Weekly / end-of-sprint demo notes |
+| [retros/](./retros/README.md) | Keep / stop / try retros |
+
+**Current focus:** Sprint 1 · **M1: Holder dashboard usable**
+
+## What we are not doing yet (Phase 3+)
+
+- Staging environment automation
+- Story points / velocity charts
 - Release trains
-
-Add those when the backlog grows beyond ~20 active issues.
