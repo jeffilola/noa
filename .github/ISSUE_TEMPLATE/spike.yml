@@ -1,0 +1,59 @@
+name: Spike
+description: Time-boxed research or proof of concept (no production code required)
+title: "[Spike]: "
+labels:
+  - spike
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Spikes answer a question or reduce uncertainty. Time-box to 1–2 days max.
+
+  - type: textarea
+    id: question
+    attributes:
+      label: Question to answer
+      placeholder: Can we ingest HID CloudEvents without outbound Origo API credentials?
+    validations:
+      required: true
+
+  - type: textarea
+    id: success
+    attributes:
+      label: Success criteria
+      placeholder: |
+        - Document payload shape in `docs/`
+        - POST mock event to `/webhooks/hid-origo` creates a credential row
+        - List blockers for production ingest
+    validations:
+      required: true
+
+  - type: input
+    id: timebox
+    attributes:
+      label: Time box
+      placeholder: 4 hours
+    validations:
+      required: true
+
+  - type: textarea
+    id: output
+    attributes:
+      label: Expected output
+      description: What artifact should exist when the spike is done?
+      placeholder: Short markdown note in `docs/spikes/hid-webhook-poc.md` or a comment on this issue
+
+  - type: dropdown
+    id: area
+    attributes:
+      label: Area
+      options:
+        - integrations (HID / Brivo / Lenel)
+        - auth (Clerk)
+        - database / Prisma
+        - RBAC
+        - wallet / mobile
+        - infra / CI
+        - other
+    validations:
+      required: true

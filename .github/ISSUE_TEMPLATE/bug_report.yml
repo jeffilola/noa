@@ -1,0 +1,75 @@
+name: Bug report
+description: Something is broken or behaves incorrectly
+title: "[Bug]: "
+labels:
+  - bug
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Describe what went wrong and how to reproduce it. Link a PR if you already have a fix.
+
+  - type: textarea
+    id: summary
+    attributes:
+      label: Summary
+      description: One or two sentences on the problem
+      placeholder: CI web build fails on ReactNode type mismatch
+    validations:
+      required: true
+
+  - type: textarea
+    id: steps
+    attributes:
+      label: Steps to reproduce
+      placeholder: |
+        1. Run `pnpm --filter @noa/web build`
+        2. See TypeScript error in auth-nav-controls.tsx
+    validations:
+      required: true
+
+  - type: textarea
+    id: expected
+    attributes:
+      label: Expected behavior
+    validations:
+      required: true
+
+  - type: textarea
+    id: actual
+    attributes:
+      label: Actual behavior
+    validations:
+      required: true
+
+  - type: dropdown
+    id: area
+    attributes:
+      label: Area
+      options:
+        - apps/web
+        - apps/api
+        - packages/database
+        - packages/domain
+        - CI / GitHub Actions
+        - docs
+        - other
+    validations:
+      required: true
+
+  - type: textarea
+    id: logs
+    attributes:
+      label: Logs or screenshots
+      description: Paste errors, CI links, or screenshots
+      render: shell
+
+  - type: checkboxes
+    id: checklist
+    attributes:
+      label: Triage
+      options:
+        - label: I searched existing issues for duplicates
+          required: true
+        - label: I can reproduce this on the latest `main` branch (or noted the commit)
+          required: false

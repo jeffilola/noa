@@ -52,6 +52,9 @@ pnpm dev
 
 ## Docs
 
+- [agile-workflow.md](docs/agile-workflow.md) — Phase 1: board, issues, PRs, DoD
+- [definition-of-done.md](docs/definition-of-done.md)
+- [environment-checklist.md](docs/environment-checklist.md)
 - [issuance-modes.md](docs/issuance-modes.md)
 - [hid-origo-integration.md](docs/hid-origo-integration.md)
 - [brivo-integration.md](docs/brivo-integration.md)

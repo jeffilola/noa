@@ -1,0 +1,8 @@
+blank_issues_enabled: false
+contact_links:
+  - name: Noa docs
+    url: https://github.com/jeffilola/noa/tree/main/docs
+    about: Architecture, RBAC, integrations, and environment setup
+  - name: Environment checklist
+    url: https://github.com/jeffilola/noa/blob/main/docs/environment-checklist.md
+    about: What you need running locally before development
