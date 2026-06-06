@@ -105,6 +105,7 @@ See dedicated docs:
 
 | Doc | Purpose |
 |-----|---------|
+| [github-automation.md](./github-automation.md) | GitHub Actions, board automation, setup |
 | [backlog.md](./backlog.md) | Prioritized product backlog by epic |
 | [sprint-planning.md](./sprint-planning.md) | 2-week sprints, milestones, planning checklist |
 | [demos/](./demos/README.md) | Weekly / end-of-sprint demo notes |

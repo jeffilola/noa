@@ -1,0 +1,317 @@
+# Automates the Noa project board (GitHub Project #2).
+# Requires secret: PROJECT_PAT — see docs/github-automation.md
+
+name: Project automation
+
+on:
+  issues:
+    types: [opened, reopened, labeled]
+  pull_request:
+    types: [opened, reopened, ready_for_review, closed]
+
+permissions:
+  contents: read
+  issues: write
+  pull-requests: write
+
+env:
+  PROJECT_ID: PVT_kwHOAVaSz84BZ6Ok
+  STATUS_FIELD_ID: PVTSSF_lAHOAVaSz84BZ6OkzhU1k5g
+  STATUS_BACKLOG: fcaca48d
+  STATUS_READY: f75ad846
+  STATUS_IN_PROGRESS: 47fc9ee4
+  STATUS_REVIEW: d55259c9
+  STATUS_DONE: 98236657
+
+jobs:
+  issue-opened:
+    if: github.event_name == 'issues' && contains(fromJSON('["opened","reopened"]'), github.event.action)
+    runs-on: ubuntu-latest
+    steps:
+      - name: Add issue to project → Backlog
+        uses: actions/github-script@v7
+        with:
+          github-token: ${{ secrets.PROJECT_PAT }}
+          script: |
+            const issueNodeId = context.payload.issue.node_id;
+            const projectId = process.env.PROJECT_ID;
+            const fieldId = process.env.STATUS_FIELD_ID;
+            const optionId = process.env.STATUS_BACKLOG;
+
+            const add = await github.graphql(
+              `mutation($projectId: ID!, $contentId: ID!) {
+                addProjectV2ItemById(input: {projectId: $projectId, contentId: $contentId}) {
+                  item { id }
+                }
+              }`,
+              { projectId, contentId: issueNodeId },
+            );
+
+            const itemId = add.addProjectV2ItemById.item.id;
+
+            await github.graphql(
+              `mutation($projectId: ID!, $itemId: ID!, $fieldId: ID!, $optionId: String!) {
+                updateProjectV2ItemFieldValue(
+                  input: {
+                    projectId: $projectId
+                    itemId: $itemId
+                    fieldId: $fieldId
+                    value: { singleSelectOptionId: $optionId }
+                  }
+                ) { projectV2Item { id } }
+              }`,
+              { projectId, itemId, fieldId, optionId },
+            );
+
+  issue-ready-label:
+    if: github.event_name == 'issues' && github.event.action == 'labeled' && github.event.label.name == 'ready'
+    runs-on: ubuntu-latest
+    steps:
+      - name: Move issue to Ready
+        uses: actions/github-script@v7
+        with:
+          github-token: ${{ secrets.PROJECT_PAT }}
+          script: |
+            const issueNodeId = context.payload.issue.node_id;
+            const projectId = process.env.PROJECT_ID;
+            const fieldId = process.env.STATUS_FIELD_ID;
+            const optionId = process.env.STATUS_READY;
+
+            async function ensureItem(contentNodeId) {
+              const items = await github.graphql(
+                `query($projectId: ID!) {
+                  node(id: $projectId) {
+                    ... on ProjectV2 {
+                      items(first: 100) {
+                        nodes { id content { ... on Issue { id } } }
+                      }
+                    }
+                  }
+                }`,
+                { projectId },
+              );
+              const existing = items.node.items.nodes.find(
+                (n) => n.content && n.content.id === contentNodeId,
+              );
+              if (existing) return existing.id;
+              const add = await github.graphql(
+                `mutation($projectId: ID!, $contentId: ID!) {
+                  addProjectV2ItemById(input: {projectId: $projectId, contentId: $contentId}) {
+                    item { id }
+                  }
+                }`,
+                { projectId, contentId: contentNodeId },
+              );
+              return add.addProjectV2ItemById.item.id;
+            }
+
+            const itemId = await ensureItem(issueNodeId);
+            await github.graphql(
+              `mutation($projectId: ID!, $itemId: ID!, $fieldId: ID!, $optionId: String!) {
+                updateProjectV2ItemFieldValue(
+                  input: {
+                    projectId: $projectId
+                    itemId: $itemId
+                    fieldId: $fieldId
+                    value: { singleSelectOptionId: $optionId }
+                  }
+                ) { projectV2Item { id } }
+              }`,
+              { projectId, itemId, fieldId, optionId },
+            );
+
+  issue-in-progress-label:
+    if: github.event_name == 'issues' && github.event.action == 'labeled' && github.event.label.name == 'in-progress'
+    runs-on: ubuntu-latest
+    steps:
+      - name: Move issue to In Progress
+        uses: actions/github-script@v7
+        with:
+          github-token: ${{ secrets.PROJECT_PAT }}
+          script: |
+            const issueNodeId = context.payload.issue.node_id;
+            const projectId = process.env.PROJECT_ID;
+            const fieldId = process.env.STATUS_FIELD_ID;
+            const optionId = process.env.STATUS_IN_PROGRESS;
+
+            async function ensureItem(contentNodeId) {
+              const items = await github.graphql(
+                `query($projectId: ID!) {
+                  node(id: $projectId) {
+                    ... on ProjectV2 {
+                      items(first: 100) {
+                        nodes { id content { ... on Issue { id } } }
+                      }
+                    }
+                  }
+                }`,
+                { projectId },
+              );
+              const existing = items.node.items.nodes.find(
+                (n) => n.content && n.content.id === contentNodeId,
+              );
+              if (existing) return existing.id;
+              const add = await github.graphql(
+                `mutation($projectId: ID!, $contentId: ID!) {
+                  addProjectV2ItemById(input: {projectId: $projectId, contentId: $contentId}) {
+                    item { id }
+                  }
+                }`,
+                { projectId, contentId: contentNodeId },
+              );
+              return add.addProjectV2ItemById.item.id;
+            }
+
+            const itemId = await ensureItem(issueNodeId);
+            await github.graphql(
+              `mutation($projectId: ID!, $itemId: ID!, $fieldId: ID!, $optionId: String!) {
+                updateProjectV2ItemFieldValue(
+                  input: {
+                    projectId: $projectId
+                    itemId: $itemId
+                    fieldId: $fieldId
+                    value: { singleSelectOptionId: $optionId }
+                  }
+                ) { projectV2Item { id } }
+              }`,
+              { projectId, itemId, fieldId, optionId },
+            );
+
+  pull-request-open:
+    if: github.event_name == 'pull_request' && contains(fromJSON('["opened","reopened","ready_for_review"]'), github.event.action)
+    runs-on: ubuntu-latest
+    steps:
+      - name: Add PR to project → Review
+        uses: actions/github-script@v7
+        with:
+          github-token: ${{ secrets.PROJECT_PAT }}
+          script: |
+            const prNodeId = context.payload.pull_request.node_id;
+            const projectId = process.env.PROJECT_ID;
+            const fieldId = process.env.STATUS_FIELD_ID;
+            const optionId = process.env.STATUS_REVIEW;
+
+            const add = await github.graphql(
+              `mutation($projectId: ID!, $contentId: ID!) {
+                addProjectV2ItemById(input: {projectId: $projectId, contentId: $contentId}) {
+                  item { id }
+                }
+              }`,
+              { projectId, contentId: prNodeId },
+            );
+
+            await github.graphql(
+              `mutation($projectId: ID!, $itemId: ID!, $fieldId: ID!, $optionId: String!) {
+                updateProjectV2ItemFieldValue(
+                  input: {
+                    projectId: $projectId
+                    itemId: $itemId
+                    fieldId: $fieldId
+                    value: { singleSelectOptionId: $optionId }
+                  }
+                ) { projectV2Item { id } }
+              }`,
+              { projectId, itemId: add.addProjectV2ItemById.item.id, fieldId, optionId },
+            );
+
+            const body = context.payload.pull_request.body || '';
+            const linked = body.match(/(?:close[sd]?|fix(?:e[sd])?|resolve[sd]?)\s+#(\d+)/i);
+            if (linked) {
+              const issueNumber = linked[1];
+              const { data: issue } = await github.rest.issues.get({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                issue_number: issueNumber,
+              });
+              await moveIssueToReview(github, issue.node_id);
+
+              async function moveIssueToReview(github, issueNodeId) {
+                const items = await github.graphql(
+                  `query($projectId: ID!) {
+                    node(id: $projectId) {
+                      ... on ProjectV2 {
+                        items(first: 100) {
+                          nodes { id content { ... on Issue { id } } }
+                        }
+                      }
+                    }
+                  }`,
+                  { projectId },
+                );
+                const node = items.node.items.nodes.find(
+                  (n) => n.content && n.content.id === issueNodeId,
+                );
+                if (node) {
+                  await github.graphql(
+                    `mutation($projectId: ID!, $itemId: ID!, $fieldId: ID!, $optionId: String!) {
+                      updateProjectV2ItemFieldValue(
+                        input: {
+                          projectId: $projectId
+                          itemId: $itemId
+                          fieldId: $fieldId
+                          value: { singleSelectOptionId: $optionId }
+                        }
+                      ) { projectV2Item { id } }
+                    }`,
+                    { projectId, itemId: node.id, fieldId, optionId },
+                  );
+                }
+              }
+            }
+
+  pull-request-merged:
+    if: github.event_name == 'pull_request' && github.event.action == 'closed' && github.event.pull_request.merged == true
+    runs-on: ubuntu-latest
+    steps:
+      - name: Move linked issues to Done
+        uses: actions/github-script@v7
+        with:
+          github-token: ${{ secrets.PROJECT_PAT }}
+          script: |
+            const body = context.payload.pull_request.body || '';
+            const projectId = process.env.PROJECT_ID;
+            const fieldId = process.env.STATUS_FIELD_ID;
+            const optionId = process.env.STATUS_DONE;
+            const matches = [...body.matchAll(/(?:close[sd]?|fix(?:e[sd])?|resolve[sd]?)\s+#(\d+)/gi)];
+
+            for (const match of matches) {
+              const issueNumber = match[1];
+              const { data: issue } = await github.rest.issues.get({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                issue_number: issueNumber,
+              });
+
+              const items = await github.graphql(
+                `query($projectId: ID!) {
+                  node(id: $projectId) {
+                    ... on ProjectV2 {
+                      items(first: 100) {
+                        nodes { id content { ... on Issue { id number } } }
+                      }
+                    }
+                  }
+                }`,
+                { projectId },
+              );
+
+              const node = items.node.items.nodes.find(
+                (n) => n.content && n.content.number === issue.number,
+              );
+
+              if (node) {
+                await github.graphql(
+                  `mutation($projectId: ID!, $itemId: ID!, $fieldId: ID!, $optionId: String!) {
+                    updateProjectV2ItemFieldValue(
+                      input: {
+                        projectId: $projectId
+                        itemId: $itemId
+                        fieldId: $fieldId
+                        value: { singleSelectOptionId: $optionId }
+                      }
+                    ) { projectV2Item { id } }
+                  }`,
+                  { projectId, itemId: node.id, fieldId, optionId },
+                );
+              }
+            }
