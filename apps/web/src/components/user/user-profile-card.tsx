@@ -7,6 +7,7 @@ import type { ProfileFieldErrors } from '@noa/shared';
 import { validateProfileDateOfBirth, validateProfilePhone } from '@noa/shared';
 import { FormSuccessBanner } from '@/components/user/dashboard-primitives';
 import { ApiClientError, useClientApi } from '@/lib/api-client';
+import { useAutoDismiss } from '@/lib/use-auto-dismiss';
 import type { UserProfile } from '@/lib/user-types';
 
 interface ProfileRow {
@@ -73,6 +74,9 @@ export function UserProfileCard({ noaProfile }: { noaProfile: UserProfile | null
   const [apiError, setApiError] = useState<string | null>(null);
   const [successMessage, setSuccessMessage] = useState<string | null>(null);
   const [pending, setPending] = useState(false);
+
+  useAutoDismiss(successMessage, () => setSuccessMessage(null));
+  useAutoDismiss(apiError, () => setApiError(null));
 
   useEffect(() => {
     if (!isLoaded || !user) return;

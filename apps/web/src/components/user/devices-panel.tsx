@@ -3,6 +3,7 @@
 import { useRef, useState } from 'react';
 import { ApiErrorBanner, FormSuccessBanner } from '@/components/user/dashboard-primitives';
 import { ApiClientError, useClientApi } from '@/lib/api-client';
+import { useAutoDismiss } from '@/lib/use-auto-dismiss';
 import type { UserDevice } from '@/lib/user-types';
 
 const PLATFORM_LABELS: Record<string, string> = {
@@ -26,6 +27,9 @@ export function DevicesPanel({ initialDevices }: { initialDevices: UserDevice[] 
   const [confirmDeactivateId, setConfirmDeactivateId] = useState<string | null>(null);
   const [successMessage, setSuccessMessage] = useState<string | null>(null);
   const [error, setError] = useState<string | null>(null);
+
+  useAutoDismiss(successMessage, () => setSuccessMessage(null));
+  useAutoDismiss(error, () => setError(null));
 
   function showFeedback(message: string | null, isError = false) {
     if (message && !isError) {
