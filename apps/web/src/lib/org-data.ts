@@ -1,4 +1,5 @@
 import { apiFetch } from '@/lib/api';
+import { fetchUserAccess, resolveOrgContextFromAccess, type UserAccessSummary } from '@/lib/access-data';
 import type { UserCredential } from '@/lib/user-types';
 
 export interface OrgSummary {
@@ -14,14 +15,14 @@ export interface OrgOverview extends OrgSummary {
   activeCredentialCount: number;
 }
 
-export interface UserAccessSummary {
-  organizationId?: string;
-  roles: string[];
-  permissions: string[];
-  roleAssignments: Array<{
-    role: string;
-    organization?: OrgSummary | null;
-  }>;
+export interface OrgAuditLog {
+  id: string;
+  action: string;
+  organizationId: string | null;
+  resourceType: string;
+  resourceId: string | null;
+  actorUserId: string | null;
+  createdAt: string;
 }
 
 export interface OrgMemberUser {
@@ -42,29 +43,9 @@ export interface OrgMember {
 }
 
 export async function resolveOrgContext(): Promise<OrgSummary | null> {
-  try {
-    const access = await apiFetch<UserAccessSummary>('/users/me/access');
-    const orgAdminAssignment = access.roleAssignments.find(
-      (assignment) => assignment.role === 'org_admin' && assignment.organization?.id,
-    );
-    if (orgAdminAssignment?.organization) {
-      return orgAdminAssignment.organization;
-    }
-
-    if (access.organizationId && access.permissions.includes('reports:view')) {
-      const overview = await apiFetch<OrgOverview>(
-        `/organizations/${access.organizationId}/overview`,
-        { organizationId: access.organizationId },
-      ).catch(() => null);
-      if (overview) {
-        return { id: overview.id, name: overview.name, slug: overview.slug };
-      }
-    }
-
-    return null;
-  } catch {
-    return null;
-  }
+  const access = await fetchUserAccess();
+  if (!access) return null;
+  return resolveOrgContextFromAccess(access);
 }
 
 export async function fetchOrgOverview(organizationId: string) {
@@ -103,3 +84,20 @@ export async function fetchOrgCredentials(organizationId: string) {
     apiReachable: credentials !== null,
   };
 }
+
+export async function fetchOrgAuditLogs(organizationId: string, limit = 50) {
+  const query = new URLSearchParams({
+    organizationId,
+    limit: String(limit),
+  });
+  const logs = await apiFetch<OrgAuditLog[]>(`/audit/logs?${query.toString()}`, {
+    organizationId,
+  }).catch(() => null);
+
+  return {
+    logs: logs ?? [],
+    apiReachable: logs !== null,
+  };
+}
+
+export type { UserAccessSummary };

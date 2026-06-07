@@ -2,6 +2,7 @@
 
 import Link from 'next/link';
 import { UserButton, useAuth } from '@clerk/nextjs';
+import { DashboardSwitcher, type DashboardSwitcherLink } from '@/components/dashboard/dashboard-switcher';
 import { marketingRoutes } from './relume/shared/routes';
 import { noaColors as c } from './relume/shared/theme';
 
@@ -35,7 +36,13 @@ function AuthLink({
   );
 }
 
-export function AuthNavControls({ compact = false }: { compact?: boolean }) {
+export function AuthNavControls({
+  compact = false,
+  switcherLinks,
+}: {
+  compact?: boolean;
+  switcherLinks?: DashboardSwitcherLink[];
+}) {
   const { isSignedIn, isLoaded } = useAuth();
 
   if (!isLoaded) {
@@ -45,9 +52,13 @@ export function AuthNavControls({ compact = false }: { compact?: boolean }) {
   if (isSignedIn) {
     return (
       <div className={`flex items-center ${compact ? 'flex-col gap-2' : 'gap-3'}`}>
-        <AuthLink href={marketingRoutes.holderDashboard} variant="primary">
-          Dashboard
-        </AuthLink>
+        {switcherLinks?.length ? (
+          <DashboardSwitcher links={switcherLinks} />
+        ) : (
+          <AuthLink href={marketingRoutes.holderDashboard} variant="primary">
+            Dashboard
+          </AuthLink>
+        )}
         <UserButton
           appearance={{
             elements: {
