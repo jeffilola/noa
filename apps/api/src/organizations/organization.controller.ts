@@ -10,8 +10,10 @@ import {
   UseGuards,
 } from '@nestjs/common';
 import type { Request } from 'express';
+import { Permission } from '@noa/domain';
 import { ClerkAuthGuard } from '../common/guards/clerk-auth.guard';
 import { RequireOrgAdmin } from '../common/guards/org-role.guard';
+import { RequireOrgScope, RequirePermission } from '../common/guards/permission.guard';
 import { OrganizationService } from './organization.service';
 
 @Controller('organizations')
@@ -24,9 +26,16 @@ export class OrganizationController {
     return this.orgs.create(body.name, body.slug);
   }
 
+  @Get(':id/overview')
+  @UseGuards(RequireOrgScope(), RequirePermission(Permission.REPORTS_VIEW))
+  getOverview(@Param('id') id: string, @Req() req: Request) {
+    return this.orgs.getOverview(id, req.auth!.userId, req.auth!.isPlatformAdmin);
+  }
+
   @Get(':id/members')
-  listMembers(@Param('id') id: string) {
-    return this.orgs.listMembers(id);
+  @UseGuards(RequireOrgScope(), RequirePermission(Permission.ORG_USERS_MANAGE))
+  listMembers(@Param('id') id: string, @Req() req: Request) {
+    return this.orgs.listMembers(id, req.auth!.userId, req.auth!.isPlatformAdmin);
   }
 
   @Post(':id/members/invite')

@@ -1,4 +1,4 @@
-import { BadRequestException, Injectable, NotFoundException } from '@nestjs/common';
+import { BadRequestException, ForbiddenException, Injectable, NotFoundException } from '@nestjs/common';
 import type { Organization } from '@noa/database';
 import { assertNoaRoleKey, NoaRole, parseOrganizationSettings, type NoaRoleKey } from '@noa/domain';
 import { PrismaService } from '../prisma/prisma.service';
@@ -35,7 +35,41 @@ export class OrganizationService {
     });
   }
 
-  async listMembers(organizationId: string) {
+  async getOverview(organizationId: string, actorUserId: string, isPlatformAdmin: boolean) {
+    await this.assertOrgAccess(actorUserId, organizationId, isPlatformAdmin);
+
+    const org = await this.prisma.organization.findUnique({
+      where: { id: organizationId },
+      select: { id: true, name: true, slug: true },
+    });
+    if (!org) throw new NotFoundException('Organization not found');
+
+    const [memberCount, activeMemberCount, credentialCount, activeCredentialCount] =
+      await Promise.all([
+        this.prisma.membership.count({
+          where: { organizationId, status: { not: 'removed' } },
+        }),
+        this.prisma.membership.count({
+          where: { organizationId, status: 'active' },
+        }),
+        this.prisma.credential.count({ where: { organizationId } }),
+        this.prisma.credential.count({
+          where: { organizationId, status: 'active' },
+        }),
+      ]);
+
+    return {
+      ...org,
+      memberCount,
+      activeMemberCount,
+      credentialCount,
+      activeCredentialCount,
+    };
+  }
+
+  async listMembers(organizationId: string, actorUserId: string, isPlatformAdmin: boolean) {
+    await this.assertOrgAccess(actorUserId, organizationId, isPlatformAdmin);
+
     return this.prisma.membership.findMany({
       where: { organizationId, status: { not: 'removed' } },
       include: { user: { select: { id: true, clerkUserId: true, isDisabled: true } } },
@@ -143,5 +177,40 @@ export class OrganizationService {
       if (!org) throw new NotFoundException('Organization not found');
       return parseOrganizationSettings(org.settings);
     });
+  }
+
+  private async assertOrgAccess(
+    userId: string,
+    organizationId: string,
+    isPlatformAdmin: boolean,
+  ) {
+    if (isPlatformAdmin) return;
+
+    const org = await this.prisma.organization.findUnique({
+      where: { id: organizationId },
+      select: { id: true },
+    });
+    if (!org) throw new NotFoundException('Organization not found');
+
+    const membership = await this.prisma.membership.findFirst({
+      where: {
+        userId,
+        organizationId,
+        status: { in: ['active', 'invited'] },
+      },
+    });
+    if (membership) return;
+
+    const orgRole = await this.prisma.userRole.findFirst({
+      where: {
+        userId,
+        organizationId,
+        revokedAt: null,
+        role: { scope: 'organization' },
+      },
+    });
+    if (orgRole) return;
+
+    throw new ForbiddenException('You do not have access to this organization');
   }
 }

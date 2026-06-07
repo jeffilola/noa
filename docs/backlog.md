@@ -6,23 +6,7 @@ Legend: **S** / **M** / **L** size · **Epic** tag · Milestone when scheduled
 
 ---
 
-## Now — Sprint 1 (M1: Holder dashboard usable)
-
-| P | Size | Item | Epic | Notes |
-|---|------|------|------|-------|
-| 1 | S | Polish holder overview (`/user`) empty states + API-offline copy | Holder | Quick win |
-| 2 | M | Identity hub: profile save feedback + validation errors | Holder | Phone/DOB in contact section; Photo ID via Clerk (upload/PACS later) |
-| 3 | M | Devices panel: register/deactivate with clear success/error toasts | Holder | API must be up |
-| 4 | S | Security page: link privacy + session info stub | Holder | |
-| 5 | M | Seed demo holder data script for local demos | Holder | `pnpm db:seed` extension |
-| 6 | S | Holder dashboard smoke test in CI (build-only or Playwright later) | Quality | Optional this sprint |
-
-**Milestone:** [M1: Holder dashboard usable](https://github.com/jeffilola/noa/milestone/1)  
-**Goal:** A signed-in Identity Holder can demo profile, credentials (empty or seeded), devices, and navigation without HID/Brivo.
-
----
-
-## Next — Sprint 2 (M2: Org admin read-only)
+## Now — Sprint 2 (M2: Org admin read-only)
 
 | P | Size | Item | Epic | Notes |
 |---|------|------|------|-------|
@@ -32,8 +16,14 @@ Legend: **S** / **M** / **L** size · **Epic** tag · Milestone when scheduled
 | 4 | S | Org audit log view (read-only) | Org | |
 | 5 | M | Role-based nav: hide dashboards user cannot access | RBAC | Web + API guards |
 
-**Milestone:** M2: Org admin read-only  
+**Milestone:** [M2: Org admin read-only](https://github.com/jeffilola/noa/milestone/2)  
 **Goal:** Org Admin can inspect their org without issuance or PACS write APIs.
+
+---
+
+## Done — Sprint 1 (M1: Holder dashboard usable)
+
+Issues #1–#4 merged. Holder dashboard demo-ready with seed data.
 
 ---
 
