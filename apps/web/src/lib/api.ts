@@ -2,7 +2,12 @@ import { auth } from '@clerk/nextjs/server';
 
 const API = process.env.NEXT_PUBLIC_API_URL ?? 'http://localhost:3001/api/v1';
 
-export async function apiFetch<T>(path: string, init?: RequestInit): Promise<T> {
+export type ApiFetchInit = RequestInit & {
+  organizationId?: string;
+};
+
+export async function apiFetch<T>(path: string, init?: ApiFetchInit): Promise<T> {
+  const { organizationId, ...requestInit } = init ?? {};
   const { getToken, userId } = await auth();
 
   if (!userId) {
@@ -11,9 +16,12 @@ export async function apiFetch<T>(path: string, init?: RequestInit): Promise<T> 
 
   const token = await getToken();
 
-  const headers = new Headers(init?.headers);
+  const headers = new Headers(requestInit.headers);
   if (token) {
     headers.set('Authorization', `Bearer ${token}`);
+  }
+  if (organizationId) {
+    headers.set('x-organization-id', organizationId);
   }
 
   let res: Response;
@@ -21,7 +29,7 @@ export async function apiFetch<T>(path: string, init?: RequestInit): Promise<T> 
   try {
     res = await fetch(`${API}${path}`, {
       cache: 'no-store',
-      ...init,
+      ...requestInit,
       headers,
     });
   } catch {

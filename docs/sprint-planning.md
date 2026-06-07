@@ -65,13 +65,14 @@ Backlog → Ready → In Progress → Review (PR open) → Done
 
 ## Current sprint
 
-**Sprint 1 · M1: Holder dashboard usable**
+**Sprint 2 · M2: Org admin read-only**
 
-Focus issues (create on GitHub from [backlog.md](./backlog.md)):
+Focus issues (GitHub milestone M2):
 
-1. Holder overview empty states + API-offline copy  
-2. Identity profile save feedback  
-3. Devices register/deactivate UX  
-4. Demo seed data for holder  
+1. Org overview with real membership + credential counts  
+2. Org users list (read-only)  
+3. Org credentials list (read-only, scoped)  
+4. Org audit log view (read-only)  
+5. Role-based nav: hide dashboards user cannot access  
 
 Update this section at each planning session.
