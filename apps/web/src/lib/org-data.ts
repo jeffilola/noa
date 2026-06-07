@@ -23,6 +23,23 @@ export interface UserAccessSummary {
   }>;
 }
 
+export interface OrgMemberUser {
+  id: string;
+  clerkUserId: string;
+  isDisabled: boolean;
+}
+
+export interface OrgMember {
+  id: string;
+  userId: string;
+  organizationId: string;
+  role: string;
+  status: string;
+  joinedAt: string | null;
+  invitedAt: string | null;
+  user: OrgMemberUser;
+}
+
 export async function resolveOrgContext(): Promise<OrgSummary | null> {
   try {
     const access = await apiFetch<UserAccessSummary>('/users/me/access');
@@ -57,5 +74,16 @@ export async function fetchOrgOverview(organizationId: string) {
   return {
     overview,
     apiReachable: overview !== null,
+  };
+}
+
+export async function fetchOrgMembers(organizationId: string) {
+  const members = await apiFetch<OrgMember[]>(`/organizations/${organizationId}/members`, {
+    organizationId,
+  }).catch(() => null);
+
+  return {
+    members: members ?? [],
+    apiReachable: members !== null,
   };
 }
