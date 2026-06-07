@@ -33,17 +33,41 @@ export class CredentialController {
     @Query('status') status?: CredentialStatus,
     @Query('all') all?: string,
   ) {
-    let scopeUserId: string | undefined = req.auth!.userId;
+    const auth = req.auth!;
 
     if (all === 'true') {
-      const canViewAll =
-        req.auth!.permissions.includes(Permission.CREDENTIALS_VIEW_ORG) ||
-        req.auth!.permissions.includes(Permission.PLATFORM_ORGANIZATIONS_MANAGE);
-      if (!canViewAll) {
-        throw new ForbiddenException('Insufficient permission to list all credentials');
+      const canViewOrgInventory =
+        auth.permissions.includes(Permission.CREDENTIALS_INVENTORY_VIEW) ||
+        auth.permissions.includes(Permission.CREDENTIALS_VIEW_ORG) ||
+        auth.permissions.includes(Permission.PLATFORM_ORGANIZATIONS_MANAGE);
+
+      if (!canViewOrgInventory) {
+        throw new ForbiddenException('Insufficient permission to list organization credentials');
       }
-      scopeUserId = userId;
-    } else if (userId && userId !== req.auth!.userId) {
+
+      if (!organizationId) {
+        throw new ForbiddenException('organizationId is required for organization credential inventory');
+      }
+
+      if (
+        auth.organizationId &&
+        auth.organizationId !== organizationId &&
+        !auth.isPlatformAdmin
+      ) {
+        throw new ForbiddenException('Organization scope mismatch');
+      }
+
+      return this.credentialService.list({
+        organizationId,
+        userId,
+        type,
+        status,
+      });
+    }
+
+    let scopeUserId: string | undefined = auth.userId;
+
+    if (userId && userId !== auth.userId) {
       throw new ForbiddenException('Cannot list another user’s credentials');
     }
 

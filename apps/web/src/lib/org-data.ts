@@ -1,4 +1,5 @@
 import { apiFetch } from '@/lib/api';
+import type { UserCredential } from '@/lib/user-types';
 
 export interface OrgSummary {
   id: string;
@@ -85,5 +86,20 @@ export async function fetchOrgMembers(organizationId: string) {
   return {
     members: members ?? [],
     apiReachable: members !== null,
+  };
+}
+
+export async function fetchOrgCredentials(organizationId: string) {
+  const query = new URLSearchParams({
+    organizationId,
+    all: 'true',
+  });
+  const credentials = await apiFetch<UserCredential[]>(`/credentials?${query.toString()}`, {
+    organizationId,
+  }).catch(() => null);
+
+  return {
+    credentials: credentials ?? [],
+    apiReachable: credentials !== null,
   };
 }
