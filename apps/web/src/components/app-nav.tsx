@@ -3,9 +3,16 @@
 import Link from 'next/link';
 import { FiMenu } from 'react-icons/fi';
 import { AuthNavControls } from '@/components/auth-nav-controls';
+import type { DashboardSwitcherLink } from '@/components/dashboard/dashboard-switcher';
 import { useSidebarOptional } from '@/components/dashboard/sidebar-context';
 
-export function AppNav({ variant = 'default' }: { variant?: 'default' | 'drawer' }) {
+export function AppNav({
+  variant = 'default',
+  switcherLinks,
+}: {
+  variant?: 'default' | 'drawer';
+  switcherLinks?: DashboardSwitcherLink[];
+}) {
   const sidebar = useSidebarOptional();
   const isDrawer = variant === 'drawer' && sidebar;
 
@@ -32,7 +39,7 @@ export function AppNav({ variant = 'default' }: { variant?: 'default' | 'drawer'
           </Link>
         </div>
 
-        <AuthNavControls />
+        <AuthNavControls switcherLinks={switcherLinks} />
       </div>
     </header>
   );

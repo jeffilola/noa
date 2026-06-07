@@ -2180,6 +2180,38 @@ a:hover {
   min-width: 0;
 }
 
+.dashboard-switcher {
+  display: inline-flex;
+  align-items: center;
+}
+
+.dashboard-switcher__select {
+  appearance: none;
+  border: 1px solid color-mix(in srgb, var(--color-sage, #8fa88a) 55%, transparent);
+  border-radius: 9999px;
+  background: transparent;
+  color: var(--color-sage, #8fa88a);
+  font-size: 0.875rem;
+  font-weight: 600;
+  line-height: 1.25rem;
+  padding: 0.5rem 2rem 0.5rem 1.25rem;
+  cursor: pointer;
+  background-image: linear-gradient(45deg, transparent 50%, currentColor 50%),
+    linear-gradient(135deg, currentColor 50%, transparent 50%);
+  background-position:
+    calc(100% - 1rem) calc(50% - 0.15rem),
+    calc(100% - 0.75rem) calc(50% - 0.15rem);
+  background-size:
+    0.35rem 0.35rem,
+    0.35rem 0.35rem;
+  background-repeat: no-repeat;
+}
+
+.dashboard-switcher__select:focus-visible {
+  outline: 2px solid var(--color-accent, #c4a574);
+  outline-offset: 2px;
+}
+
 .drawer-menu-button {
   display: inline-flex;
   align-items: center;

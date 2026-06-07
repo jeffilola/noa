@@ -2,6 +2,7 @@
 
 import type { ReactNode } from 'react';
 import { AppNav } from '@/components/app-nav';
+import type { DashboardSwitcherLink } from '@/components/dashboard/dashboard-switcher';
 import { SidebarProvider, useSidebar } from '@/components/dashboard/sidebar-context';
 
 function DrawerBody({ sidebar, children }: { sidebar: ReactNode; children: ReactNode }) {
@@ -19,15 +20,17 @@ function DrawerBody({ sidebar, children }: { sidebar: ReactNode; children: React
 
 export function DashboardAppShell({
   sidebar,
+  switcherLinks,
   children,
 }: {
   sidebar: ReactNode;
+  switcherLinks?: DashboardSwitcherLink[];
   children: ReactNode;
 }) {
   return (
     <SidebarProvider>
       <div className="app-shell app-shell--drawer">
-        <AppNav variant="drawer" />
+        <AppNav variant="drawer" switcherLinks={switcherLinks} />
         <DrawerBody sidebar={sidebar}>{children}</DrawerBody>
       </div>
     </SidebarProvider>
