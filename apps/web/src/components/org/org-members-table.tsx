@@ -1,4 +1,5 @@
 import type { OrgMember } from '@/lib/org-data';
+import { formatCredentialDate } from '@/lib/user-dashboard';
 
 function formatRole(role: string) {
   return role.replace(/_/g, ' ');
@@ -6,7 +7,7 @@ function formatRole(role: string) {
 
 function formatDate(value: string | null) {
   if (!value) return '—';
-  return new Date(value).toLocaleDateString();
+  return formatCredentialDate(value);
 }
 
 export function OrgMembersTable({ members }: { members: OrgMember[] }) {

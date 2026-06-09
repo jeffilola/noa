@@ -15,7 +15,7 @@ export function WalletHubAnimation() {
     <div
       className="hero-wallet-hub rounded-[1.25rem] border p-6 md:p-8"
       style={{
-        borderColor: `color-mix(in srgb, #ffffff 12%, transparent)`,
+        borderColor: `color-mix(in srgb, ${c.ink} 12%, transparent)`,
         background: c.cardBgSoft,
         boxShadow: '0 24px 60px rgb(0 0 0 / 35%)',
       }}

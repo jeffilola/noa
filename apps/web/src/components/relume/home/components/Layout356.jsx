@@ -40,7 +40,7 @@ function StepPreview({ items, accent }) {
     <div
       className="flex h-full min-h-[220px] flex-col justify-center gap-3 rounded-2xl border p-5"
       style={{
-        borderColor: `color-mix(in srgb, #ffffff 10%, transparent)`,
+        borderColor: `color-mix(in srgb, ${c.ink} 10%, transparent)`,
         background: `linear-gradient(160deg, ${c.surface} 0%, ${c.surfaceAlt} 100%)`,
       }}
     >
@@ -86,7 +86,7 @@ export function Layout356() {
               key={step.number}
               className="grid overflow-hidden rounded-[1.25rem] border lg:grid-cols-2"
               style={{
-                borderColor: `color-mix(in srgb, #ffffff 10%, transparent)`,
+                borderColor: `color-mix(in srgb, ${c.ink} 10%, transparent)`,
                 background: c.cardBgSoft,
                 boxShadow: '0 16px 48px rgb(0 0 0 / 28%)',
               }}

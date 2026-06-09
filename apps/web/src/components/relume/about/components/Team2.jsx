@@ -72,7 +72,7 @@ function TeamCard({ member }) {
     <article
       className="flex flex-col rounded-2xl border p-5 text-center md:p-6"
       style={{
-        borderColor: `color-mix(in srgb, #ffffff 12%, transparent)`,
+        borderColor: `color-mix(in srgb, ${c.ink} 12%, transparent)`,
         background: c.cardBgSoft,
       }}
     >
@@ -114,7 +114,7 @@ export function Team2() {
       id="team"
       className="marketing-section relative z-[1] border-t"
       style={{
-        borderColor: `color-mix(in srgb, #ffffff 10%, transparent)`,
+        borderColor: `color-mix(in srgb, ${c.ink} 10%, transparent)`,
         background: c.glass,
         backdropFilter: 'blur(20px)',
       }}
@@ -141,7 +141,7 @@ export function Team2() {
         <div
           className="mx-auto mt-14 max-w-md rounded-2xl border p-8 text-center md:mt-16"
           style={{
-            borderColor: `color-mix(in srgb, #ffffff 10%, transparent)`,
+            borderColor: `color-mix(in srgb, ${c.ink} 10%, transparent)`,
             background: c.cardBgSoft,
           }}
         >

@@ -12,7 +12,7 @@ export function Cta40() {
       id="relume"
       className="marketing-section cta-newsletter relative z-[1] border-t"
       style={{
-        borderColor: `color-mix(in srgb, #ffffff 10%, transparent)`,
+        borderColor: `color-mix(in srgb, ${c.ink} 10%, transparent)`,
       }}
     >
       <div className="marketing-shell">

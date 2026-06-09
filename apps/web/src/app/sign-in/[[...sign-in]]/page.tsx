@@ -1,7 +1,6 @@
 import { SignIn } from '@clerk/nextjs';
 import Link from 'next/link';
 import { BrandLogo } from '@/components/relume/shared/BrandLogo';
-import { clerkAppearance } from '@/lib/clerk-appearance';
 
 export default function SignInPage() {
   return (
@@ -10,15 +9,14 @@ export default function SignInPage() {
         <BrandLogo href="/" />
       </div>
       <SignIn
-        appearance={clerkAppearance}
         routing="path"
         path="/sign-in"
         signUpUrl="/sign-up"
         fallbackRedirectUrl="/user"
       />
-      <p className="mt-8 text-center text-sm text-neutral-400">
+      <p className="mt-8 text-center text-sm text-[var(--text-muted)]">
         Need an account?{' '}
-        <Link href="/sign-up" className="font-semibold text-white no-underline hover:underline">
+        <Link href="/sign-up" className="font-semibold text-[var(--text)] no-underline hover:underline">
           Sign up
         </Link>
       </p>

@@ -89,7 +89,7 @@ export function Footer3() {
 
       style={{
 
-        borderColor: `color-mix(in srgb, #ffffff 10%, transparent)`,
+        borderColor: `color-mix(in srgb, ${c.ink} 10%, transparent)`,
 
         background: c.glassNav,
 

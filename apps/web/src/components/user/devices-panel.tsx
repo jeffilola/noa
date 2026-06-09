@@ -3,6 +3,7 @@
 import { useRef, useState } from 'react';
 import { ApiErrorBanner, FormSuccessBanner } from '@/components/user/dashboard-primitives';
 import { ApiClientError, useClientApi } from '@/lib/api-client';
+import { formatCredentialDate } from '@/lib/user-dashboard';
 import { useAutoDismiss } from '@/lib/use-auto-dismiss';
 import type { UserDevice } from '@/lib/user-types';
 
@@ -147,7 +148,7 @@ export function DevicesPanel({ initialDevices }: { initialDevices: UserDevice[] 
                 <span className="meta">
                   {platformLabel(device.platform)}
                   {device.lastSeenAt
-                    ? ` · Last seen ${new Date(device.lastSeenAt).toLocaleDateString()}`
+                    ? ` · Last seen ${formatCredentialDate(device.lastSeenAt)}`
                     : ''}
                 </span>
               </div>

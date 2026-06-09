@@ -49,7 +49,7 @@ export function AuthNavControls({
   const { isSignedIn, isLoaded } = useAuth();
   const { resolvedTheme } = useTheme();
   const c = useNoaColors();
-  const clerkMode = resolvedTheme === 'light' ? 'light' : 'dark';
+  const clerkMode = resolvedTheme === 'dark' ? 'dark' : 'light';
 
   if (!isLoaded) {
     return (
