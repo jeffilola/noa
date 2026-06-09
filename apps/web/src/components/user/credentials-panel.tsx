@@ -39,6 +39,9 @@ export function CredentialsPanel({
   }, [initialCredentials]);
 
   const activeCount = credentials.filter((credential) => credential.status === 'active').length;
+  const mockCredential = credentials.find(
+    (credential) => credential.externalCredentialId === 'mock-origo-webhook-001',
+  );
 
   return (
     <div className="content-stack">
@@ -47,6 +50,7 @@ export function CredentialsPanel({
           {credentials.length === 0
             ? 'Nothing loaded yet.'
             : `${activeCount} active · ${credentials.length} total`}
+          {mockCredential ? ` · Mock badge is ${mockCredential.status}` : null}
         </p>
         <button type="button" className="btn btn-secondary btn-sm" disabled={loading} onClick={() => void reload()}>
           {loading ? 'Refreshing…' : 'Refresh list'}
@@ -60,7 +64,7 @@ export function CredentialsPanel({
           title="No credentials yet"
           body={
             clerkUserId
-              ? `If you just ran the mock webhook script, click Refresh list above. Your signed-in account is ${clerkUserId} — it must match DEMO_CLERK_USER_ID in packages/database/.env or the badge is assigned to someone else.`
+              ? `If you just ran the mock webhook script, click Refresh list above. The script assigns the mock badge to your most recent demo-org sign-in (${clerkUserId}). If you still see nothing, pass --as=${clerkUserId} when running the script.`
               : 'Corporate badges sync from your PACS via HID Origo webhooks once your organization connects a provider. After running the local mock webhook script, click Refresh list.'
           }
         />

@@ -4,7 +4,12 @@ import { fileURLToPath } from 'url';
 import { execSync } from 'child_process';
 
 const repoRoot = resolve(dirname(fileURLToPath(import.meta.url)), '..');
-const fixtureArg = process.argv[2] ?? 'issued';
+const rawArgs = process.argv.slice(2);
+const fixtureArg =
+  rawArgs.find((arg) => !arg.startsWith('--')) ?? 'issued';
+const holderClerkUserId =
+  rawArgs.find((arg) => arg.startsWith('--as='))?.slice('--as='.length)?.trim() ||
+  process.env.NOA_WEBHOOK_HOLDER_CLERK_USER_ID?.trim();
 const apiBase = process.env.NOA_API_URL ?? 'http://localhost:3001/api/v1';
 
 const fixtureName =
@@ -60,17 +65,20 @@ async function resolveDemoContext() {
     return {
       orgId: process.env.NOA_DEMO_ORG_ID,
       userId: process.env.NOA_DEMO_USER_ID,
-      clerkUserId: resolveDemoClerkUserId(),
+      clerkUserId: holderClerkUserId || resolveDemoClerkUserId(),
       orgName: 'demo-org',
+      source: 'NOA_DEMO_* env vars',
     };
   }
 
-  const clerkUserId = resolveDemoClerkUserId();
-  const output = execSync('pnpm exec tsx scripts/resolve-demo-webhook-context.ts', {
-    cwd: resolve(repoRoot, 'packages/database'),
-    encoding: 'utf8',
-    stdio: ['ignore', 'pipe', 'pipe'],
-  }).trim();
+  const output = execSync(
+    `pnpm exec tsx scripts/resolve-demo-webhook-context.ts${holderClerkUserId ? ` --as=${holderClerkUserId}` : ''}`,
+    {
+      cwd: resolve(repoRoot, 'packages/database'),
+      encoding: 'utf8',
+      stdio: ['ignore', 'pipe', 'pipe'],
+    },
+  ).trim();
 
   return JSON.parse(output);
 }
@@ -93,6 +101,9 @@ async function main() {
 
   console.log(`Posting ${event.type} for org "${context.orgName}" (${context.orgId})`);
   console.log(`Holder: ${context.clerkUserId} (${context.userId})`);
+  if (context.source) {
+    console.log(`Resolved via: ${context.source}`);
+  }
   console.log(`Fixture: ${fixturePath}`);
 
   const response = await fetch(`${apiBase}/webhooks/hid-origo`, {
@@ -122,7 +133,9 @@ async function main() {
   if (fixtureName.includes('issued')) {
     console.log('3. If you previously ran revoked, this re-activates the mock badge');
   }
-  console.log('4. Sign in as the same Clerk user as DEMO_CLERK_USER_ID in packages/database/.env');
+  console.log(
+    `4. You must be signed in as ${context.clerkUserId}. Override with --as=user_xxx if needed.`,
+  );
 }
 
 main().catch((error) => {

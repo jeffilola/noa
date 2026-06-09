@@ -87,11 +87,14 @@ Fixtures use placeholders `__DEMO_ORG_ID__` and `__DEMO_USER_ID__` — replace w
 
 ### Helper script (recommended)
 
-Resolves demo org + holder IDs from Postgres and posts the fixture:
+Resolves demo org + holder IDs from Postgres and posts the fixture. By default the holder is your **most recent demo-org sign-in** (not necessarily `DEMO_CLERK_USER_ID`). Override with `--as=user_xxx` if needed.
 
 ```powershell
 # Issue mock badge to demo holder
 node scripts/post-hid-webhook.mjs issued
+
+# Target a specific Clerk user
+node scripts/post-hid-webhook.mjs issued --as=user_3EdNaRfqgoQM6xnpo4Z4McerU4Z
 
 # Re-post same event — should update in place, not duplicate
 node scripts/post-hid-webhook.mjs issued
