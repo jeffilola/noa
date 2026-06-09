@@ -106,11 +106,20 @@ async function main() {
   }
   console.log(`Fixture: ${fixturePath}`);
 
-  const response = await fetch(`${apiBase}/webhooks/hid-origo`, {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify(event),
-  });
+  let response;
+  try {
+    response = await fetch(`${apiBase}/webhooks/hid-origo`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(event),
+    });
+  } catch (error) {
+    const message = error instanceof Error ? error.message : String(error);
+    console.error(`Could not reach ${apiBase}/webhooks/hid-origo (${message}).`);
+    console.error('Start the API first: pnpm --filter @noa/api dev');
+    console.error('Also ensure Postgres is running: docker compose up -d postgres');
+    process.exit(1);
+  }
 
   const body = await response.text();
   let parsed;
