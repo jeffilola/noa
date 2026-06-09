@@ -43,6 +43,31 @@
   --page-x-wide: clamp(1.5rem, 6vw, 4rem);
   --section-y: clamp(3.5rem, 7vw, 6rem);
   --stack-gap: 1.5rem;
+
+  --surface-glass: rgb(255 255 255 / 88%);
+  --surface-glass-strong: rgb(255 255 255 / 94%);
+  --surface-panel: rgb(255 255 255 / 92%);
+  --surface-table-head: rgb(0 0 0 / 4%);
+  --surface-drawer: rgb(255 255 255 / 86%);
+  --surface-drawer-hover: rgb(0 0 0 / 6%);
+  --surface-drawer-active: rgb(0 0 0 / 8%);
+  --overlay-scrim: rgb(0 0 0 / 40%);
+  --marketing-band: rgb(255 255 255 / 82%);
+  --marketing-section-alt: rgb(0 0 0 / 3%);
+  --hero-stroke: rgb(0 0 0 / 22%);
+  --hero-stroke-soft: rgb(0 0 0 / 14%);
+  --hero-card-bg: rgb(255 255 255 / 96%);
+  --hero-card-border: color-mix(in srgb, var(--noa-ink) 12%, transparent);
+  --hero-provider-bg: rgb(255 255 255 / 94%);
+  --hero-glow: rgb(0 0 0 / 6%);
+  --hero-mark-bg: linear-gradient(135deg, var(--noa-ink), var(--noa-glow));
+  --shadow-elevated: 0 20px 50px rgb(0 0 0 / 10%);
+  --success-text: #15803d;
+  --callout-offline-bg: color-mix(in srgb, var(--accent-soft) 70%, var(--bg-elevated));
+  --callout-success-bg: color-mix(in srgb, #22c55e 14%, var(--bg-elevated));
+  --text-on-media: #ffffff;
+  --world-glow-start: rgb(0 0 0 / 8%);
+  --world-glow-mid: rgb(100 100 100 / 5%);
 }
 
 .dark {
@@ -76,6 +101,31 @@
   --noa: var(--noa-accent);
   --noa-soft: var(--noa-accent-soft);
   --shadow: 0 1px 2px rgb(0 0 0 / 28%), 0 12px 32px rgb(0 0 0 / 36%);
+
+  --surface-glass: rgb(10 10 10 / 78%);
+  --surface-glass-strong: rgb(10 10 10 / 94%);
+  --surface-panel: rgb(10 10 10 / 68%);
+  --surface-table-head: rgb(255 255 255 / 4%);
+  --surface-drawer: rgb(0 0 0 / 35%);
+  --surface-drawer-hover: rgb(255 255 255 / 10%);
+  --surface-drawer-active: rgb(255 255 255 / 12%);
+  --overlay-scrim: rgb(0 0 0 / 65%);
+  --marketing-band: rgb(10 10 10 / 94%);
+  --marketing-section-alt: rgb(0 0 0 / 52%);
+  --hero-stroke: rgb(255 255 255 / 35%);
+  --hero-stroke-soft: rgb(255 255 255 / 30%);
+  --hero-card-bg: rgb(20 20 28 / 92%);
+  --hero-card-border: color-mix(in srgb, #ffffff 14%, transparent);
+  --hero-provider-bg: rgb(24 24 32 / 88%);
+  --hero-glow: rgb(255 255 255 / 22%);
+  --hero-mark-bg: linear-gradient(135deg, #ffffff, #d4d4d4);
+  --shadow-elevated: 0 20px 50px rgb(0 0 0 / 48%);
+  --success-text: #bbf7d0;
+  --callout-offline-bg: color-mix(in srgb, var(--accent) 12%, rgb(10 10 10 / 68%));
+  --callout-success-bg: color-mix(in srgb, #22c55e 14%, rgb(10 10 10 / 72%));
+  --text-on-media: #ffffff;
+  --world-glow-start: rgb(255 255 255 / 18%);
+  --world-glow-mid: rgb(163 163 163 / 8%);
 }
 *,
 *::before,
@@ -172,9 +222,9 @@ a:hover {
 }
 
 .card {
-  background: rgb(10 10 10 / 78%);
+  background: var(--surface-glass);
   backdrop-filter: blur(14px);
-  border: 1px solid color-mix(in srgb, #ffffff 16%, transparent);
+  border: 1px solid var(--border);
   border-radius: var(--radius-lg);
   box-shadow: var(--shadow);
   padding: 1.75rem 2rem;
@@ -304,7 +354,7 @@ a:hover {
 }
 
 .callout-offline {
-  background: color-mix(in srgb, var(--accent) 12%, rgb(10 10 10 / 68%));
+  background: var(--callout-offline-bg);
   border-color: color-mix(in srgb, var(--accent) 35%, var(--border));
 }
 
@@ -323,14 +373,14 @@ a:hover {
 }
 
 .callout-success {
-  background: color-mix(in srgb, #22c55e 14%, rgb(10 10 10 / 72%));
+  background: var(--callout-success-bg);
   border-color: color-mix(in srgb, #22c55e 50%, var(--border));
   margin-top: 1rem;
   margin-bottom: 0;
 }
 
 .callout-success p {
-  color: #bbf7d0;
+  color: var(--success-text);
   font-weight: 500;
 }
 
@@ -344,7 +394,7 @@ a:hover {
   overflow-x: auto;
   border: 1px solid var(--border);
   border-radius: var(--radius);
-  background: rgb(10 10 10 / 68%);
+  background: var(--surface-panel);
   backdrop-filter: blur(14px);
   box-shadow: var(--shadow);
 }
@@ -368,7 +418,7 @@ a:hover {
   text-transform: uppercase;
   letter-spacing: 0.04em;
   color: var(--text-muted);
-  background: rgb(255 255 255 / 4%);
+  background: var(--surface-table-head);
 }
 
 .data-table tr:last-child td {
@@ -402,7 +452,7 @@ a:hover {
   padding: 1.25rem 1.5rem;
   border: 1px solid var(--border);
   border-radius: var(--radius-lg);
-  background: rgb(10 10 10 / 65%);
+  background: var(--surface-glass);
   backdrop-filter: blur(10px);
 }
 
@@ -805,6 +855,16 @@ a:hover {
   transform: scale(1.35);
 }
 
+.world-bg__globe-ring {
+  stroke: var(--world-line-strong);
+  fill: none;
+}
+
+.world-bg__globe-lat {
+  stroke: var(--world-line);
+  fill: none;
+}
+
 .world-bg__lat-grid {
   position: absolute;
   inset: -25% 0;
@@ -1193,12 +1253,12 @@ a:hover {
 }
 
 .hero-wallet-hub__stem {
-  stroke: rgb(255 255 255 / 35%);
+  stroke: var(--hero-stroke);
   stroke-width: 2;
 }
 
 .hero-wallet-hub__sync-line {
-  stroke: rgb(255 255 255 / 30%);
+  stroke: var(--hero-stroke-soft);
   stroke-width: 1.5;
   stroke-dasharray: 6 8;
   animation: hero-wallet-sync 2.4s ease-in-out infinite;
@@ -1206,8 +1266,8 @@ a:hover {
 }
 
 .hero-wallet-hub__pulse {
-  fill: rgb(163 163 163);
-  filter: drop-shadow(0 0 6px rgb(255 255 255 / 90%));
+  fill: var(--noa-sage);
+  filter: drop-shadow(0 0 6px color-mix(in srgb, var(--noa-ink) 35%, transparent));
 }
 
 .hero-wallet-hub__noa {
@@ -1222,7 +1282,7 @@ a:hover {
   position: absolute;
   inset: -12% 10%;
   border-radius: 1.5rem;
-  background: radial-gradient(circle, rgb(255 255 255 / 22%), transparent 70%);
+  background: radial-gradient(circle, var(--hero-glow), transparent 70%);
   animation: hero-wallet-glow 3s ease-in-out infinite;
 }
 
@@ -1230,8 +1290,8 @@ a:hover {
   position: relative;
   width: min(100%, 17rem);
   border-radius: 1rem;
-  border: 1px solid color-mix(in srgb, #ffffff 14%, transparent);
-  background: rgb(20 20 28 / 92%);
+  border: 1px solid var(--hero-card-border);
+  background: var(--hero-card-bg);
   padding: 1rem 1.1rem 1.25rem;
   animation: hero-wallet-float 4s ease-in-out infinite;
 }
@@ -1248,7 +1308,7 @@ a:hover {
   height: 2.25rem;
   place-items: center;
   border-radius: 0.65rem;
-  background: linear-gradient(135deg, #ffffff, #d4d4d4);
+  background: var(--hero-mark-bg);
   color: var(--noa-on-accent);
   font-size: 0.9rem;
   font-weight: 800;
@@ -1274,7 +1334,7 @@ a:hover {
   font-size: 0.65rem;
   font-weight: 700;
   color: var(--noa-on-accent);
-  background: #ffffff;
+  background: var(--noa-accent);
 }
 
 .hero-wallet-hub__noa-stack {
@@ -1289,8 +1349,12 @@ a:hover {
   width: 78%;
   height: 2.2rem;
   border-radius: 0.55rem;
-  border: 1px solid rgb(163 163 163 / 35%);
-  background: linear-gradient(135deg, rgb(255 255 255 / 35%), rgb(163 163 163 / 15%));
+  border: 1px solid color-mix(in srgb, var(--noa-sage) 35%, transparent);
+  background: linear-gradient(
+    135deg,
+    color-mix(in srgb, var(--noa-ink) 12%, transparent),
+    color-mix(in srgb, var(--noa-sage) 18%, transparent)
+  );
   transform: translateX(-50%);
 }
 
@@ -1326,8 +1390,8 @@ a:hover {
 .hero-wallet-hub__provider {
   position: relative;
   border-radius: 0.85rem;
-  border: 1px solid color-mix(in srgb, #ffffff 10%, transparent);
-  background: rgb(24 24 32 / 88%);
+  border: 1px solid var(--hero-card-border);
+  background: var(--hero-provider-bg);
   padding: 0.75rem 0.5rem 1.75rem;
   text-align: center;
   animation: hero-wallet-provider-in 0.6s ease-out both;
@@ -1464,7 +1528,7 @@ a:hover {
 .marketing-page .cta-newsletter__media {
   position: relative;
   z-index: 2;
-  background: #0e1018 !important;
+  background: var(--noa-surface-alt) !important;
   padding: 0;
   overflow: hidden;
   min-height: 16rem;
@@ -2101,6 +2165,15 @@ a:hover {
 .marketing-page #relume p,
 .marketing-page #relume li {
   line-height: 1.65;
+  color: var(--noa-sage);
+}
+
+.marketing-page #relume blockquote {
+  color: var(--noa-ink);
+}
+
+.marketing-page #relume .font-semibold:not(blockquote) {
+  color: var(--noa-ink);
 }
 
 .marketing-page #relume .container {
@@ -2155,7 +2228,7 @@ a:hover {
 }
 
 .marketing-page section#relume:nth-of-type(even) {
-  background: rgb(0 0 0 / 52%);
+  background: var(--marketing-section-alt);
   backdrop-filter: blur(10px);
 }
 
@@ -2168,7 +2241,7 @@ a:hover {
 }
 
 .marketing-page section.trust-stats {
-  background: rgb(10 10 10 / 94%) !important;
+  background: var(--marketing-band) !important;
   backdrop-filter: blur(20px);
   padding-inline: 0;
 }
@@ -2202,7 +2275,7 @@ a:hover {
   inset: 0;
   background: radial-gradient(
     ellipse 85% 90% at 50% 50%,
-    rgb(20 20 28 / 50%) 0%,
+    color-mix(in srgb, var(--noa-ink) 8%, transparent) 0%,
     transparent 72%
   );
   pointer-events: none;
@@ -2218,12 +2291,9 @@ a:hover {
 .marketing-page .cta-newsletter__card {
   position: relative;
   z-index: 2;
-  border-color: color-mix(in srgb, #ffffff 12%, transparent);
+  border-color: var(--border);
   background: var(--noa-surface) !important;
-  box-shadow:
-    0 0 0 1px color-mix(in srgb, #ffffff 8%, transparent),
-    0 20px 50px rgb(0 0 0 / 48%),
-    0 0 100px rgb(20 20 28 / 85%);
+  box-shadow: var(--shadow-elevated);
 }
 
 .marketing-page .cta-newsletter__copy {
@@ -2322,10 +2392,10 @@ a:hover {
 
 .dashboard-switcher__select {
   appearance: none;
-  border: 1px solid color-mix(in srgb, var(--color-sage, #8fa88a) 55%, transparent);
+  border: 1px solid var(--border);
   border-radius: 9999px;
   background: transparent;
-  color: var(--color-sage, #8fa88a);
+  color: var(--text-muted);
   font-size: 0.875rem;
   font-weight: 600;
   line-height: 1.25rem;
@@ -2343,7 +2413,7 @@ a:hover {
 }
 
 .dashboard-switcher__select:focus-visible {
-  outline: 2px solid var(--color-accent, #c4a574);
+  outline: 2px solid var(--accent);
   outline-offset: 2px;
 }
 
@@ -2363,7 +2433,7 @@ a:hover {
 }
 
 .drawer-menu-button:hover {
-  background: rgb(255 255 255 / 10%);
+  background: var(--surface-drawer-hover);
 }
 
 .drawer-menu-button svg {
@@ -2382,8 +2452,8 @@ a:hover {
   flex-shrink: 0;
   overflow: hidden;
   transition: width 0.2s ease;
-  border-right: 1px solid rgb(255 255 255 / 6%);
-  background: rgb(0 0 0 / 35%);
+  border-right: 1px solid var(--border);
+  background: var(--surface-drawer);
 }
 
 .drawer-layout--collapsed .drawer-sidebar {
@@ -2457,12 +2527,12 @@ a:hover {
 }
 
 .drawer-nav-link:hover {
-  background: rgb(255 255 255 / 10%);
+  background: var(--surface-drawer-hover);
   text-decoration: none;
 }
 
 .drawer-nav-link--active {
-  background: rgb(255 255 255 / 12%);
+  background: var(--surface-drawer-active);
   font-weight: 600;
 }
 
@@ -2528,7 +2598,7 @@ a:hover {
   gap: 0.15rem;
   margin: 0.15rem 0 0.5rem;
   padding-left: 0.75rem;
-  border-left: 1px solid rgb(255 255 255 / 8%);
+  border-left: 1px solid var(--border);
 }
 
 .user-sidebar__sublink {
@@ -2542,12 +2612,12 @@ a:hover {
 }
 
 .user-sidebar__sublink:hover {
-  background: rgb(255 255 255 / 6%);
+  background: var(--surface-drawer-hover);
   color: var(--text);
 }
 
 .user-sidebar__sublink--active {
-  background: rgb(255 255 255 / 10%);
+  background: var(--surface-drawer-active);
   color: var(--text);
   font-weight: 600;
 }
@@ -2703,7 +2773,7 @@ a:hover {
   padding: 1.5rem;
   border: 1px solid var(--border);
   border-radius: var(--radius-lg);
-  background: rgb(10 10 10 / 65%);
+  background: var(--surface-glass);
   transition: border-color 0.15s, transform 0.15s;
 }
 

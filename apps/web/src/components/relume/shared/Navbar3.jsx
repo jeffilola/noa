@@ -160,7 +160,7 @@ export function Navbar3() {
 
             className="fixed inset-0 z-40 lg:hidden"
 
-            style={{ background: 'rgb(0 0 0 / 65%)' }}
+            style={{ background: 'var(--overlay-scrim)' }}
 
             aria-label="Close menu overlay"
 

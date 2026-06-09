@@ -17,7 +17,7 @@ export function WalletHubAnimation() {
       style={{
         borderColor: `color-mix(in srgb, ${c.ink} 12%, transparent)`,
         background: c.cardBgSoft,
-        boxShadow: '0 24px 60px rgb(0 0 0 / 35%)',
+        boxShadow: c.hubShadow,
       }}
     >
       <svg

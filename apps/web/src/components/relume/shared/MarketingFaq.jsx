@@ -12,7 +12,7 @@ function FaqCard({ item, index }) {
       style={{
         borderColor: `color-mix(in srgb, ${c.ink} 12%, transparent)`,
         background: c.cardBg,
-        boxShadow: '0 10px 28px rgb(0 0 0 / 28%)',
+        boxShadow: c.cardShadow,
       }}
     >
       <div

@@ -88,7 +88,7 @@ export function Layout356() {
               style={{
                 borderColor: `color-mix(in srgb, ${c.ink} 10%, transparent)`,
                 background: c.cardBgSoft,
-                boxShadow: '0 16px 48px rgb(0 0 0 / 28%)',
+                boxShadow: c.elevatedShadow,
               }}
             >
               <div className="flex flex-col justify-center p-8 md:p-10 lg:p-12">

@@ -16,6 +16,9 @@ export const noaColorsDark = {
   cardBg: 'rgb(17 17 17 / 96%)',
   cardBgSoft: 'rgb(17 17 17 / 78%)',
   ctaBg: 'rgb(8 8 8 / 95%)',
+  cardShadow: '0 10px 28px rgb(0 0 0 / 28%)',
+  elevatedShadow: '0 16px 48px rgb(0 0 0 / 32%)',
+  hubShadow: '0 24px 60px rgb(0 0 0 / 35%)',
 };
 
 export const noaColorsLight = {
@@ -36,6 +39,9 @@ export const noaColorsLight = {
   cardBg: 'rgb(255 255 255 / 96%)',
   cardBgSoft: 'rgb(255 255 255 / 88%)',
   ctaBg: 'rgb(255 255 255 / 95%)',
+  cardShadow: '0 10px 28px rgb(0 0 0 / 10%)',
+  elevatedShadow: '0 16px 48px rgb(0 0 0 / 12%)',
+  hubShadow: '0 24px 60px rgb(0 0 0 / 14%)',
 };
 
 /** @deprecated Prefer useNoaColors() for theme-aware UI */

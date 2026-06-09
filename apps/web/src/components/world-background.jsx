@@ -209,14 +209,14 @@ export function WorldBackground() {
         <svg className="world-bg__globe" viewBox="0 0 400 400" fill="none">
           <defs>
             <radialGradient id="noa-globe-glow" cx="50%" cy="50%" r="50%">
-              <stop offset="0%" stopColor="rgb(255 255 255 / 18%)" />
-              <stop offset="55%" stopColor="rgb(163 163 163 / 8%)" />
+              <stop offset="0%" stopColor="var(--world-glow-start)" />
+              <stop offset="55%" stopColor="var(--world-glow-mid)" />
               <stop offset="100%" stopColor="transparent" />
             </radialGradient>
           </defs>
           <circle cx="200" cy="200" r="198" fill="url(#noa-globe-glow)" />
           <g className="world-bg__globe-spin">
-            <circle cx="200" cy="200" r="175" stroke="rgb(255 255 255 / 12%)" strokeWidth="1.1" />
+            <circle cx="200" cy="200" r="175" className="world-bg__globe-ring" strokeWidth="1.1" />
             {[0, 28, 56, 84, 112, 140, 168].map((ry) => (
               <ellipse
                 key={`lat-${ry}`}
@@ -224,7 +224,7 @@ export function WorldBackground() {
                 cy="200"
                 rx="175"
                 ry={ry === 0 ? 175 : Math.max(ry * 0.52, 16)}
-                stroke="rgb(255 255 255 / 8%)"
+                className="world-bg__globe-lat"
                 strokeWidth="0.85"
               />
             ))}
@@ -235,7 +235,7 @@ export function WorldBackground() {
                 cy="200"
                 rx={rx === 0 ? 175 : Math.max(rx * 0.52, 16)}
                 ry="175"
-                stroke="rgb(255 255 255 / 6%)"
+                className="world-bg__globe-lat"
                 strokeWidth="0.85"
               />
             ))}
