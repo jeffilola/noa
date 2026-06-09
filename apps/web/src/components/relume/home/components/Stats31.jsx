@@ -4,7 +4,7 @@ import { Button } from '@relume_io/relume-ui';
 import Link from 'next/link';
 import React from 'react';
 import { RxChevronRight } from 'react-icons/rx';
-import { noaColors as c } from '../../shared/theme';
+import { useNoaColors } from '@/hooks/use-noa-colors';
 
 const STATS = [
   {
@@ -30,6 +30,7 @@ const STATS = [
 ];
 
 export function Stats31() {
+  const c = useNoaColors();
   return (
     <section
       id="relume"

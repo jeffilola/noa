@@ -2,10 +2,11 @@
 
 import { Button, Input } from '@relume_io/relume-ui';
 import React from 'react';
-import { noaColors as c } from '../../shared/theme';
+import { useNoaColors } from '@/hooks/use-noa-colors';
 import { WalletPassAnimation } from './WalletPassAnimation';
 
 export function Cta40() {
+  const c = useNoaColors();
   return (
     <section
       id="relume"

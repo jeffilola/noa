@@ -5,7 +5,7 @@ import Link from 'next/link';
 import React from 'react';
 import { BiLogoLinkedinSquare } from 'react-icons/bi';
 import { FaXTwitter } from 'react-icons/fa6';
-import { noaColors as c } from '../../shared/theme';
+import { useNoaColors } from '@/hooks/use-noa-colors';
 
 const TEAM = [
   {
@@ -67,6 +67,7 @@ const TEAM = [
 ];
 
 function TeamCard({ member }) {
+  const c = useNoaColors();
   return (
     <article
       className="flex flex-col rounded-2xl border p-5 text-center md:p-6"
@@ -107,6 +108,7 @@ function TeamCard({ member }) {
 }
 
 export function Team2() {
+  const c = useNoaColors();
   return (
     <section
       id="team"

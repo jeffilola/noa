@@ -2,9 +2,10 @@
 
 import Link from 'next/link';
 import React from 'react';
-import { noaColors as c } from './theme';
+import { useNoaColors } from '@/hooks/use-noa-colors';
 
 function FaqCard({ item, index }) {
+  const c = useNoaColors();
   return (
     <article
       className="faq-card group relative flex h-full flex-col rounded-2xl border p-6 md:p-7"
@@ -58,6 +59,7 @@ export function MarketingFaq({
   ctaHref = '/contact',
   ctaLabel = 'Contact sales',
 }) {
+  const c = useNoaColors();
   return (
     <section
       id="faq"

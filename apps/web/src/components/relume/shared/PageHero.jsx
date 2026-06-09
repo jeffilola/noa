@@ -3,9 +3,10 @@
 import { Button } from '@relume_io/relume-ui';
 import Link from 'next/link';
 import React from 'react';
-import { noaColors as c } from './theme';
+import { useNoaColors } from '@/hooks/use-noa-colors';
 
 export function PageHero({ eyebrow, title, description, primaryHref, primaryLabel, secondaryHref, secondaryLabel }) {
+  const c = useNoaColors();
   return (
     <section className="marketing-section">
       <div className="marketing-shell mx-auto max-w-3xl text-center">

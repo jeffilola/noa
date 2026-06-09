@@ -1,7 +1,7 @@
 'use client';
 
 import React from 'react';
-import { noaColors as c } from '../../shared/theme';
+import { useNoaColors } from '@/hooks/use-noa-colors';
 
 const PROVIDERS = [
   { id: 'hid', name: 'HID', tag: 'Origo', accent: '#FFFFFF' },
@@ -10,6 +10,7 @@ const PROVIDERS = [
 ];
 
 export function WalletHubAnimation() {
+  const c = useNoaColors();
   return (
     <div
       className="hero-wallet-hub rounded-[1.25rem] border p-6 md:p-8"

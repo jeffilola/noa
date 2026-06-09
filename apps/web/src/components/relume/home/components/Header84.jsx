@@ -5,10 +5,11 @@ import { useAuth } from '@clerk/nextjs';
 import Link from 'next/link';
 import React from 'react';
 import { marketingRoutes } from '../../shared/routes';
-import { noaColors as c } from '../../shared/theme';
+import { useNoaColors } from '@/hooks/use-noa-colors';
 import { WalletHubAnimation } from './WalletHubAnimation';
 
 export function Header84() {
+  const c = useNoaColors();
   const { isSignedIn, isLoaded } = useAuth();
 
   return (

@@ -2,7 +2,7 @@
 
 import Link from 'next/link';
 import React from 'react';
-import { noaColors as c } from '../../shared/theme';
+import { useNoaColors } from '@/hooks/use-noa-colors';
 
 const steps = [
   {
@@ -35,6 +35,7 @@ const steps = [
 ];
 
 function StepPreview({ items, accent }) {
+  const c = useNoaColors();
   return (
     <div
       className="flex h-full min-h-[220px] flex-col justify-center gap-3 rounded-2xl border p-5"
@@ -63,6 +64,7 @@ function StepPreview({ items, accent }) {
 }
 
 export function Layout356() {
+  const c = useNoaColors();
   return (
     <section className="marketing-section border-t" style={{ borderColor: `color-mix(in srgb, ${c.sage} 18%, transparent)` }}>
       <div className="marketing-shell">

@@ -3,8 +3,10 @@
 import Link from 'next/link';
 import { UserButton, useAuth } from '@clerk/nextjs';
 import { DashboardSwitcher, type DashboardSwitcherLink } from '@/components/dashboard/dashboard-switcher';
+import { useNoaColors } from '@/hooks/use-noa-colors';
+import { getClerkAppearance } from '@/lib/clerk-appearance';
+import { useTheme } from 'next-themes';
 import { marketingRoutes } from './relume/shared/routes';
-import { noaColors as c } from './relume/shared/theme';
 
 function AuthLink({
   href,
@@ -15,6 +17,7 @@ function AuthLink({
   children: string;
   variant?: 'ghost' | 'primary';
 }) {
+  const c = useNoaColors();
   const isPrimary = variant === 'primary';
 
   return (
@@ -44,9 +47,18 @@ export function AuthNavControls({
   switcherLinks?: DashboardSwitcherLink[];
 }) {
   const { isSignedIn, isLoaded } = useAuth();
+  const { resolvedTheme } = useTheme();
+  const c = useNoaColors();
+  const clerkMode = resolvedTheme === 'light' ? 'light' : 'dark';
 
   if (!isLoaded) {
-    return <div className="h-9 w-24 animate-pulse rounded-full bg-white/10" aria-hidden />;
+    return (
+      <div
+        className="h-9 w-24 animate-pulse rounded-full"
+        style={{ background: `color-mix(in srgb, ${c.sage} 25%, transparent)` }}
+        aria-hidden
+      />
+    );
   }
 
   if (isSignedIn) {
@@ -59,14 +71,7 @@ export function AuthNavControls({
             Dashboard
           </AuthLink>
         )}
-        <UserButton
-          appearance={{
-            elements: {
-              userButtonPopoverCard: 'border border-white/10 bg-[#0a0a0a]',
-              userButtonPopoverActionButton: 'text-white hover:bg-white/10',
-            },
-          }}
-        />
+        <UserButton appearance={getClerkAppearance(clerkMode)} />
       </div>
     );
   }
