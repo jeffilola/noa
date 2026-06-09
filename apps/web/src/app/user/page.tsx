@@ -11,6 +11,8 @@ import { UserQuickLink } from '@/components/user/user-quick-link';
 import { displayName } from '@/lib/user-dashboard';
 import { fetchUserDashboardData } from '@/lib/user-data';
 
+export const dynamic = 'force-dynamic';
+
 const unavailableStat = { value: '—' as const, hint: 'Unavailable while API is offline', unavailable: true };
 
 function formatCount(count: number, emptyHint: string) {

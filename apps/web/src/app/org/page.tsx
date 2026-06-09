@@ -93,6 +93,12 @@ export default async function OrgOverviewPage() {
           statUnavailable={apiOffline}
         />
         <UserQuickLink
+          href="/org/integrations"
+          title="Integrations"
+          description="HID Origo and other provider connection status."
+          statUnavailable={apiOffline}
+        />
+        <UserQuickLink
           href="/org/audit"
           title="Audit logs"
           description="Review organization activity and compliance events."

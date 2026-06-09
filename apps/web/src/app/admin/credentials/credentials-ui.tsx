@@ -1,4 +1,7 @@
 import { DEFAULT_ISSUANCE_POLICY, isPacsLedCorporateBlocked } from '@noa/domain';
+import { IssuanceSourceBadge } from '@/components/credentials/issuance-source-badge';
+
+export { IssuanceSourceBadge };
 
 export interface CredentialRow {
   id: string;
@@ -12,14 +15,6 @@ export interface CredentialRow {
 
 export function canIssueCredential(type: string, settings = DEFAULT_ISSUANCE_POLICY): boolean {
   return !isPacsLedCorporateBlocked(type as 'corporate_access', { issuancePolicy: settings });
-}
-
-export function IssuanceSourceBadge({ source }: { source: 'PACS' | 'NOA' }) {
-  return (
-    <span className={`badge ${source === 'PACS' ? 'badge-pacs' : 'badge-noa'}`}>
-      {source}
-    </span>
-  );
 }
 
 function StatusBadge({ status }: { status: string }) {

@@ -30,6 +30,8 @@ export function sourceBadgeClass(source: string) {
 export function statusBadgeClass(status: string) {
   const normalized = status.toLowerCase();
   if (normalized === 'active') return 'badge badge-active';
+  if (normalized === 'revoked') return 'badge badge-muted';
+  if (normalized === 'suspended') return 'badge badge-muted';
   return 'badge badge-muted';
 }
 
