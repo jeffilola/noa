@@ -115,6 +115,14 @@ async function main() {
   }
 
   console.log('Response:', JSON.stringify(parsed, null, 2));
+  console.log('');
+  console.log('Next steps:');
+  console.log('1. Open http://localhost:3000/user/identity#credentials in your browser');
+  console.log('2. Click "Refresh list" (or reload the page)');
+  if (fixtureName.includes('issued')) {
+    console.log('3. If you previously ran revoked, this re-activates the mock badge');
+  }
+  console.log('4. Sign in as the same Clerk user as DEMO_CLERK_USER_ID in packages/database/.env');
 }
 
 main().catch((error) => {

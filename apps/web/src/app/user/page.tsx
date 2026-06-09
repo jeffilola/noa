@@ -1,5 +1,6 @@
 import { PageHeader } from '@/components/page-header';
 import {
+  ApiErrorBanner,
   ApiOfflineBanner,
   DashboardStatGrid,
   OverviewEmptyStates,
@@ -57,7 +58,7 @@ function buildEmptyItems(
 }
 
 export default async function UserOverviewPage() {
-  const { profile, memberships, credentials, devices, apiReachable } =
+  const { profile, memberships, credentials, devices, apiReachable, credentialsError } =
     await fetchUserDashboardData();
 
   const apiOffline = !apiReachable;
@@ -110,6 +111,7 @@ export default async function UserOverviewPage() {
       />
 
       {apiOffline ? <ApiOfflineBanner /> : null}
+      {credentialsError ? <ApiErrorBanner message={credentialsError} /> : null}
 
       <DashboardStatGrid stats={stats} />
 

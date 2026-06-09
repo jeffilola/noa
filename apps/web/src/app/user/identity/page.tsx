@@ -1,12 +1,13 @@
 import { PageHeader } from '@/components/page-header';
 import { ApiErrorBanner, EmptyPanel } from '@/components/user/dashboard-primitives';
-import { CredentialsGrid } from '@/components/user/credentials-grid';
+import { CredentialsPanel } from '@/components/user/credentials-panel';
 import { UserProfileCard } from '@/components/user/user-profile-card';
 import { DevicesPanel } from '@/components/user/devices-panel';
 import { loadIdentityPageData, OrganizationsCard } from '@/components/user/identity-sections';
 
 export default async function IdentityPage() {
-  const { profile, memberships, credentials, devices, error } = await loadIdentityPageData();
+  const { profile, memberships, credentials, devices, error, credentialsError } =
+    await loadIdentityPageData();
 
   return (
     <div className="content-stack">
@@ -16,6 +17,7 @@ export default async function IdentityPage() {
       />
 
       {error ? <ApiErrorBanner message={error} /> : null}
+      {credentialsError ? <ApiErrorBanner message={credentialsError} /> : null}
 
       <div className="identity-sections">
         <UserProfileCard noaProfile={profile} />
@@ -24,14 +26,7 @@ export default async function IdentityPage() {
 
         <section className="card identity-section" id="credentials">
           <h2 className="dashboard-section-title">Credentials</h2>
-          {credentials.length === 0 ? (
-            <EmptyPanel
-              title="No credentials yet"
-              body="Corporate badges sync from your PACS via HID Origo webhooks once your organization connects a provider."
-            />
-          ) : (
-            <CredentialsGrid credentials={credentials} />
-          )}
+          <CredentialsPanel initialCredentials={credentials} clerkUserId={profile?.clerkUserId} />
         </section>
 
         <section className="card identity-section" id="devices">
