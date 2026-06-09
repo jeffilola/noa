@@ -2853,6 +2853,30 @@ a:hover {
   margin: -0.25rem 0 1rem;
 }
 
+.privacy-consequences {
+  margin: 0 0 1rem 1.125rem;
+  padding: 0;
+}
+
+.privacy-consequences li {
+  margin-bottom: 0.35rem;
+}
+
+.privacy-delete-confirm {
+  margin-top: 1rem;
+}
+
+.privacy-delete-confirm__actions {
+  display: flex;
+  gap: 0.75rem;
+  flex-wrap: wrap;
+  margin-top: 0.75rem;
+}
+
+.privacy-export-success {
+  margin-top: 1rem;
+}
+
 @media (max-width: 900px) {
   .drawer-layout--collapsed .drawer-sidebar {
     width: 0;
