@@ -1,7 +1,7 @@
 import { PageHeader } from '@/components/page-header';
 import { ApiOfflineBanner, DashboardStatGrid, EmptyPanel } from '@/components/user/dashboard-primitives';
 import { UserQuickLink } from '@/components/user/user-quick-link';
-import { fetchOrgOverview, resolveOrgContext } from '@/lib/org-data';
+import { fetchOrgOverview, ORG_ADMIN_ACCESS_EMPTY, resolveOrgContext } from '@/lib/org-data';
 
 const unavailableStat = { value: '—' as const, hint: 'Unavailable while API is offline', unavailable: true };
 
@@ -22,10 +22,7 @@ export default async function OrgOverviewPage() {
           title="Organization overview"
           description="Operational summary for organization administrators."
         />
-        <EmptyPanel
-          title="No organization admin access"
-          body="You need an Org Admin role on an organization to view this dashboard. In local dev, seed data includes user_demo_org_admin on Demo Organization."
-        />
+        <EmptyPanel title={ORG_ADMIN_ACCESS_EMPTY.title} body={ORG_ADMIN_ACCESS_EMPTY.body} />
       </div>
     );
   }

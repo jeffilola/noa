@@ -8,6 +8,7 @@ import {
 import type { OrgSummary } from '@/lib/org-data';
 
 export interface UserAccessSummary {
+  clerkUserId?: string;
   userId: string;
   organizationId?: string;
   roles: string[];
@@ -30,11 +31,20 @@ export async function fetchUserAccess(): Promise<UserAccessSummary | null> {
 }
 
 export function resolveOrgContextFromAccess(access: UserAccessSummary): OrgSummary | null {
-  const orgAdminAssignment = access.roleAssignments.find(
+  const assignments = access.roleAssignments ?? [];
+
+  const orgAdminAssignment = assignments.find(
     (assignment) => assignment.role === 'org_admin' && assignment.organization?.id,
   );
   if (orgAdminAssignment?.organization) {
     return orgAdminAssignment.organization;
+  }
+
+  if (access.roles?.includes('org_admin')) {
+    const orgFromAssignment = assignments.find((assignment) => assignment.organization?.id);
+    if (orgFromAssignment?.organization) {
+      return orgFromAssignment.organization;
+    }
   }
 
   return null;
@@ -42,11 +52,13 @@ export function resolveOrgContextFromAccess(access: UserAccessSummary): OrgSumma
 
 export function canAccessOrgDashboard(access: UserAccessSummary | null): boolean {
   if (!access) return false;
-  if (!resolveOrgContextFromAccess(access)) return false;
 
-  const permissions = access.permissions as PermissionName[];
-  const visibleItems = filterNavItems(DASHBOARD_NAVIGATION.org_admin, permissions);
-  return visibleItems.length > 0;
+  if (access.roles?.includes('org_admin')) return true;
+  if (access.roleAssignments?.some((assignment) => assignment.role === 'org_admin')) return true;
+  if (access.dashboards?.some((dashboard) => dashboard.basePath === '/org')) return true;
+
+  const permissions = (access.permissions ?? []) as PermissionName[];
+  return filterNavItems(DASHBOARD_NAVIGATION.org_admin, permissions).length > 0;
 }
 
 export function dashboardSwitcherLinks(access: UserAccessSummary | null) {

@@ -47,11 +47,21 @@ Copy examples and fill in values:
 
 | File | Purpose |
 |------|---------|
-| `apps/api/.env` | `DATABASE_URL`, Clerk secret, encryption keys |
-| `apps/web/.env.local` | `NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY`, Clerk URLs |
+| `apps/api/.env` | `DATABASE_URL`, `CLERK_SECRET_KEY`, encryption keys |
+| `apps/web/.env.local` | `NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY`, **`CLERK_SECRET_KEY` (same app as API)**, Clerk URLs |
 | `packages/database/.env` | `DATABASE_URL` for Prisma CLI |
 
-Clerk keys in **web** and **api** must match the same Clerk application.
+Clerk keys in **web** and **api** must match the same Clerk application. **`CLERK_SECRET_KEY` is required in both** — without it in `apps/web/.env.local`, server-side API calls have no bearer token and `/org` cannot verify org admin access.
+
+**Option 1 — one Clerk account (recommended):** set a single ID in `packages/database/.env`:
+
+```
+DEMO_CLERK_USER_ID=user_xxxxxxxx
+```
+
+(`DEMO_HOLDER_CLERK_USER_ID` and `DEMO_ORG_ADMIN_CLERK_USER_ID` are aliases — same value is fine.)
+
+Run `pnpm db:seed`, restart the API, sign out, and sign back in. Seed and the API apply **holder credentials + org admin** together on that account. Use the header dashboard switcher to move between `/user` and `/org`.
 
 ## Demo holder seed data
 

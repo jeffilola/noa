@@ -5,7 +5,7 @@ import {
   UnauthorizedException,
 } from '@nestjs/common';
 import type { Request } from 'express';
-import { ensureHolderDemoForClerkUser } from '@noa/database';
+import { ensureCombinedDemoForClerkUser } from '@noa/database';
 import { AccessService } from '../../auth/access.service';
 import { PrismaService } from '../../prisma/prisma.service';
 import { UserService } from '../../users/user.service';
@@ -61,8 +61,8 @@ export class ClerkAuthGuard implements CanActivate {
         }
 
         if (process.env.NODE_ENV !== 'production') {
-          await ensureHolderDemoForClerkUser(this.prisma, clerkUserId).catch((error) => {
-            console.warn('[ClerkAuthGuard] Dev holder demo bootstrap failed:', error);
+          await ensureCombinedDemoForClerkUser(this.prisma, clerkUserId).catch((error) => {
+            console.warn('[ClerkAuthGuard] Dev combined demo bootstrap failed:', error);
           });
         }
 
@@ -95,13 +95,29 @@ export class ClerkAuthGuard implements CanActivate {
     if (process.env.NODE_ENV !== 'production') {
       const devClerkUserId =
         (req.headers['x-dev-clerk-user-id'] as string | undefined)?.trim() ||
-        process.env.DEV_DEFAULT_CLERK_USER_ID?.trim() ||
-        'user_demo_holder';
-      const user = await this.prisma.user.findUnique({ where: { clerkUserId: devClerkUserId } });
-      if (user) {
-        const resolved = await this.access.resolveForUser(user.id, {});
-        return this.toAuthContext(user.clerkUserId, resolved);
+        process.env.DEV_DEFAULT_CLERK_USER_ID?.trim();
+
+      if (devClerkUserId) {
+        const user = await this.prisma.user.findUnique({ where: { clerkUserId: devClerkUserId } });
+        if (user) {
+          const resolved = await this.access.resolveForUser(user.id, {});
+          return this.toAuthContext(user.clerkUserId, resolved);
+        }
       }
+
+      if (!process.env.CLERK_SECRET_KEY) {
+        const user = await this.prisma.user.findUnique({ where: { clerkUserId: 'user_demo_holder' } });
+        if (user) {
+          const resolved = await this.access.resolveForUser(user.id, {});
+          return this.toAuthContext(user.clerkUserId, resolved);
+        }
+      }
+    }
+
+    if (process.env.CLERK_SECRET_KEY) {
+      throw new UnauthorizedException(
+        'Missing or invalid Authorization bearer token. Ensure apps/web/.env.local includes CLERK_SECRET_KEY from the same Clerk app as the API.',
+      );
     }
 
     throw new UnauthorizedException('Authentication required');

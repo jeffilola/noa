@@ -1,8 +1,10 @@
 import { Body, Controller, Get, Patch, Req, UseGuards } from '@nestjs/common';
 import type { Request } from 'express';
+import { ensureCombinedDemoForClerkUser } from '@noa/database';
 import { AccessService } from '../auth/access.service';
 import { RbacService } from '../auth/rbac.service';
 import { ClerkAuthGuard } from '../common/guards/clerk-auth.guard';
+import { PrismaService } from '../prisma/prisma.service';
 import { UserService } from './user.service';
 
 @Controller('users')
@@ -12,6 +14,7 @@ export class UserController {
     private readonly users: UserService,
     private readonly access: AccessService,
     private readonly rbac: RbacService,
+    private readonly prisma: PrismaService,
   ) {}
 
   @Get('me')
@@ -35,10 +38,18 @@ export class UserController {
   @Get('me/access')
   async getAccess(@Req() req: Request) {
     const auth = req.auth!;
+
+    if (process.env.NODE_ENV !== 'production') {
+      await ensureCombinedDemoForClerkUser(this.prisma, auth.clerkUserId).catch((error) => {
+        console.warn('[UserController] Dev combined demo bootstrap failed:', error);
+      });
+    }
+
     const access = await this.rbac.resolveAccess(auth.userId, auth.organizationId);
     const roleAssignments = await this.rbac.listUserRoleAssignments(auth.userId);
 
     return {
+      clerkUserId: auth.clerkUserId,
       userId: auth.userId,
       organizationId: access.organizationId,
       roles: access.roles,

@@ -1,6 +1,6 @@
 import { PrismaClient, ProviderType } from '@prisma/client';
 import { NoaRole } from '@noa/domain';
-import { resolveHolderClerkUserId, seedHolderDemoData } from '../src/holder-demo-seed';
+import { resolveDemoClerkUserId, seedCombinedDemoUser, seedHolderDemoData } from '../src/holder-demo-seed';
 
 const prisma = new PrismaClient();
 
@@ -227,21 +227,27 @@ async function main() {
     },
   });
 
-  const { clerkUserId: holderClerkUserId, source: holderSource } = await resolveHolderClerkUserId(prisma);
-  const holderDemo = await seedHolderDemoData(prisma, org.id, holderClerkUserId);
+  const { clerkUserId: demoClerkUserId, source: demoSource } = await resolveDemoClerkUserId(prisma);
+  const combinedDemo = isValidDemoClerkUser(demoClerkUserId)
+    ? await seedCombinedDemoUser(prisma, org.id, demoClerkUserId)
+    : { holderDemo: await seedHolderDemoData(prisma, org.id, demoClerkUserId), orgAdminDemo: null, clerkUserId: demoClerkUserId };
 
   console.log('Seed complete:', {
     orgId: org.id,
     demoOrgSlug: org.slug,
     demoUsers: demoUsers.map((entry) => entry.clerkUserId),
     primaryUserId: primaryUser.id,
-    holderDemo,
-    holderSource,
-    holderSeedNote:
-      holderSource === 'default demo holder'
-        ? 'Set DEMO_HOLDER_CLERK_USER_ID or add CLERK_SECRET_KEY (apps/api/.env) so seed links to your signed-in Clerk user'
-        : `Holder demo data linked via ${holderSource}: ${holderClerkUserId}`,
+    combinedDemo,
+    demoSource,
+    demoSeedNote:
+      demoSource === 'default demo holder'
+        ? 'Set DEMO_CLERK_USER_ID (or DEMO_HOLDER_CLERK_USER_ID) in packages/database/.env to your Clerk user ID for holder + org admin on one account'
+        : `Demo holder + org admin linked via ${demoSource}: ${demoClerkUserId}`,
   });
+}
+
+function isValidDemoClerkUser(clerkUserId: string) {
+  return clerkUserId.startsWith('user_') && !clerkUserId.startsWith('user_demo_');
 }
 
 main()

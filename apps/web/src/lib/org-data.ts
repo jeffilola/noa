@@ -1,6 +1,16 @@
 import { apiFetch } from '@/lib/api';
-import { fetchUserAccess, resolveOrgContextFromAccess, type UserAccessSummary } from '@/lib/access-data';
-import type { UserCredential } from '@/lib/user-types';
+import {
+  canAccessOrgDashboard,
+  fetchUserAccess,
+  resolveOrgContextFromAccess,
+  type UserAccessSummary,
+} from '@/lib/access-data';
+import type { UserCredential, UserMembership } from '@/lib/user-types';
+
+export const ORG_ADMIN_ACCESS_EMPTY = {
+  title: 'No organization admin access',
+  body: 'You need an Org Admin role on an organization to view this page. In local dev, set DEMO_CLERK_USER_ID in packages/database/.env to your Clerk user id, run pnpm db:seed, restart the API and web servers, and add CLERK_SECRET_KEY to both apps/api/.env and apps/web/.env.local.',
+} as const;
 
 export interface OrgSummary {
   id: string;
@@ -42,10 +52,40 @@ export interface OrgMember {
   user: OrgMemberUser;
 }
 
+function orgFromMemberships(memberships: UserMembership[]): OrgSummary | null {
+  const orgAdminMembership =
+    memberships.find((membership) => membership.role === 'org_admin' && membership.organization?.id) ??
+    memberships.find((membership) => membership.organization?.slug === 'demo-org') ??
+    memberships.find((membership) => membership.organization?.id);
+
+  return orgAdminMembership?.organization ?? null;
+}
+
 export async function resolveOrgContext(): Promise<OrgSummary | null> {
   const access = await fetchUserAccess();
   if (!access) return null;
-  return resolveOrgContextFromAccess(access);
+
+  const fromAccess = resolveOrgContextFromAccess(access);
+  if (fromAccess) return fromAccess;
+
+  if (!canAccessOrgDashboard(access)) return null;
+
+  try {
+    const memberships = await apiFetch<UserMembership[]>('/users/me/memberships');
+    const fromMemberships = orgFromMemberships(memberships);
+    if (fromMemberships) return fromMemberships;
+  } catch {
+    // fall through to organizationId lookup
+  }
+
+  if (access.organizationId) {
+    const { overview } = await fetchOrgOverview(access.organizationId);
+    if (overview) {
+      return { id: overview.id, name: overview.name, slug: overview.slug };
+    }
+  }
+
+  return null;
 }
 
 export async function fetchOrgOverview(organizationId: string) {
