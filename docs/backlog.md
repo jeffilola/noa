@@ -6,18 +6,30 @@ Legend: **S** / **M** / **L** size · **Epic** tag · Milestone when scheduled
 
 ---
 
-## Now — Sprint 2 (M2: Org admin read-only)
+## Now — Sprint 4 (M4: Holder trust / GDPR)
 
-| P | Size | Item | Epic | Notes |
+| P | Size | Item | Epic | Issue |
 |---|------|------|------|-------|
-| 1 | M | Org overview with real membership + credential counts | Org | Scoped API |
-| 2 | M | Org users list (read-only) | Org | RBAC: org_admin |
-| 3 | M | Org credentials list (read-only, scoped) | Org | |
-| 4 | S | Org audit log view (read-only) | Org | |
-| 5 | M | Role-based nav: hide dashboards user cannot access | RBAC | Web + API guards |
+| 1 | M | GDPR export download UX on Security page | Holder | #35 |
+| 2 | M | Account deletion confirmation flow + sign-out | Holder | #36 |
+| 3 | S | Consolidate `/user/security` and `/user/privacy` | Holder | #37 |
 
-**Milestone:** [M2: Org admin read-only](https://github.com/jeffilola/noa/milestone/2)  
-**Goal:** Org Admin can inspect their org without issuance or PACS write APIs.
+**Milestone:** [M4: Holder trust (GDPR & privacy)](https://github.com/jeffilola/noa/milestone/4)  
+**Goal:** Holders can export and delete their data with clear, audited UX.
+
+---
+
+## Done — Sprint 3 (M3: PACS ingest demo)
+
+Issues #30–#33 merged. Mock HID webhook → credential in holder UI; PACS/NOA badges; org integrations status.
+
+See [m3-local-testing.md](./m3-local-testing.md).
+
+---
+
+## Done — Sprint 2 (M2: Org admin read-only)
+
+Org overview, users, credentials, audit, role-based nav. Milestone closed.
 
 ---
 
@@ -27,25 +39,11 @@ Issues #1–#4 merged. Holder dashboard demo-ready with seed data.
 
 ---
 
-## Later — Sprint 3 (M3: PACS ingest demo)
-
-| P | Size | Item | Epic | Notes |
-|---|------|------|------|-------|
-| 1 | M | Spike: document + POST mock HID CloudEvents to `/webhooks/hid-origo` | Integrations | No live HID account |
-| 2 | M | Credential appears in holder UI after webhook ingest | Integrations | End-to-end slice |
-| 3 | S | Admin badge: PACS vs NOA source on credential cards | Holder | Already partial |
-| 4 | L | Integration health placeholders → DB-backed status | Integrations | |
-
-**Milestone:** M3: Webhook ingest demo  
-**Goal:** Prove PACS-led mirror path without outbound HID issue.
-
----
-
-## Backlog (unscheduled)
+## Later — unscheduled (after M4)
 
 ### Identity Holder
-- Privacy: GDPR export download UX
-- Privacy: account deletion request flow
+- ~~Privacy: GDPR export download UX~~ → M4 #35
+- ~~Privacy: account deletion request flow~~ → M4 #36
 - Wallet pass preview (stub UI)
 - Mobile app shell (Expo) smoke screen
 

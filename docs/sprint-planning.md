@@ -20,7 +20,8 @@ Two-week cadence for Noa. Lightweight — suitable for solo or pair work.
 |-----------|----------------|--------------|
 | **M1: Holder dashboard usable** | Demo-ready holder UX, local seed data | Sprint 1 |
 | **M2: Org admin read-only** | Org Admin read-only dashboards | Sprint 2 |
-| **M3: Webhook ingest demo** | Mock HID webhook → credential in UI | Sprint 3 |
+| **M3: Webhook ingest demo** | Mock HID webhook → credential in UI | Sprint 3 ✓ |
+| **M4: Holder trust (GDPR & privacy)** | Export UX + deletion flow | Sprint 4 |
 
 View on GitHub: https://github.com/jeffilola/noa/milestones
 
