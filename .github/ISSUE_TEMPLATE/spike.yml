@@ -43,6 +43,19 @@ body:
       description: What artifact should exist when the spike is done?
       placeholder: Short markdown note in `docs/spikes/hid-webhook-poc.md` or a comment on this issue
 
+  - type: textarea
+    id: test_procedures
+    attributes:
+      label: Test procedures
+      description: Step-by-step checks to confirm the spike worked (plain language OK). Copy into the PR test plan.
+      placeholder: |
+        1. Start Postgres + API
+        2. Run the documented command or curl example
+        3. Confirm the expected row/response appears
+        4. Re-run once — confirm nothing duplicates or breaks
+    validations:
+      required: true
+
   - type: dropdown
     id: area
     attributes:

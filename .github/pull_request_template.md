@@ -15,11 +15,11 @@
 
 ## Test plan
 
-<!-- How did you verify this? Copy checklist items from the issue if applicable -->
+<!-- Copy the **Test procedures** section from the linked issue. Check each step off after you run it. -->
 
 - [ ] `pnpm build` passes locally
 - [ ] `pnpm test` passes (if relevant)
-- [ ] Manual smoke test (route / flow):
+- [ ] Manual steps from issue **Test procedures** (list them here or paste the section):
 - [ ] No secrets in diff (`.env`, keys, tokens)
 
 ## Screenshots

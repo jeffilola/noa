@@ -37,6 +37,7 @@ An issue is **Done** when all of the following are true.
 ## Product
 
 - [ ] Acceptance criteria on the linked issue are met.
+- [ ] **Test procedures** on the linked issue were run and checked off in the PR test plan.
 - [ ] Empty/error states handled when API or Clerk is unavailable (for user-facing work).
 
 ## After merge

@@ -174,3 +174,23 @@ Posting the same `origoCredentialId` twice for the same organization updates the
 Elements issues → HID provisions → card number returns to Elements → controllers updated. Noa mirrors via webhook only.
 
 See [issuance-modes.md](./issuance-modes.md).
+
+## Test procedures
+
+Run these after the spike is merged (or on branch `spike/issue-30-hid-webhook-mock`).
+
+1. **Start the basics** — Postgres running, then `pnpm db:seed`, then start the API (`pnpm --filter @noa/api dev`).
+2. **Send a fake “new badge” message** — from the repo root:
+   ```powershell
+   node scripts/post-hid-webhook.mjs issued
+   ```
+   You should see `"processed": 1` and a credential id in the response.
+3. **Send the same message again** — run the same command a second time. You should still get **one** badge (same id), not two.
+4. **Send a fake “badge removed” message**:
+   ```powershell
+   node scripts/post-hid-webhook.mjs revoked
+   ```
+   Response should show `"action": "revoked"`.
+5. **Optional check in the database** — credential `mock-origo-webhook-001` should exist with `issuanceSource` PACS, then status revoked after step 4.
+
+If step 2 fails with “Demo org missing”, run `pnpm db:seed` again.
