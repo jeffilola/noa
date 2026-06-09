@@ -10,9 +10,9 @@
   },
   "dependencies": {
     "@clerk/backend": "^3.5.0",
-    "@nestjs/common": "^10.4.15",
+    "@nestjs/common": "^11.1.24",
     "@nestjs/core": "^11.1.24",
-    "@nestjs/platform-express": "^10.4.15",
+    "@nestjs/platform-express": "^11.1.24",
     "@noa/database": "workspace:*",
     "@noa/domain": "workspace:*",
     "@noa/encryption": "workspace:*",
@@ -25,11 +25,11 @@
     "rxjs": "^7.8.1"
   },
   "devDependencies": {
-    "@nestjs/cli": "^10.4.9",
-    "@nestjs/testing": "^10.4.15",
+    "@nestjs/cli": "^11.0.23",
+    "@nestjs/testing": "^11.1.26",
     "@types/express": "^5.0.0",
-    "@types/node": "^22.10.2",
+    "@types/node": "^25.9.2",
     "tsx": "^4.19.2",
-    "typescript": "^5.7.2"
+    "typescript": "^6.0.3"
   }
 }
