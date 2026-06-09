@@ -2,7 +2,6 @@ import type { Metadata } from 'next';
 
 import { ThemedClerkProvider } from '@/components/themed-clerk-provider';
 import { ThemeProvider } from '@/components/theme-provider';
-import { WorldBackground } from '@/components/world-background';
 
 import './globals.css';
 
@@ -17,7 +16,6 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
       <body>
         <ThemeProvider>
           <ThemedClerkProvider>
-            <WorldBackground />
             <div className="site-content">{children}</div>
           </ThemedClerkProvider>
         </ThemeProvider>
