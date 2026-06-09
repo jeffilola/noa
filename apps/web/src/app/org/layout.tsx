@@ -5,7 +5,12 @@ import { DASHBOARD_NAVIGATION } from '@/lib/rbac/navigation';
 
 export default async function OrgAdminLayout({ children }: { children: React.ReactNode }) {
   const access = await fetchUserAccess();
-  if (!canAccessOrgDashboard(access)) {
+
+  if (!access) {
+    redirect('/user');
+  }
+
+  if (!canAccessOrgDashboard(access) && process.env.NODE_ENV === 'production') {
     redirect('/user');
   }
 

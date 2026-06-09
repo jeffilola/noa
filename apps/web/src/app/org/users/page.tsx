@@ -1,7 +1,7 @@
 import { PageHeader } from '@/components/page-header';
 import { OrgMembersTable } from '@/components/org/org-members-table';
 import { ApiOfflineBanner, EmptyPanel } from '@/components/user/dashboard-primitives';
-import { fetchOrgMembers, resolveOrgContext } from '@/lib/org-data';
+import { fetchOrgMembers, ORG_ADMIN_ACCESS_EMPTY, resolveOrgContext } from '@/lib/org-data';
 
 export default async function OrgUsersPage() {
   const orgContext = await resolveOrgContext();
@@ -13,10 +13,7 @@ export default async function OrgUsersPage() {
           title="Organization users"
           description="View organization memberships and roles."
         />
-        <EmptyPanel
-          title="No organization admin access"
-          body="You need an Org Admin role on an organization to view members. In local dev, seed data includes user_demo_org_admin on Demo Organization."
-        />
+        <EmptyPanel title={ORG_ADMIN_ACCESS_EMPTY.title} body={ORG_ADMIN_ACCESS_EMPTY.body} />
       </div>
     );
   }

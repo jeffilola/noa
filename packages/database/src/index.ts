@@ -30,9 +30,14 @@ export type {
   UserRole,
 } from '@prisma/client';
 export {
+  ensureCombinedDemoForClerkUser,
   ensureHolderDemoForClerkUser,
+  ensureOrgAdminForClerkUser,
+  resolveDemoClerkUserId,
   resolveHolderClerkUserId,
+  seedCombinedDemoUser,
   seedHolderDemoData,
+  seedOrgAdminForClerkUser,
 } from './holder-demo-seed';
 
 import { PrismaClient } from '@prisma/client';

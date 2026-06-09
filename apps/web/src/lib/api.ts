@@ -19,6 +19,10 @@ export async function apiFetch<T>(path: string, init?: ApiFetchInit): Promise<T>
   const headers = new Headers(requestInit.headers);
   if (token) {
     headers.set('Authorization', `Bearer ${token}`);
+  } else if (process.env.CLERK_SECRET_KEY || process.env.NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY) {
+    throw new Error(
+      `API ${path} failed: no Clerk session token. Add CLERK_SECRET_KEY to apps/web/.env.local (same Clerk app as apps/api/.env), then restart the web dev server.`,
+    );
   }
   if (organizationId) {
     headers.set('x-organization-id', organizationId);
