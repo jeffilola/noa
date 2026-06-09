@@ -1,4 +1,5 @@
 import {
+  formatCredentialDate,
   formatCredentialType,
   sourceBadgeClass,
   statusBadgeClass,
@@ -41,7 +42,7 @@ export function CredentialsGrid({ credentials }: { credentials: UserCredential[]
             {credential.validUntil ? (
               <div>
                 <dt>Valid until</dt>
-                <dd>{new Date(credential.validUntil).toLocaleDateString()}</dd>
+                <dd>{formatCredentialDate(credential.validUntil)}</dd>
               </div>
             ) : null}
           </dl>
