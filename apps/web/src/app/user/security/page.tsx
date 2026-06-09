@@ -1,22 +1,16 @@
-import Link from 'next/link';
-import { DashboardPlaceholder } from '@/components/dashboard/dashboard-placeholder';
+import { PageHeader } from '@/components/page-header';
+import { SecurityPrivacyPanel } from '@/components/user/security-privacy-panel';
+
+export const dynamic = 'force-dynamic';
 
 export default function UserSecurityPage() {
   return (
-    <section className="dashboard-stack">
-      <DashboardPlaceholder
-        title="Security & Privacy"
-        description="Manage privacy settings, data export, and account security preferences."
+    <div className="content-stack">
+      <PageHeader
+        title="Security & privacy"
+        description="Export or delete your holder data. All actions are audited."
       />
-      <div className="dashboard-panel">
-        <p>
-          Data export and deletion controls live in{' '}
-          <Link href="/user/privacy" className="text-link">
-            Privacy settings
-          </Link>
-          .
-        </p>
-      </div>
-    </section>
+      <SecurityPrivacyPanel />
+    </div>
   );
 }

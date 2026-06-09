@@ -21,7 +21,16 @@ export class UserRepository {
   async upsertFromClerk(dto: UpsertUserDto) {
     const existing = await this.prisma.user.findUnique({ where: { clerkUserId: dto.clerkUserId } });
     if (existing) {
-      return this.updateEncrypted(existing.id, dto);
+      const data: Record<string, unknown> = {};
+      if (existing.isDisabled || existing.anonymizedAt) {
+        data.isDisabled = false;
+        data.anonymizedAt = null;
+      }
+      await this.applyPiiFields(data, dto);
+      if (Object.keys(data).length === 0) {
+        return existing;
+      }
+      return this.prisma.user.update({ where: { id: existing.id }, data: data as never });
     }
     return this.create(dto);
   }
