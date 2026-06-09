@@ -89,7 +89,8 @@ Use GitHub labels when creating issues:
 
 1. Pick the **current milestone** (see [sprint planning](./sprint-planning.md)).
 2. Create a **Feature** issue per row with acceptance criteria from the template.
-3. Move issues to **Ready** on the project board.
+3. Add **Test procedures** at the end of every issue — plain step-by-step checks anyone can run when the work is done.
+4. Move issues to **Ready** on the project board.
 4. When done, check off here or remove the row (GitHub Issues are the source of truth during the sprint).
 
 Last updated: 2026-06-05

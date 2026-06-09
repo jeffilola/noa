@@ -66,6 +66,19 @@ body:
       description: Design links, dependencies, out of scope
       placeholder: Depends on API `/credentials` scoping — already done.
 
+  - type: textarea
+    id: test_procedures
+    attributes:
+      label: Test procedures
+      description: Step-by-step checks anyone can run when the work is done (plain language OK). Copy into the PR test plan.
+      placeholder: |
+        1. Start Postgres + API + web (see environment-checklist.md)
+        2. Sign in as demo user
+        3. Open /user/credentials — expect …
+        4. If API is stopped — expect friendly message, not a crash
+    validations:
+      required: true
+
   - type: checkboxes
     id: checklist
     attributes:

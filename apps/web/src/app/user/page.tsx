@@ -1,5 +1,6 @@
 import { PageHeader } from '@/components/page-header';
 import {
+  ApiErrorBanner,
   ApiOfflineBanner,
   DashboardStatGrid,
   OverviewEmptyStates,
@@ -9,6 +10,8 @@ import { CredentialsGrid } from '@/components/user/credentials-grid';
 import { UserQuickLink } from '@/components/user/user-quick-link';
 import { displayName } from '@/lib/user-dashboard';
 import { fetchUserDashboardData } from '@/lib/user-data';
+
+export const dynamic = 'force-dynamic';
 
 const unavailableStat = { value: '—' as const, hint: 'Unavailable while API is offline', unavailable: true };
 
@@ -57,7 +60,7 @@ function buildEmptyItems(
 }
 
 export default async function UserOverviewPage() {
-  const { profile, memberships, credentials, devices, apiReachable } =
+  const { profile, memberships, credentials, devices, apiReachable, credentialsError } =
     await fetchUserDashboardData();
 
   const apiOffline = !apiReachable;
@@ -110,6 +113,7 @@ export default async function UserOverviewPage() {
       />
 
       {apiOffline ? <ApiOfflineBanner /> : null}
+      {credentialsError ? <ApiErrorBanner message={credentialsError} /> : null}
 
       <DashboardStatGrid stats={stats} />
 

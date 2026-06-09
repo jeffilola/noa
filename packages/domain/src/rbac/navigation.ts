@@ -35,6 +35,7 @@ export const DASHBOARD_NAVIGATION: Record<NoaRoleKey, DashboardNavConfig> = {
       { href: '/org', label: 'Overview', requiredPermission: Permission.REPORTS_VIEW },
       { href: '/org/users', label: 'Users', requiredPermission: Permission.ORG_USERS_MANAGE },
       { href: '/org/credentials', label: 'Credentials', requiredPermission: Permission.CREDENTIALS_INVENTORY_VIEW },
+      { href: '/org/integrations', label: 'Integrations', requiredPermission: Permission.INTEGRATIONS_HEALTH_VIEW },
       { href: '/org/reports', label: 'Reports', requiredPermission: Permission.REPORTS_VIEW },
       { href: '/org/audit', label: 'Audit Logs', requiredPermission: Permission.AUDIT_VIEW_ORG },
     ],

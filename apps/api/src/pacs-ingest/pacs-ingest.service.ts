@@ -197,6 +197,15 @@ export class PacsIngestService {
     userId: string,
     organizationId: string,
   ) {
+    await this.prisma.credentialAssignment.updateMany({
+      where: {
+        credentialId,
+        userId: { not: userId },
+        unassignedAt: null,
+      },
+      data: { unassignedAt: new Date() },
+    });
+
     await this.prisma.credentialAssignment.upsert({
       where: {
         credentialId_userId: { credentialId, userId },

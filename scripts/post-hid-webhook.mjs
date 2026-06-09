@@ -1,0 +1,153 @@
+import { existsSync, readFileSync } from 'fs';
+import { resolve, dirname } from 'path';
+import { fileURLToPath } from 'url';
+import { execSync } from 'child_process';
+
+const repoRoot = resolve(dirname(fileURLToPath(import.meta.url)), '..');
+const rawArgs = process.argv.slice(2);
+const fixtureArg =
+  rawArgs.find((arg) => !arg.startsWith('--')) ?? 'issued';
+const holderClerkUserId =
+  rawArgs.find((arg) => arg.startsWith('--as='))?.slice('--as='.length)?.trim() ||
+  process.env.NOA_WEBHOOK_HOLDER_CLERK_USER_ID?.trim();
+const apiBase = process.env.NOA_API_URL ?? 'http://localhost:3001/api/v1';
+
+const fixtureName =
+  fixtureArg === 'issued' || fixtureArg === 'credential-issued.mock.json'
+    ? 'credential-issued.mock.json'
+    : fixtureArg === 'revoked' || fixtureArg === 'credential-revoked.mock.json'
+      ? 'credential-revoked.mock.json'
+      : fixtureArg;
+
+const fixturePath = resolve(repoRoot, 'docs/fixtures/hid-origo', fixtureName);
+
+function loadEnvFile(relativePath) {
+  const filePath = resolve(repoRoot, relativePath);
+  if (!existsSync(filePath)) return {};
+
+  const vars = {};
+  for (const line of readFileSync(filePath, 'utf8').split('\n')) {
+    const trimmed = line.trim();
+    if (!trimmed || trimmed.startsWith('#')) continue;
+    const eq = trimmed.indexOf('=');
+    if (eq === -1) continue;
+    let value = trimmed.slice(eq + 1).trim();
+    if (
+      (value.startsWith('"') && value.endsWith('"')) ||
+      (value.startsWith("'") && value.endsWith("'"))
+    ) {
+      value = value.slice(1, -1);
+    }
+    vars[trimmed.slice(0, eq).trim()] = value;
+  }
+  return vars;
+}
+
+function resolveDemoClerkUserId() {
+  for (const key of ['DEMO_CLERK_USER_ID', 'DEMO_HOLDER_CLERK_USER_ID']) {
+    const fromProcess = process.env[key]?.trim();
+    if (fromProcess?.startsWith('user_')) return fromProcess;
+  }
+
+  for (const relPath of ['packages/database/.env', 'apps/api/.env']) {
+    const vars = loadEnvFile(relPath);
+    for (const key of ['DEMO_CLERK_USER_ID', 'DEMO_HOLDER_CLERK_USER_ID']) {
+      const value = vars[key]?.trim();
+      if (value?.startsWith('user_')) return value;
+    }
+  }
+
+  return 'user_demo_holder';
+}
+
+async function resolveDemoContext() {
+  if (process.env.NOA_DEMO_ORG_ID && process.env.NOA_DEMO_USER_ID) {
+    return {
+      orgId: process.env.NOA_DEMO_ORG_ID,
+      userId: process.env.NOA_DEMO_USER_ID,
+      clerkUserId: holderClerkUserId || resolveDemoClerkUserId(),
+      orgName: 'demo-org',
+      source: 'NOA_DEMO_* env vars',
+    };
+  }
+
+  const output = execSync(
+    `pnpm exec tsx scripts/resolve-demo-webhook-context.ts${holderClerkUserId ? ` --as=${holderClerkUserId}` : ''}`,
+    {
+      cwd: resolve(repoRoot, 'packages/database'),
+      encoding: 'utf8',
+      stdio: ['ignore', 'pipe', 'pipe'],
+    },
+  ).trim();
+
+  return JSON.parse(output);
+}
+
+function loadFixture(context) {
+  if (!existsSync(fixturePath)) {
+    throw new Error(`Fixture not found: ${fixturePath}`);
+  }
+
+  const raw = readFileSync(fixturePath, 'utf8')
+    .replaceAll('__DEMO_ORG_ID__', context.orgId)
+    .replaceAll('__DEMO_USER_ID__', context.userId);
+
+  return JSON.parse(raw);
+}
+
+async function main() {
+  const context = await resolveDemoContext();
+  const event = loadFixture(context);
+
+  console.log(`Posting ${event.type} for org "${context.orgName}" (${context.orgId})`);
+  console.log(`Holder: ${context.clerkUserId} (${context.userId})`);
+  if (context.source) {
+    console.log(`Resolved via: ${context.source}`);
+  }
+  console.log(`Fixture: ${fixturePath}`);
+
+  let response;
+  try {
+    response = await fetch(`${apiBase}/webhooks/hid-origo`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(event),
+    });
+  } catch (error) {
+    const message = error instanceof Error ? error.message : String(error);
+    console.error(`Could not reach ${apiBase}/webhooks/hid-origo (${message}).`);
+    console.error('Start the API first: pnpm --filter @noa/api dev');
+    console.error('Also ensure Postgres is running: docker compose up -d postgres');
+    process.exit(1);
+  }
+
+  const body = await response.text();
+  let parsed;
+  try {
+    parsed = JSON.parse(body);
+  } catch {
+    parsed = body;
+  }
+
+  if (!response.ok) {
+    console.error(`HTTP ${response.status}`, parsed);
+    process.exit(1);
+  }
+
+  console.log('Response:', JSON.stringify(parsed, null, 2));
+  console.log('');
+  console.log('Next steps:');
+  console.log('1. Open http://localhost:3000/user/identity#credentials in your browser');
+  console.log('2. Click "Refresh list" (or reload the page)');
+  if (fixtureName.includes('issued')) {
+    console.log('3. If you previously ran revoked, this re-activates the mock badge');
+  }
+  console.log(
+    `4. You must be signed in as ${context.clerkUserId}. Override with --as=user_xxx if needed.`,
+  );
+}
+
+main().catch((error) => {
+  console.error(error instanceof Error ? error.message : error);
+  process.exit(1);
+});

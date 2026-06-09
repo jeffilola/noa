@@ -2431,6 +2431,15 @@ a:hover {
   margin: -0.25rem 0 1rem;
 }
 
+.identity-section__toolbar {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.75rem;
+  margin-bottom: 1rem;
+}
+
 .profile-field-hint {
   display: block;
   margin-top: 0.25rem;

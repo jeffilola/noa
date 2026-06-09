@@ -5,6 +5,18 @@ export function formatCredentialType(type: string) {
   return type.replace(/_/g, ' ');
 }
 
+/** Stable YYYY-MM-DD formatting for SSR + browser (avoids locale hydration mismatches). */
+export function formatCredentialDate(value: string) {
+  const trimmed = value.trim();
+  const isoPrefix = trimmed.match(/^(\d{4}-\d{2}-\d{2})/);
+  if (isoPrefix) return isoPrefix[1];
+
+  const parsed = new Date(trimmed);
+  if (Number.isNaN(parsed.getTime())) return trimmed;
+
+  return parsed.toISOString().slice(0, 10);
+}
+
 export function displayName(profile: UserProfile | null) {
   if (!profile) return 'Holder';
   const name = [profile.firstName, profile.lastName].filter(Boolean).join(' ');
@@ -18,6 +30,8 @@ export function sourceBadgeClass(source: string) {
 export function statusBadgeClass(status: string) {
   const normalized = status.toLowerCase();
   if (normalized === 'active') return 'badge badge-active';
+  if (normalized === 'revoked') return 'badge badge-muted';
+  if (normalized === 'suspended') return 'badge badge-muted';
   return 'badge badge-muted';
 }
 

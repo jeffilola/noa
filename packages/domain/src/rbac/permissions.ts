@@ -68,6 +68,7 @@ export const ROLE_PERMISSION_MAP: Record<NoaRoleKey, PermissionName[]> = {
     Permission.CREDENTIALS_PROVISION_REQUEST,
     Permission.REPORTS_VIEW,
     Permission.AUDIT_VIEW_ORG,
+    Permission.INTEGRATIONS_HEALTH_VIEW,
   ],
   [NoaRole.SECURITY_ADMIN]: [
     ...IDENTITY_HOLDER_PERMISSIONS,

@@ -62,6 +62,7 @@ After seed, re-run `pnpm db:seed` whenever you need holder demo data — it auto
 - [environment-checklist.md](docs/environment-checklist.md)
 - [issuance-modes.md](docs/issuance-modes.md)
 - [hid-origo-integration.md](docs/hid-origo-integration.md)
+- [m3-local-testing.md](docs/m3-local-testing.md) — M3 copy-paste terminal tests (#30–#33)
 - [brivo-integration.md](docs/brivo-integration.md)
 
 ## Testing

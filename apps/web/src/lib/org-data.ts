@@ -52,6 +52,25 @@ export interface OrgMember {
   user: OrgMemberUser;
 }
 
+export interface OrgIntegrationProvider {
+  id: string;
+  name: string;
+  adapterKey: string;
+}
+
+export interface OrgIntegrationConnection {
+  id: string;
+  status: string;
+  apiBaseUrl: string;
+  lastTestedAt?: string | null;
+  lastError?: string | null;
+}
+
+export interface OrgIntegrationRow {
+  provider: OrgIntegrationProvider;
+  connection: OrgIntegrationConnection | null;
+}
+
 function orgFromMemberships(memberships: UserMembership[]): OrgSummary | null {
   const orgAdminMembership =
     memberships.find((membership) => membership.role === 'org_admin' && membership.organization?.id) ??
@@ -137,6 +156,18 @@ export async function fetchOrgAuditLogs(organizationId: string, limit = 50) {
   return {
     logs: logs ?? [],
     apiReachable: logs !== null,
+  };
+}
+
+export async function fetchOrgIntegrations(organizationId: string) {
+  const integrations = await apiFetch<OrgIntegrationRow[]>(
+    `/organizations/${organizationId}/integrations`,
+    { organizationId },
+  ).catch(() => null);
+
+  return {
+    integrations: integrations ?? [],
+    apiReachable: integrations !== null,
   };
 }
 

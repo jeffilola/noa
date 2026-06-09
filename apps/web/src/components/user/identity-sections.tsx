@@ -64,6 +64,7 @@ export async function loadIdentityPageData() {
   let credentials: UserCredential[] = [];
   let devices: UserDevice[] = [];
   let error: string | null = null;
+  let credentialsError: string | null = null;
 
   try {
     profile = await apiFetch<UserProfile>('/users/me');
@@ -78,16 +79,17 @@ export async function loadIdentityPageData() {
   }
 
   try {
-    credentials = await apiFetch('/credentials');
-  } catch {
+    credentials = await apiFetch<UserCredential[]>('/credentials');
+  } catch (err) {
+    credentialsError = err instanceof Error ? err.message : 'Could not load credentials.';
     credentials = [];
   }
 
   try {
-    devices = await apiFetch('/devices');
+    devices = await apiFetch<UserDevice[]>('/devices');
   } catch {
     devices = [];
   }
 
-  return { profile, memberships, credentials, devices, error };
+  return { profile, memberships, credentials, devices, error, credentialsError };
 }

@@ -1,6 +1,7 @@
+import { IssuanceSourceBadge } from '@/components/credentials/issuance-source-badge';
 import {
+  formatCredentialDate,
   formatCredentialType,
-  sourceBadgeClass,
   statusBadgeClass,
 } from '@/lib/user-dashboard';
 import type { UserCredential } from '@/lib/user-types';
@@ -19,9 +20,7 @@ export function CredentialsGrid({ credentials }: { credentials: UserCredential[]
             </div>
             <div className="badges">
               <span className={statusBadgeClass(credential.status)}>{credential.status}</span>
-              <span className={sourceBadgeClass(credential.issuanceSource)}>
-                {credential.issuanceSource}
-              </span>
+              <IssuanceSourceBadge source={credential.issuanceSource} />
             </div>
           </div>
 
@@ -41,7 +40,7 @@ export function CredentialsGrid({ credentials }: { credentials: UserCredential[]
             {credential.validUntil ? (
               <div>
                 <dt>Valid until</dt>
-                <dd>{new Date(credential.validUntil).toLocaleDateString()}</dd>
+                <dd>{formatCredentialDate(credential.validUntil)}</dd>
               </div>
             ) : null}
           </dl>
