@@ -728,33 +728,29 @@ a:hover {
   z-index: 0;
   overflow: hidden;
   background: var(--noa-mist);
-  --world-highlight: rgb(10 10 10);
-  --world-highlight-soft: rgb(82 82 82);
-  --world-line: rgb(0 0 0 / 10%);
-  --world-line-strong: rgb(0 0 0 / 16%);
-  --world-label: rgb(82 82 82 / 88%);
-  --world-rail: rgb(0 0 0 / 10%);
-  --world-stop: rgb(0 0 0 / 16%);
-  --world-stop-active: rgb(0 0 0 / 55%);
-  --world-stop-current: rgb(10 10 10);
-  --world-route: rgb(0 0 0 / 14%);
-  --world-node: rgb(64 64 64 / 85%);
-  --world-node-ring: rgb(0 0 0 / 22%);
-}
-
-.dark .world-bg {
-  --world-highlight: rgb(200 225 255);
-  --world-highlight-soft: rgb(163 163 163);
-  --world-line: rgb(255 255 255 / 8%);
-  --world-line-strong: rgb(255 255 255 / 12%);
-  --world-label: rgb(163 163 163 / 92%);
-  --world-rail: rgb(255 255 255 / 8%);
-  --world-stop: rgb(255 255 255 / 18%);
-  --world-stop-active: rgb(255 255 255 / 78%);
-  --world-stop-current: rgb(200 225 255);
-  --world-route: rgb(255 255 255 / 18%);
-  --world-node: rgb(255 255 255 / 95%);
-  --world-node-ring: rgb(255 255 255 / 40%);
+  --world-accent: var(--noa-accent);
+  --world-muted: var(--noa-sage);
+  --world-label: color-mix(in srgb, var(--noa-sage) 92%, transparent);
+  --world-line: color-mix(in srgb, var(--noa-ink) 10%, transparent);
+  --world-line-strong: color-mix(in srgb, var(--noa-ink) 16%, transparent);
+  --world-rail: color-mix(in srgb, var(--noa-ink) 10%, transparent);
+  --world-stop: color-mix(in srgb, var(--noa-ink) 16%, transparent);
+  --world-stop-active: color-mix(in srgb, var(--noa-ink) 55%, transparent);
+  --world-stop-current: var(--noa-accent);
+  --world-route: color-mix(in srgb, var(--noa-ink) 14%, transparent);
+  --world-route-lit: color-mix(in srgb, var(--noa-accent) 70%, transparent);
+  --world-map-fill: color-mix(in srgb, var(--noa-ink) 7%, transparent);
+  --world-map-stroke: color-mix(in srgb, var(--noa-ink) 14%, transparent);
+  --world-map-disc: color-mix(in srgb, var(--noa-ink) 4%, transparent);
+  --world-map-dot: color-mix(in srgb, var(--noa-ink) 22%, transparent);
+  --world-map-shine-center: color-mix(in srgb, var(--noa-accent) 6%, transparent);
+  --world-map-shine-edge: transparent;
+  --world-hub-core: color-mix(in srgb, var(--noa-accent) 88%, var(--noa-surface));
+  --world-hub-ring: color-mix(in srgb, var(--noa-accent) 35%, transparent);
+  --world-card-fill: var(--noa-surface);
+  --world-card-stroke: color-mix(in srgb, var(--noa-ink) 35%, transparent);
+  --world-card-glow: color-mix(in srgb, var(--noa-accent) 45%, transparent);
+  --world-grid-line: color-mix(in srgb, var(--noa-ink) 5%, transparent);
 }
 
 .world-bg__vignette {
@@ -802,7 +798,7 @@ a:hover {
   font-weight: 800;
   letter-spacing: 0.22em;
   text-transform: uppercase;
-  color: var(--world-label);
+  color: var(--text-muted);
 }
 
 .world-bg__page-rail {
@@ -819,14 +815,215 @@ a:hover {
 .world-bg__page-rail-fill {
   height: 100%;
   border-radius: inherit;
-  background: linear-gradient(90deg, rgb(115 115 115), rgb(82 82 82), rgb(10 10 10));
-  box-shadow: 0 0 12px rgb(0 0 0 / 12%);
+  background: linear-gradient(
+    90deg,
+    color-mix(in srgb, var(--noa-sage) 80%, transparent),
+    var(--noa-accent),
+    color-mix(in srgb, var(--noa-accent) 85%, var(--noa-ink))
+  );
+  box-shadow: 0 0 14px color-mix(in srgb, var(--noa-accent) 35%, transparent);
   transition: width 1.1s cubic-bezier(0.22, 1, 0.36, 1);
 }
 
-.dark .world-bg__page-rail-fill {
-  background: linear-gradient(90deg, rgb(212 212 212), rgb(163 163 163), rgb(255 255 255));
-  box-shadow: 0 0 18px rgb(255 255 255 / 50%);
+.world-bg__grid {
+  position: absolute;
+  inset: 0;
+  opacity: 0.45;
+  background-image:
+    linear-gradient(var(--world-grid-line) 1px, transparent 1px),
+    linear-gradient(90deg, var(--world-grid-line) 1px, transparent 1px);
+  background-size: clamp(3rem, 8vw, 5rem) clamp(3rem, 8vw, 5rem);
+  mask-image: radial-gradient(ellipse 80% 70% at 50% 42%, black 15%, transparent 72%);
+}
+
+.world-bg__map-stage {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: min(132vmin, 1600px);
+  aspect-ratio: 100 / 52;
+  transform: translate(-50%, -54%);
+  filter: drop-shadow(0 24px 80px color-mix(in srgb, var(--noa-ink) 12%, transparent));
+}
+
+.world-bg__map {
+  width: 100%;
+  height: 100%;
+  overflow: visible;
+}
+
+.world-bg__map-disc {
+  fill: var(--world-map-disc);
+  stroke: var(--world-line-strong);
+  stroke-width: 0.45;
+}
+
+.world-bg__map-shine {
+  opacity: 0.9;
+  pointer-events: none;
+}
+
+.world-bg__land {
+  fill: var(--world-map-fill);
+  stroke: var(--world-map-stroke);
+  stroke-width: 0.35;
+  stroke-linejoin: round;
+}
+
+.world-bg__map-dot {
+  fill: var(--world-map-dot);
+  opacity: 0.65;
+}
+
+.world-bg__route,
+.world-bg__route-glow {
+  fill: none;
+  stroke-linecap: round;
+}
+
+.world-bg__route-glow {
+  stroke: var(--world-route);
+  stroke-width: 1.4;
+  opacity: 0.35;
+  filter: blur(1.5px);
+}
+
+.world-bg__route-glow.is-lit {
+  stroke: var(--world-route-lit);
+  opacity: 0.55;
+}
+
+.world-bg__route {
+  stroke: var(--world-route);
+  stroke-width: 0.45;
+  stroke-dasharray: 2.5 5;
+  animation: world-route-flow 7s linear infinite;
+  animation-delay: var(--route-delay, 0s);
+}
+
+.world-bg__route.is-lit {
+  stroke: url(#world-route-gradient);
+  stroke-width: 0.65;
+  opacity: 1;
+}
+
+.world-bg__loop-trail {
+  fill: none;
+  stroke: color-mix(in srgb, var(--noa-accent) 25%, transparent);
+  stroke-width: 2.5;
+  stroke-linecap: round;
+  filter: blur(3px);
+  opacity: 0.5;
+}
+
+.world-bg__hub-label {
+  fill: var(--world-label);
+  font-size: 2.6px;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  font-family: var(--font);
+}
+
+.world-bg__hub-core {
+  fill: var(--world-hub-core);
+  stroke: var(--world-card-stroke);
+  stroke-width: 0.25;
+}
+
+.world-bg__hub-dot {
+  fill: var(--noa-on-accent);
+}
+
+.world-bg__hub-ripple {
+  fill: none;
+  stroke: var(--world-hub-ring);
+  stroke-width: 0.35;
+  opacity: 0;
+  transform-box: fill-box;
+  transform-origin: center;
+}
+
+.world-bg__hub-ripple--1 {
+  animation: world-hub-pulse 3.2s ease-out infinite;
+  animation-delay: var(--hub-delay, 0s);
+}
+
+.world-bg__hub-ripple--2 {
+  animation: world-hub-pulse 3.2s ease-out infinite;
+  animation-delay: calc(var(--hub-delay, 0s) + 0.8s);
+}
+
+.world-bg__hub.is-active .world-bg__hub-core {
+  filter: drop-shadow(0 0 6px var(--world-card-glow));
+}
+
+.world-bg__hub.is-active .world-bg__hub-label {
+  fill: var(--noa-ink);
+}
+
+.world-bg__hub.is-active .world-bg__hub-ripple {
+  stroke: color-mix(in srgb, var(--noa-accent) 55%, transparent);
+}
+
+.world-bg__card-body {
+  fill: var(--world-card-fill);
+  stroke: var(--world-card-stroke);
+  stroke-width: 0.35;
+  filter: drop-shadow(0 0 5px var(--world-card-glow));
+}
+
+.world-bg__card-chip {
+  fill: color-mix(in srgb, var(--noa-accent) 18%, var(--noa-surface-alt));
+  stroke: none;
+}
+
+.world-bg__card-stripe {
+  stroke: color-mix(in srgb, var(--noa-ink) 30%, transparent);
+  stroke-width: 0.35;
+}
+
+.world-bg__card-nfc {
+  fill: color-mix(in srgb, var(--noa-accent) 70%, transparent);
+}
+
+.world-bg__credential-card.is-jumping .world-bg__card-body {
+  filter: drop-shadow(0 0 10px var(--world-card-glow));
+}
+
+.world-bg__jump-path {
+  stroke: none;
+  fill: none;
+}
+
+.world-bg__card-jumper,
+.world-bg__card-traveler {
+  pointer-events: none;
+}
+
+.world-bg__card-traveler {
+  filter: drop-shadow(0 0 8px var(--world-card-glow));
+}
+
+.world-bg__journey {
+  animation: world-journey-flash 3.2s ease-out forwards;
+}
+
+.world-bg__journey-arc {
+  stroke: var(--world-accent);
+  stroke-width: 1;
+  fill: none;
+  stroke-dasharray: 120;
+  animation: world-journey-draw 2.2s ease-out forwards;
+}
+
+.world-bg__journey-arc-glow {
+  stroke: color-mix(in srgb, var(--noa-accent) 50%, transparent);
+  stroke-width: 2.4;
+  fill: none;
+  filter: blur(2px);
+  stroke-dasharray: 120;
+  animation: world-journey-draw 2.2s ease-out forwards;
 }
 
 .world-bg__page-stops {
@@ -855,285 +1052,31 @@ a:hover {
   transform: scale(1.35);
 }
 
-.world-bg__globe-ring {
-  stroke: var(--world-line-strong);
-  fill: none;
-}
-
-.world-bg__globe-lat {
-  stroke: var(--world-line);
-  fill: none;
-}
-
-.world-bg__lat-grid {
-  position: absolute;
-  inset: -25% 0;
-  opacity: 0.55;
-}
-
-.world-bg__lat-line {
-  position: absolute;
-  left: -15%;
-  right: -15%;
-  height: 1px;
-  top: calc(4% + var(--i) * 8%);
-  background: linear-gradient(
-    90deg,
-    transparent,
-    var(--world-line) 18%,
-    var(--world-line-strong) 50%,
-    var(--world-line) 82%,
-    transparent
-  );
-  animation: world-lat-drift 32s linear infinite;
-  animation-delay: calc(var(--i) * -2.6s);
-}
-
-.world-bg__globe-wrap {
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  width: min(118vmin, 1500px);
-  aspect-ratio: 1;
-  transform: translate(-50%, -50%);
-}
-
-.world-bg__globe {
-  width: 100%;
-  height: 100%;
-  opacity: 0.95;
-}
-
-.world-bg__globe-spin {
-  transform-origin: 200px 200px;
-  animation: world-globe-spin 160s linear infinite;
-}
-
-.world-bg__network {
-  position: absolute;
-  inset: 14%;
-}
-
-.world-bg__route {
-  stroke: var(--world-route);
-  stroke-width: 0.4;
-  fill: none;
-  stroke-dasharray: 2 5;
-}
-
-.world-bg__vertical-base {
-  fill: rgb(255 255 255 / 12%);
-}
-
-.world-bg__vertical-label {
-  fill: rgb(255 255 255 / 50%);
-  font-size: 3px;
-  font-weight: 700;
-  letter-spacing: 0.05em;
-  text-transform: uppercase;
-  font-family: var(--font);
-}
-
-.world-bg__vertical.is-active .world-bg__vertical-label {
-  fill: rgb(200 225 255);
-}
-
-.world-bg__vertical.is-active .world-bg__vertical-base {
-  fill: rgb(255 255 255 / 28%);
-}
-
-.world-bg__building-fill {
-  fill: rgb(12 12 12 / 90%);
-  stroke: rgb(163 163 163 / 45%);
-  stroke-width: 0.35;
-}
-
-.world-bg__building-window {
-  fill: rgb(255 255 255 / 35%);
-}
-
-.world-bg__building-door {
-  fill: rgb(255 255 255 / 25%);
-  stroke: none;
-}
-
-.world-bg__building-roof {
-  fill: none;
-  stroke: rgb(163 163 163 / 55%);
-  stroke-width: 0.4;
-}
-
-.world-bg__building-accent {
-  fill: rgb(255 255 255 / 55%);
-  stroke: none;
-}
-
-.world-bg__building-detail {
-  stroke: rgb(163 163 163 / 50%);
-  fill: none;
-}
-
-.world-bg__vertical.is-active .world-bg__building-fill {
-  stroke: rgb(200 225 255 / 75%);
-  fill: rgb(40 44 58 / 92%);
-}
-
-.world-bg__vertical.is-active .world-bg__building-window,
-.world-bg__vertical.is-active .world-bg__building-accent {
-  fill: rgb(168 212 255 / 70%);
-}
-
-.world-bg__card-body {
-  fill: rgb(163 163 163);
-  stroke: rgb(255 255 255 / 55%);
-  stroke-width: 0.35;
-  filter: drop-shadow(0 0 4px rgb(255 255 255 / 80%));
-}
-
-.world-bg__card-chip {
-  fill: rgb(212 212 212 / 85%);
-  stroke: none;
-}
-
-.world-bg__card-stripe {
-  stroke: rgb(20 20 28 / 45%);
-  stroke-width: 0.35;
-}
-
-.world-bg__credential-card.is-jumping .world-bg__card-body {
-  filter: drop-shadow(0 0 8px rgb(200 225 255));
-}
-
-.world-bg__jump-path {
-  stroke: none;
-  fill: none;
-}
-
-.world-bg__card-jumper {
-  pointer-events: none;
-}
-
-.world-bg__arc {
-  stroke: rgb(255 255 255 / 36%);
-  stroke-width: 0.55;
-  fill: none;
-  stroke-dasharray: 3 6;
-  animation: world-sync-in 4.2s ease-in-out infinite;
-  animation-delay: var(--arc-delay, 0s);
-}
-
-.world-bg__arc-glow {
-  stroke: rgb(163 163 163 / 62%);
-  stroke-width: 1.1;
-  fill: none;
-  stroke-dasharray: 2 14;
-  filter: blur(1px);
-  animation: world-sync-in 4.2s ease-in-out infinite;
-  animation-delay: var(--arc-delay, 0s);
-}
-
-.world-bg__traveler {
-  opacity: 1;
-  filter: drop-shadow(0 0 6px rgb(163 163 163 / 85%));
-}
-
-.world-bg__node-group.is-active .world-bg__node {
-  fill: rgb(200 225 255);
-}
-
-.world-bg__node-group.is-active .world-bg__node-ring {
-  stroke: rgb(163 163 163 / 82%);
-}
-
-.world-bg__node-group.is-active .world-bg__node-label {
-  fill: rgb(200 225 255 / 95%);
-}
-
-.world-bg__node {
-  fill: var(--world-node);
-  animation: world-node-pulse 2.8s ease-in-out infinite;
-  animation-delay: var(--node-delay, 0s);
-}
-
-.world-bg__node-ring {
-  fill: none;
-  stroke: var(--world-node-ring);
-  stroke-width: 0.55;
-  animation: world-node-ring 2.8s ease-in-out infinite;
-  animation-delay: var(--node-delay, 0s);
-}
-
-.world-bg__node-label {
-  fill: var(--world-label);
-  font-size: 3.2px;
-  font-weight: 700;
-  letter-spacing: 0.06em;
-  text-transform: uppercase;
-  font-family: var(--font);
-}
-
-.world-bg__journey {
-  animation: world-journey-flash 3.2s ease-out forwards;
-}
-
-.world-bg__journey-arc {
-  stroke: rgb(200 225 255);
-  stroke-width: 1.1;
-  fill: none;
-  stroke-dasharray: 120;
-  animation: world-journey-draw 2.8s ease-out forwards;
-}
-
-.world-bg__journey-arc-glow {
-  stroke: rgb(163 163 163);
-  stroke-width: 2.2;
-  fill: none;
-  filter: blur(2px);
-  stroke-dasharray: 120;
-  animation: world-journey-draw 2.8s ease-out forwards;
-}
-
-.world-bg__journey-traveler {
-  filter: drop-shadow(0 0 8px rgb(200 225 255));
-}
-
-.world-bg__wallet.is-active .world-bg__wallet-ring {
-  stroke: rgb(200 225 255);
-  fill: rgb(255 255 255 / 16%);
-}
-
-.world-bg__wallet-ring {
-  fill: rgb(255 255 255 / 10%);
-  stroke: rgb(163 163 163 / 62%);
-  stroke-width: 0.85;
-  animation: world-wallet-ring 3s ease-in-out infinite;
-}
-
-.world-bg__wallet-core {
-  fill: rgb(20 20 26 / 75%);
-  stroke: rgb(163 163 163 / 88%);
-  stroke-width: 0.9;
-}
-
-.world-bg__wallet-card {
-  fill: rgb(163 163 163);
-  stroke: rgb(255 255 255 / 45%);
-  stroke-width: 0.4;
-}
-
-.world-bg__wallet-label {
-  fill: rgb(200 225 255);
-  font-size: 3.5px;
-  font-weight: 800;
-  letter-spacing: 0.08em;
-  text-transform: uppercase;
-  font-family: var(--font);
-}
-
 .marketing-page {
   position: relative;
   overflow-x: hidden;
   color: var(--noa-ink);
+}
+
+@keyframes world-route-flow {
+  to {
+    stroke-dashoffset: -30;
+  }
+}
+
+@keyframes world-hub-pulse {
+  0% {
+    opacity: 0.55;
+    transform: scale(0.55);
+  }
+  70% {
+    opacity: 0;
+    transform: scale(1.35);
+  }
+  100% {
+    opacity: 0;
+    transform: scale(1.35);
+  }
 }
 
 @keyframes world-globe-spin {
@@ -2117,9 +2060,9 @@ a:hover {
 }
 
 @media (max-width: 768px) {
-  .world-bg__globe-wrap {
-    width: 145vmin;
-    opacity: 0.82;
+  .world-bg__map-stage {
+    width: 148vmin;
+    opacity: 0.9;
   }
 
   .world-bg__page-bridge-tag {
@@ -2127,16 +2070,15 @@ a:hover {
     letter-spacing: 0.16em;
   }
 
-  .world-bg__vertical-label {
+  .world-bg__hub-label {
     display: none;
   }
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .world-bg__globe-spin,
-  .world-bg__lat-line,
   .world-bg__aurora,
-  .world-bg__route {
+  .world-bg__route,
+  .world-bg__hub-ripple {
     animation: none !important;
   }
 

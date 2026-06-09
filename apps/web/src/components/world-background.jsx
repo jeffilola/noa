@@ -3,28 +3,53 @@
 import { usePathname } from 'next/navigation';
 import React, { useEffect, useMemo, useRef, useState } from 'react';
 
-/** Industry verticals positioned on the globe */
+/** Vertical hubs on a stylized world map (viewBox 0 0 100 52) */
 const VERTICALS = [
-  { id: 'corporate', cx: 20, cy: 36, label: 'Corporate', type: 'corporate' },
-  { id: 'hotel', cx: 38, cy: 20, label: 'Hotel', type: 'hotel' },
-  { id: 'healthcare', cx: 58, cy: 28, label: 'Healthcare', type: 'healthcare' },
-  { id: 'gym', cx: 82, cy: 34, label: 'Gym', type: 'gym' },
-  { id: 'campus', cx: 78, cy: 62, label: 'Campus', type: 'campus' },
-  { id: 'events', cx: 24, cy: 68, label: 'Events', type: 'events' },
+  { id: 'corporate', cx: 17, cy: 22, label: 'Corporate', type: 'corporate' },
+  { id: 'hotel', cx: 47, cy: 18, label: 'Hotel', type: 'hotel' },
+  { id: 'healthcare', cx: 51, cy: 26, label: 'Healthcare', type: 'healthcare' },
+  { id: 'gym', cx: 22, cy: 30, label: 'Gym', type: 'gym' },
+  { id: 'campus', cx: 74, cy: 21, label: 'Campus', type: 'campus' },
+  { id: 'events', cx: 81, cy: 34, label: 'Events', type: 'events' },
 ];
 
 const VERTICAL_BY_ID = Object.fromEntries(VERTICALS.map((v) => [v.id, v]));
 
-/** Card visits each vertical in sequence */
 const CARD_LOOP = ['corporate', 'hotel', 'healthcare', 'gym', 'campus', 'events', 'corporate'];
 
-const PAGE_VERTICALS = [
-  { id: 'corporate', short: 'Corporate' },
-  { id: 'hotel', short: 'Hotel' },
-  { id: 'healthcare', short: 'Healthcare' },
-  { id: 'gym', short: 'Gym' },
-  { id: 'campus', short: 'Campus' },
-  { id: 'events', short: 'Events' },
+const PAGE_VERTICALS = VERTICALS.map(({ id, label }) => ({ id, short: label }));
+
+/** Minimal continent silhouettes — abstract, not geographic */
+const MAP_LANDMASSES = [
+  {
+    id: 'americas',
+    d: 'M 4 14 Q 10 8 18 10 T 28 16 Q 30 22 26 28 Q 22 34 18 38 Q 14 42 12 36 Q 8 28 4 22 Z',
+  },
+  {
+    id: 'emea',
+    d: 'M 42 10 Q 50 8 54 14 T 56 26 Q 54 34 50 40 Q 46 46 44 38 Q 42 28 40 18 Q 40 12 42 10 Z',
+  },
+  {
+    id: 'asia',
+    d: 'M 58 10 Q 72 8 88 12 T 94 22 Q 90 28 78 26 Q 66 24 58 18 Z',
+  },
+  {
+    id: 'oceania',
+    d: 'M 76 32 Q 84 30 90 34 T 86 40 Q 80 42 76 38 Z',
+  },
+];
+
+const MAP_DOTS = [
+  [12, 16],
+  [20, 24],
+  [28, 20],
+  [46, 20],
+  [52, 30],
+  [68, 18],
+  [82, 26],
+  [74, 36],
+  [38, 32],
+  [60, 38],
 ];
 
 function resolveRouteVertical(pathname) {
@@ -38,7 +63,7 @@ function resolveRouteVertical(pathname) {
   return 'corporate';
 }
 
-function arcBetweenPoints(a, b, lift = 10) {
+function arcBetweenPoints(a, b, lift = 8) {
   const mx = (a.cx + b.cx) / 2;
   const my = Math.min(a.cy, b.cy) - lift;
   return `M ${a.cx} ${a.cy} Q ${mx} ${my} ${b.cx} ${b.cy}`;
@@ -52,7 +77,7 @@ function buildLoopPath(ids) {
     const prev = points[i - 1];
     const curr = points[i];
     const mx = (prev.cx + curr.cx) / 2;
-    const my = Math.min(prev.cy, curr.cy) - 12;
+    const my = Math.min(prev.cy, curr.cy) - 10;
     d += ` Q ${mx} ${my} ${curr.cx} ${curr.cy}`;
   }
   return d;
@@ -65,81 +90,30 @@ function verticalIndex(id) {
 function CredentialCard({ className = '' }) {
   return (
     <g className={`world-bg__credential-card ${className}`.trim()}>
-      <rect x="-5" y="-3.2" width="10" height="6.4" rx="1.2" className="world-bg__card-body" />
-      <rect x="-3" y="-1.4" width="2.4" height="1.8" rx="0.35" className="world-bg__card-chip" />
-      <line x1="-3.5" y1="2" x2="3.5" y2="2" className="world-bg__card-stripe" />
+      <rect x="-6" y="-3.8" width="12" height="7.6" rx="1.4" className="world-bg__card-body" />
+      <rect x="-4.2" y="-2" width="3.2" height="2.2" rx="0.4" className="world-bg__card-chip" />
+      <line x1="-4.5" y1="2.2" x2="4.5" y2="2.2" className="world-bg__card-stripe" />
+      <circle cx="4.6" cy="-2.4" r="0.75" className="world-bg__card-nfc" />
     </g>
   );
 }
 
-function VerticalBuilding({ type, active }) {
-  const cls = active ? 'world-bg__building is-active' : 'world-bg__building';
-
-  switch (type) {
-    case 'corporate':
-      return (
-        <g className={cls}>
-          <rect x="-3.5" y="-1" width="7" height="9" rx="0.5" className="world-bg__building-fill" />
-          {[0, 1, 2].map((row) =>
-            [0, 1].map((col) => (
-              <rect
-                key={`${row}-${col}`}
-                x={-2 + col * 2.4}
-                y={-0.2 + row * 2.2}
-                width="1.4"
-                height="1.4"
-                rx="0.15"
-                className="world-bg__building-window"
-              />
-            )),
-          )}
-        </g>
-      );
-    case 'hotel':
-      return (
-        <g className={cls}>
-          <path d="M -4 8 L -4 2 L 0 -1 L 4 2 L 4 8 Z" className="world-bg__building-fill" />
-          <rect x="-2.5" y="4" width="5" height="4" className="world-bg__building-door" />
-          <path d="M -5 1 Q 0 -2 5 1" className="world-bg__building-roof" />
-        </g>
-      );
-    case 'gym':
-      return (
-        <g className={cls}>
-          <rect x="-4.5" y="1" width="9" height="7" rx="0.5" className="world-bg__building-fill" />
-          <rect x="-1.5" y="-2" width="3" height="3" rx="0.4" className="world-bg__building-accent" />
-          <line x1="-3" y1="4" x2="-1" y2="4" className="world-bg__building-detail" strokeWidth="0.6" />
-          <line x1="1" y1="4" x2="3" y2="4" className="world-bg__building-detail" strokeWidth="0.6" />
-        </g>
-      );
-    case 'campus':
-      return (
-        <g className={cls}>
-          <rect x="-6" y="2" width="12" height="6" rx="0.4" className="world-bg__building-fill" />
-          <rect x="-5" y="-1" width="2.5" height="3" className="world-bg__building-fill" />
-          <rect x="-1.2" y="-2" width="2.4" height="4" className="world-bg__building-fill" />
-          <rect x="2.5" y="-1" width="2.5" height="3" className="world-bg__building-fill" />
-        </g>
-      );
-    case 'events':
-      return (
-        <g className={cls}>
-          <path d="M -5 8 L -5 4 Q 0 0 5 4 L 5 8 Z" className="world-bg__building-fill" />
-          <path d="M -6 4 L 0 1 L 6 4" className="world-bg__building-roof" />
-          <rect x="-1" y="5" width="2" height="3" className="world-bg__building-door" />
-        </g>
-      );
-    case 'healthcare':
-      return (
-        <g className={cls}>
-          <rect x="-4" y="0" width="8" height="8" rx="0.5" className="world-bg__building-fill" />
-          <rect x="-0.6" y="2" width="1.2" height="4" className="world-bg__building-accent" />
-          <rect x="-2" y="3.4" width="4" height="1.2" className="world-bg__building-accent" />
-        </g>
-      );
-    default:
-      return null;
-  }
+function VerticalHub({ vertical, isActive, loopIndex }) {
+  return (
+    <g
+      transform={`translate(${vertical.cx} ${vertical.cy})`}
+      className={isActive ? 'world-bg__hub is-active' : 'world-bg__hub'}
+      style={{ '--hub-delay': `${loopIndex * 0.35}s` }}
+    >
+      <circle r="9" className="world-bg__hub-ripple world-bg__hub-ripple--1" />
+      <circle r="6.5" className="world-bg__hub-ripple world-bg__hub-ripple--2" />
+      <circle r="2.8" className="world-bg__hub-core" />
+      <circle r="1.1" className="world-bg__hub-dot" />
+      <text y="12.5" textAnchor="middle" className="world-bg__hub-label">
+        {vertical.label}
+      </text>
+    </g>
+  );
 }
 
 export function WorldBackground() {
@@ -152,7 +126,7 @@ export function WorldBackground() {
   const activeIndex = verticalIndex(activeVerticalId);
   const loopPath = useMemo(() => buildLoopPath(CARD_LOOP), []);
   const journeyPath = journey
-    ? arcBetweenPoints(VERTICAL_BY_ID[journey.fromId], VERTICAL_BY_ID[journey.toId], 14)
+    ? arcBetweenPoints(VERTICAL_BY_ID[journey.fromId], VERTICAL_BY_ID[journey.toId], 12)
     : null;
 
   useEffect(() => {
@@ -180,12 +154,7 @@ export function WorldBackground() {
     <div className="world-bg" aria-hidden="true">
       <div className="world-bg__vignette" />
       <div className="world-bg__aurora" />
-
-      <div className="world-bg__lat-grid">
-        {Array.from({ length: 12 }).map((_, i) => (
-          <span key={i} className="world-bg__lat-line" style={{ '--i': i }} />
-        ))}
-      </div>
+      <div className="world-bg__grid" />
 
       <div className="world-bg__page-bridge">
         <p className="world-bg__page-bridge-tag">One card · Every vertical · Every door</p>
@@ -205,91 +174,86 @@ export function WorldBackground() {
         </div>
       </div>
 
-      <div className="world-bg__globe-wrap">
-        <svg className="world-bg__globe" viewBox="0 0 400 400" fill="none">
+      <div className="world-bg__map-stage">
+        <svg className="world-bg__map" viewBox="0 0 100 52" fill="none" preserveAspectRatio="xMidYMid meet">
           <defs>
-            <radialGradient id="noa-globe-glow" cx="50%" cy="50%" r="50%">
-              <stop offset="0%" stopColor="var(--world-glow-start)" />
-              <stop offset="55%" stopColor="var(--world-glow-mid)" />
-              <stop offset="100%" stopColor="transparent" />
+            <radialGradient id="world-map-shine" cx="50%" cy="42%" r="58%">
+              <stop offset="0%" stopColor="var(--world-map-shine-center)" />
+              <stop offset="100%" stopColor="var(--world-map-shine-edge)" />
             </radialGradient>
+            <linearGradient id="world-route-gradient" x1="0%" y1="0%" x2="100%" y2="0%">
+              <stop offset="0%" stopColor="var(--world-route)" stopOpacity="0.2" />
+              <stop offset="50%" stopColor="var(--world-accent)" stopOpacity="0.85" />
+              <stop offset="100%" stopColor="var(--world-route)" stopOpacity="0.2" />
+            </linearGradient>
           </defs>
-          <circle cx="200" cy="200" r="198" fill="url(#noa-globe-glow)" />
-          <g className="world-bg__globe-spin">
-            <circle cx="200" cy="200" r="175" className="world-bg__globe-ring" strokeWidth="1.1" />
-            {[0, 28, 56, 84, 112, 140, 168].map((ry) => (
-              <ellipse
-                key={`lat-${ry}`}
-                cx="200"
-                cy="200"
-                rx="175"
-                ry={ry === 0 ? 175 : Math.max(ry * 0.52, 16)}
-                className="world-bg__globe-lat"
-                strokeWidth="0.85"
-              />
-            ))}
-            {[0, 32, 64, 96, 128, 160].map((rx) => (
-              <ellipse
-                key={`lon-${rx}`}
-                cx="200"
-                cy="200"
-                rx={rx === 0 ? 175 : Math.max(rx * 0.52, 16)}
-                ry="175"
-                className="world-bg__globe-lat"
-                strokeWidth="0.85"
-              />
-            ))}
-          </g>
-        </svg>
 
-        <svg className="world-bg__network" viewBox="0 0 100 100" fill="none">
+          <ellipse cx="50" cy="26" rx="48" ry="24" className="world-bg__map-disc" />
+          <rect x="0" y="0" width="100" height="52" fill="url(#world-map-shine)" className="world-bg__map-shine" />
+
+          {MAP_LANDMASSES.map((land) => (
+            <path key={land.id} d={land.d} className="world-bg__land" />
+          ))}
+
+          {MAP_DOTS.map(([cx, cy], i) => (
+            <circle key={`dot-${i}`} cx={cx} cy={cy} r="0.35" className="world-bg__map-dot" />
+          ))}
+
           {CARD_LOOP.slice(0, -1).map((fromId, i) => {
             const toId = CARD_LOOP[i + 1];
             const from = VERTICAL_BY_ID[fromId];
             const to = VERTICAL_BY_ID[toId];
-            return (
-              <path
-                key={`route-${fromId}-${toId}`}
-                d={arcBetweenPoints(from, to, 12)}
-                className="world-bg__route"
-              />
-            );
-          })}
+            const touchesActive =
+              fromId === activeVerticalId ||
+              toId === activeVerticalId ||
+              fromId === journey?.toId ||
+              toId === journey?.fromId;
 
-          {VERTICALS.map((vertical) => {
-            const isActive = vertical.id === activeVerticalId;
             return (
-              <g
-                key={vertical.id}
-                transform={`translate(${vertical.cx} ${vertical.cy})`}
-                className={isActive ? 'world-bg__vertical is-active' : 'world-bg__vertical'}
-              >
-                <ellipse cx="0" cy="9.5" rx="6" ry="1.2" className="world-bg__vertical-base" />
-                <VerticalBuilding type={vertical.type} active={isActive} />
-                <text y="13" textAnchor="middle" className="world-bg__vertical-label">
-                  {vertical.label}
-                </text>
+              <g key={`route-${fromId}-${toId}`}>
+                <path
+                  d={arcBetweenPoints(from, to, 9)}
+                  className={`world-bg__route-glow${touchesActive ? ' is-lit' : ''}`}
+                />
+                <path
+                  d={arcBetweenPoints(from, to, 9)}
+                  className={`world-bg__route${touchesActive ? ' is-lit' : ''}`}
+                  style={{ '--route-delay': `${i * 0.6}s` }}
+                />
               </g>
             );
           })}
 
           {!journey && loopPath ? (
+            <path d={loopPath} className="world-bg__loop-trail" />
+          ) : null}
+
+          {VERTICALS.map((vertical, i) => (
+            <VerticalHub
+              key={vertical.id}
+              vertical={vertical}
+              isActive={vertical.id === activeVerticalId}
+              loopIndex={i}
+            />
+          ))}
+
+          {!journey && loopPath ? (
             <g className="world-bg__card-jumper">
               <path d={loopPath} className="world-bg__jump-path" />
-              <g>
+              <g className="world-bg__card-traveler">
                 <CredentialCard />
-                <animateMotion dur="22s" repeatCount="indefinite" path={loopPath} rotate="auto" />
+                <animateMotion dur="16s" repeatCount="indefinite" path={loopPath} rotate="auto" />
               </g>
             </g>
           ) : null}
 
           {journey && journeyPath ? (
             <g key={journey.key} className="world-bg__journey">
-              <path d={journeyPath} className="world-bg__journey-arc" />
               <path d={journeyPath} className="world-bg__journey-arc-glow" />
-              <g>
+              <path d={journeyPath} className="world-bg__journey-arc" />
+              <g className="world-bg__card-traveler">
                 <CredentialCard className="is-jumping" />
-                <animateMotion dur="2.4s" repeatCount="1" fill="freeze" path={journeyPath} rotate="auto" />
+                <animateMotion dur="2.2s" repeatCount="1" fill="freeze" path={journeyPath} rotate="auto" />
               </g>
             </g>
           ) : null}
