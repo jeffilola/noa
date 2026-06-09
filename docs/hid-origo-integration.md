@@ -197,3 +197,5 @@ Run these after the spike is merged (or on branch `spike/issue-30-hid-webhook-mo
 5. **Optional check in the database** — credential `mock-origo-webhook-001` should exist with `issuanceSource` PACS, then status revoked after step 4.
 
 If step 2 fails with “Demo org missing”, run `pnpm db:seed` again.
+
+For holder UI, badges, and org integrations tests (issues #31–#33), see [m3-local-testing.md](./m3-local-testing.md).

@@ -23,4 +23,4 @@
 4. Run `node scripts/post-hid-webhook.mjs revoked` — expect `"action": "revoked"`.
 5. Open `docs/hid-origo-integration.md` — confirm examples, fixtures path, and production blockers are documented.
 
-Full steps also in `docs/hid-origo-integration.md` → **Test procedures**.
+Full steps also in `docs/hid-origo-integration.md` → **Test procedures**. For all M3 issues (#30–#33), see [m3-local-testing.md](./m3-local-testing.md).
