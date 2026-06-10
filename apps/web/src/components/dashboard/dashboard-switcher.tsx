@@ -2,7 +2,7 @@
 
 import Link from 'next/link';
 import { usePathname, useRouter } from 'next/navigation';
-import { noaColors as c } from '@/components/relume/shared/theme';
+import { useNoaColors } from '@/hooks/use-noa-colors';
 
 export interface DashboardSwitcherLink {
   label: string;
@@ -12,6 +12,7 @@ export interface DashboardSwitcherLink {
 export function DashboardSwitcher({ links }: { links: DashboardSwitcherLink[] }) {
   const pathname = usePathname();
   const router = useRouter();
+  const c = useNoaColors();
 
   if (links.length === 0) {
     return null;

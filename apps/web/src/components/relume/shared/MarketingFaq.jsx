@@ -2,16 +2,17 @@
 
 import Link from 'next/link';
 import React from 'react';
-import { noaColors as c } from './theme';
+import { useNoaColors } from '@/hooks/use-noa-colors';
 
 function FaqCard({ item, index }) {
+  const c = useNoaColors();
   return (
     <article
       className="faq-card group relative flex h-full flex-col rounded-2xl border p-6 md:p-7"
       style={{
-        borderColor: `color-mix(in srgb, #ffffff 12%, transparent)`,
+        borderColor: `color-mix(in srgb, ${c.ink} 12%, transparent)`,
         background: c.cardBg,
-        boxShadow: '0 10px 28px rgb(0 0 0 / 28%)',
+        boxShadow: c.cardShadow,
       }}
     >
       <div
@@ -21,8 +22,8 @@ function FaqCard({ item, index }) {
 
       <div className="mb-4 flex items-start justify-between gap-3">
         <span
-          className="inline-flex size-9 shrink-0 items-center justify-center rounded-lg text-xs font-bold text-white"
-          style={{ background: c.deep }}
+          className="inline-flex size-9 shrink-0 items-center justify-center rounded-lg text-xs font-bold"
+          style={{ background: c.accent, color: c.onAccent }}
         >
           {String(index + 1).padStart(2, '0')}
         </span>
@@ -58,12 +59,13 @@ export function MarketingFaq({
   ctaHref = '/contact',
   ctaLabel = 'Contact sales',
 }) {
+  const c = useNoaColors();
   return (
     <section
       id="faq"
       className="marketing-section relative z-[1] border-t"
       style={{
-        borderColor: `color-mix(in srgb, #ffffff 10%, transparent)`,
+        borderColor: `color-mix(in srgb, ${c.ink} 10%, transparent)`,
         background: c.glass,
       }}
     >
@@ -91,12 +93,14 @@ export function MarketingFaq({
         <div
           className="mt-12 flex flex-col gap-6 rounded-2xl border p-8 md:mt-16 md:flex-row md:items-center md:justify-between md:p-10"
           style={{
-            borderColor: `color-mix(in srgb, #ffffff 10%, transparent)`,
+            borderColor: `color-mix(in srgb, ${c.ink} 10%, transparent)`,
             background: c.ctaBg,
           }}
         >
           <div className="max-w-xl">
-            <h3 className="text-2xl font-bold tracking-tight text-white md:text-3xl">{ctaTitle}</h3>
+            <h3 className="text-2xl font-bold tracking-tight md:text-3xl" style={{ color: c.ink }}>
+              {ctaTitle}
+            </h3>
             <p className="mt-2 text-sm leading-relaxed md:text-base" style={{ color: c.glow }}>
               {ctaBody}
             </p>

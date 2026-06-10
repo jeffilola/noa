@@ -5,7 +5,7 @@ import Link from 'next/link';
 import React from 'react';
 import { BiLogoLinkedinSquare } from 'react-icons/bi';
 import { FaXTwitter } from 'react-icons/fa6';
-import { noaColors as c } from '../../shared/theme';
+import { useNoaColors } from '@/hooks/use-noa-colors';
 
 const TEAM = [
   {
@@ -67,11 +67,12 @@ const TEAM = [
 ];
 
 function TeamCard({ member }) {
+  const c = useNoaColors();
   return (
     <article
       className="flex flex-col rounded-2xl border p-5 text-center md:p-6"
       style={{
-        borderColor: `color-mix(in srgb, #ffffff 12%, transparent)`,
+        borderColor: `color-mix(in srgb, ${c.ink} 12%, transparent)`,
         background: c.cardBgSoft,
       }}
     >
@@ -107,12 +108,13 @@ function TeamCard({ member }) {
 }
 
 export function Team2() {
+  const c = useNoaColors();
   return (
     <section
       id="team"
       className="marketing-section relative z-[1] border-t"
       style={{
-        borderColor: `color-mix(in srgb, #ffffff 10%, transparent)`,
+        borderColor: `color-mix(in srgb, ${c.ink} 10%, transparent)`,
         background: c.glass,
         backdropFilter: 'blur(20px)',
       }}
@@ -139,7 +141,7 @@ export function Team2() {
         <div
           className="mx-auto mt-14 max-w-md rounded-2xl border p-8 text-center md:mt-16"
           style={{
-            borderColor: `color-mix(in srgb, #ffffff 10%, transparent)`,
+            borderColor: `color-mix(in srgb, ${c.ink} 10%, transparent)`,
             background: c.cardBgSoft,
           }}
         >

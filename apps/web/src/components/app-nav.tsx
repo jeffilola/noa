@@ -5,6 +5,7 @@ import { FiMenu } from 'react-icons/fi';
 import { AuthNavControls } from '@/components/auth-nav-controls';
 import type { DashboardSwitcherLink } from '@/components/dashboard/dashboard-switcher';
 import { useSidebarOptional } from '@/components/dashboard/sidebar-context';
+import { ThemeToggle } from '@/components/theme-toggle';
 
 export function AppNav({
   variant = 'default',
@@ -24,7 +25,7 @@ export function AppNav({
             <button
               type="button"
               className="drawer-menu-button"
-              onClick={sidebar.toggle}
+              onClick={() => sidebar?.toggle()}
               aria-expanded={sidebar.open}
               aria-label={sidebar.open ? 'Close navigation menu' : 'Open navigation menu'}
             >
@@ -39,7 +40,10 @@ export function AppNav({
           </Link>
         </div>
 
-        <AuthNavControls switcherLinks={switcherLinks} />
+        <div className="site-header-end">
+          {!isDrawer ? <ThemeToggle compact /> : null}
+          <AuthNavControls switcherLinks={switcherLinks} />
+        </div>
       </div>
     </header>
   );

@@ -1,5 +1,5 @@
 import { IssuanceSourceBadge } from '@/app/admin/credentials/credentials-ui';
-import { formatCredentialType, statusBadgeClass } from '@/lib/user-dashboard';
+import { formatCredentialDate, formatCredentialType, statusBadgeClass } from '@/lib/user-dashboard';
 import type { UserCredential } from '@/lib/user-types';
 
 function StatusBadge({ status }: { status: string }) {
@@ -47,7 +47,7 @@ export function OrgCredentialsTable({ credentials }: { credentials: UserCredenti
               <td>{credential.provider?.name ?? '—'}</td>
               <td>
                 {credential.validUntil
-                  ? new Date(credential.validUntil).toLocaleDateString()
+                  ? formatCredentialDate(credential.validUntil)
                   : '—'}
               </td>
             </tr>

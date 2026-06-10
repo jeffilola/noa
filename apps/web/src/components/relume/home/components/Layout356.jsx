@@ -2,7 +2,7 @@
 
 import Link from 'next/link';
 import React from 'react';
-import { noaColors as c } from '../../shared/theme';
+import { useNoaColors } from '@/hooks/use-noa-colors';
 
 const steps = [
   {
@@ -35,11 +35,12 @@ const steps = [
 ];
 
 function StepPreview({ items, accent }) {
+  const c = useNoaColors();
   return (
     <div
       className="flex h-full min-h-[220px] flex-col justify-center gap-3 rounded-2xl border p-5"
       style={{
-        borderColor: `color-mix(in srgb, #ffffff 10%, transparent)`,
+        borderColor: `color-mix(in srgb, ${c.ink} 10%, transparent)`,
         background: `linear-gradient(160deg, ${c.surface} 0%, ${c.surfaceAlt} 100%)`,
       }}
     >
@@ -63,6 +64,7 @@ function StepPreview({ items, accent }) {
 }
 
 export function Layout356() {
+  const c = useNoaColors();
   return (
     <section className="marketing-section border-t" style={{ borderColor: `color-mix(in srgb, ${c.sage} 18%, transparent)` }}>
       <div className="marketing-shell">
@@ -84,9 +86,9 @@ export function Layout356() {
               key={step.number}
               className="grid overflow-hidden rounded-[1.25rem] border lg:grid-cols-2"
               style={{
-                borderColor: `color-mix(in srgb, #ffffff 10%, transparent)`,
+                borderColor: `color-mix(in srgb, ${c.ink} 10%, transparent)`,
                 background: c.cardBgSoft,
-                boxShadow: '0 16px 48px rgb(0 0 0 / 28%)',
+                boxShadow: c.elevatedShadow,
               }}
             >
               <div className="flex flex-col justify-center p-8 md:p-10 lg:p-12">

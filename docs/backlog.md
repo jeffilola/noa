@@ -6,16 +6,23 @@ Legend: **S** / **M** / **L** size · **Epic** tag · Milestone when scheduled
 
 ---
 
-## Now — Sprint 4 (M4: Holder trust / GDPR)
+## Now — Sprint 5 (M5: Design system & light/dark UI)
 
 | P | Size | Item | Epic | Issue |
 |---|------|------|------|-------|
-| 1 | M | GDPR export download UX on Security page | Holder | #35 |
-| 2 | M | Account deletion confirmation flow + sign-out | Holder | #36 |
-| 3 | S | Consolidate `/user/security` and `/user/privacy` | Holder | #37 |
+| 1 | M | Semantic design tokens + theme provider | Platform | #39 |
+| 2 | M | Theme toggle + Clerk appearance sync | Platform | #40 |
+| 3 | M | Marketing pages theme-aware | Platform | #41 |
+| 4 | S | UX visual QA pass (holder + org) | Platform | #42 |
 
-**Milestone:** [M4: Holder trust (GDPR & privacy)](https://github.com/jeffilola/noa/milestone/4)  
-**Goal:** Holders can export and delete their data with clear, audited UX.
+**Milestone:** [M5: Design system & light/dark UI](https://github.com/jeffilola/noa/milestone/5)  
+**Goal:** Cohesive light/dark experience across marketing and dashboards before staging.
+
+---
+
+## Done — Sprint 4 (M4: Holder trust / GDPR)
+
+Issues #35–#37 merged in PR #38. GDPR export, account deletion, consolidated security page.
 
 ---
 
@@ -39,7 +46,7 @@ Issues #1–#4 merged. Holder dashboard demo-ready with seed data.
 
 ---
 
-## Later — unscheduled (after M4)
+## Later — unscheduled (after M5)
 
 ### Identity Holder
 - ~~Privacy: GDPR export download UX~~ → M4 #35

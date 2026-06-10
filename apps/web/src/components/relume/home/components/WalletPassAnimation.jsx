@@ -1,7 +1,7 @@
 'use client';
 
 import React from 'react';
-import { noaColors as c } from '../../shared/theme';
+import { useNoaColors } from '@/hooks/use-noa-colors';
 
 const DEVICE_IMAGE = '/marketing/noa-wallet-devices.png';
 
@@ -17,6 +17,7 @@ const DEVICES = [
 ];
 
 export function WalletPassAnimation() {
+  const c = useNoaColors();
   return (
     <div className="wallet-pass-anim wallet-pass-anim--photo">
       <div className="wallet-pass-anim__glow wallet-pass-anim__glow--photo" style={{ background: c.accentSoft }} />

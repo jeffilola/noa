@@ -10,7 +10,12 @@
     "db:migrate": "pnpm --filter @noa/database migrate",
     "db:seed": "pnpm --filter @noa/database seed",
     "db:up": "docker compose up -d postgres",
-    "dev:stack": "docker compose up -d postgres && turbo run dev --parallel"
+    "dev:stack": "docker compose up -d postgres && turbo run dev --parallel",
+    "qa:prepare": "node scripts/qa-prepare.mjs",
+    "qa:stop": "node scripts/qa-stop.mjs",
+    "qa:servers": "node scripts/qa-servers.mjs",
+    "qa:smoke": "node scripts/qa-smoke.mjs",
+    "qa:dev": "node scripts/qa-prepare.mjs && node scripts/qa-servers.mjs"
   },
   "devDependencies": {
     "@types/node": "^25.9.2",

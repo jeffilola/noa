@@ -3,6 +3,8 @@
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import type { ElementType } from 'react';
+import { useSidebarOptional } from '@/components/dashboard/sidebar-context';
+import { SidebarThemeSettings } from '@/components/sidebar-theme-settings';
 import {
   FiActivity,
   FiAlertCircle,
@@ -44,6 +46,13 @@ interface DashboardSidebarProps {
 
 export function DashboardSidebar({ config }: DashboardSidebarProps) {
   const pathname = usePathname();
+  const sidebar = useSidebarOptional();
+
+  function closeOnMobile() {
+    if (typeof window !== 'undefined' && window.matchMedia('(max-width: 900px)').matches) {
+      sidebar?.close();
+    }
+  }
 
   return (
     <aside className="user-sidebar" aria-label={`${config.label} dashboard`}>
@@ -62,6 +71,7 @@ export function DashboardSidebar({ config }: DashboardSidebarProps) {
               href={link.href}
               className={`drawer-nav-link${active ? ' drawer-nav-link--active' : ''}`}
               title={link.label}
+              onClick={closeOnMobile}
             >
               <Icon className="drawer-nav-link__icon" aria-hidden />
               <span className="drawer-nav-link__label">{link.label}</span>
@@ -69,6 +79,7 @@ export function DashboardSidebar({ config }: DashboardSidebarProps) {
           );
         })}
       </nav>
+      <SidebarThemeSettings />
     </aside>
   );
 }

@@ -4,7 +4,7 @@ import { Button } from '@relume_io/relume-ui';
 import Link from 'next/link';
 import React from 'react';
 import { RxChevronRight } from 'react-icons/rx';
-import { noaColors as c } from '../../shared/theme';
+import { useNoaColors } from '@/hooks/use-noa-colors';
 
 const STATS = [
   {
@@ -30,12 +30,13 @@ const STATS = [
 ];
 
 export function Stats31() {
+  const c = useNoaColors();
   return (
     <section
       id="relume"
       className="marketing-section trust-stats relative z-[1] border-t"
       style={{
-        borderColor: `color-mix(in srgb, #ffffff 10%, transparent)`,
+        borderColor: `color-mix(in srgb, ${c.ink} 10%, transparent)`,
         background: c.glass,
         backdropFilter: 'blur(20px)',
       }}
@@ -85,7 +86,7 @@ export function Stats31() {
                 key={stat.title}
                 className="flex flex-col rounded-2xl border p-7 md:p-8 lg:p-9"
                 style={{
-                  borderColor: `color-mix(in srgb, #ffffff 12%, transparent)`,
+                  borderColor: `color-mix(in srgb, ${c.ink} 12%, transparent)`,
                   background: c.cardBg,
                 }}
               >

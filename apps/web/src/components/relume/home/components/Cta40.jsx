@@ -2,16 +2,17 @@
 
 import { Button, Input } from '@relume_io/relume-ui';
 import React from 'react';
-import { noaColors as c } from '../../shared/theme';
+import { useNoaColors } from '@/hooks/use-noa-colors';
 import { WalletPassAnimation } from './WalletPassAnimation';
 
 export function Cta40() {
+  const c = useNoaColors();
   return (
     <section
       id="relume"
       className="marketing-section cta-newsletter relative z-[1] border-t"
       style={{
-        borderColor: `color-mix(in srgb, #ffffff 10%, transparent)`,
+        borderColor: `color-mix(in srgb, ${c.ink} 10%, transparent)`,
       }}
     >
       <div className="marketing-shell">
