@@ -157,17 +157,18 @@ Use browser DevTools → Network while signed in, or call with Clerk session tok
 
 ### Steps
 
-1. Sign in as **org admin** → **Org** → **Users**.
-2. Click **Access view** on the demo holder row.
-3. On `/org/users/[userId]` verify **Access decision** panel shows:
+1. Sign in as **org admin** → switch dashboard to **Organization Admin** (top switcher).
+2. Sidebar → **Users** (or **Site access** for org-wide feed).
+3. Click **Access view** on the demo holder row.
+4. On `/org/users/[userId]` verify **Access decision** panel shows:
    - Identity verified (not disabled)
    - Active membership / workforce status
    - At least one **active credential** (HQ Building Access from seed)
    - **Last site access** with Main entrance + yesterday’s date
    - Training/cert lines marked as demo stubs
-4. **Recent access events** table below — ≥3 rows, newest at top.
-5. Toggle **dark mode** (sidebar menu) — panel + table readable.
-6. DevTools → mobile width (~390px) — page scrolls; menu doesn’t cover content.
+5. **Recent access events** table below — ≥3 rows, newest at top.
+6. Toggle **dark mode** (sidebar menu) — panel + table readable.
+7. DevTools → mobile width (~390px) — page scrolls; menu doesn’t cover content.
 
 ### Pass criteria
 
@@ -224,6 +225,7 @@ Then browser:
 | API unreachable banner | `pnpm qa:dev` or `pnpm --filter @noa/api dev` |
 | No org access | Set `DEMO_CLERK_USER_ID` in `packages/database/.env`, re-seed, restart API |
 | Empty access events | `pnpm db:seed` then refresh |
+| Org sidebar missing **Site access** | Run `pnpm --filter @noa/domain build` and restart dev, or `pnpm qa:prepare` (rebuilds domain) |
 | Issue #45 events missing on `/user/access` | Script posted for a different user — use `--as=` with your Clerk id, or set `DEMO_CLERK_USER_ID` in `packages/database/.env`, re-seed, sign in as that user |
 | Clerk 401 | Match `CLERK_SECRET_KEY` in `apps/api/.env` and `apps/web/.env.local` |
 

@@ -13,6 +13,7 @@ import {
   FiFileText,
   FiGlobe,
   FiLink,
+  FiMapPin,
   FiRefreshCw,
   FiSettings,
   FiShield,
@@ -23,7 +24,9 @@ import type { DashboardNavConfig } from '@/lib/rbac/navigation';
 const iconByLabel: Record<string, ElementType> = {
   Overview: FiActivity,
   Users: FiUsers,
+  'Site access': FiMapPin,
   Credentials: FiCreditCard,
+  Integrations: FiLink,
   Reports: FiBarChart2,
   'Audit Logs': FiFileText,
   'Security Center': FiShield,

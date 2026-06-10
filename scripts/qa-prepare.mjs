@@ -88,6 +88,9 @@ await waitForPostgres();
 runOrExit(() =>
   runPnpm(['--filter', '@noa/database', 'migrate:deploy'], { cwd: repoRoot, label: 'Applying migrations' }),
 );
+runOrExit(() =>
+  runPnpm(['--filter', '@noa/domain', 'build'], { cwd: repoRoot, label: 'Building @noa/domain (nav + RBAC)' }),
+);
 runOrExit(() => runPnpm(['db:seed'], { cwd: repoRoot, label: 'Seeding demo data' }));
 
 const demoClerkUserId = resolveDemoClerkUserId();

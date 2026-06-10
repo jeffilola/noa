@@ -6,7 +6,7 @@ Short record of what was shown at the end of each sprint or week.
 
 | Date | Sprint / milestone | Note |
 |------|-------------------|------|
-| _(none yet)_ | — | First demo after Sprint 1 |
+| 2026-06-10 | Sprint 6 · M6 | [2026-06-10.md](./2026-06-10.md) — access events + org access decision demo |
 
 ## How to add a demo note
 

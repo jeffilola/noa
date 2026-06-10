@@ -6,18 +6,25 @@ Legend: **S** / **M** / **L** size · **Epic** tag · Milestone when scheduled
 
 ---
 
-## Now — Sprint 6 (M6: Site access history)
+## Now — Sprint 7 (planning)
 
-| P | Size | Item | Epic | Issue |
-|---|------|------|------|-------|
-| 1 | M | AccessEvent schema + migration + demo seed | Integrations | #44 |
-| 2 | M | Mock PACS access event ingest (webhook + script) | Integrations | #45 |
-| 3 | M | Access events read API (org + holder) | Org | #46 |
-| 4 | M | Org member access decision panel + last access | Org | #47 |
-| 5 | S | Holder access history view | Holder | #48 |
+**Status:** M6 complete. Pick the next milestone slice from [Later](#later--unscheduled) below and create GitHub issues + milestone **M7** at sprint planning (Day 1).
 
-**Milestone:** [M6: Site access history](https://github.com/jeffilola/noa/milestone/6)  
-**Goal:** Real access events and the org “does this contractor have access?” demo ([product-vision](./product-vision.md)).
+**Candidates (pick one theme):**
+
+| Theme | Examples from backlog |
+|-------|------------------------|
+| Hero demo polish | Training + certification records on membership (replace stubs) |
+| Go live | Staging: Vercel + API host + managed Postgres |
+| Platform | Platform admin org list with search |
+
+See [sprint-planning.md](./sprint-planning.md) for the Day 1 checklist.
+
+---
+
+## Done — Sprint 6 (M6: Site access history)
+
+Issues #44–#48 merged in PR #49. Access events, org access decision panel, `/org/access`, holder `/user/access`. Testing: [m6-testing.md](./m6-testing.md). Demo: [demos/2026-06-10.md](./demos/2026-06-10.md).
 
 ---
 
