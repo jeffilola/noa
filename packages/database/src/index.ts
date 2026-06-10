@@ -1,5 +1,7 @@
 export { PrismaClient, Prisma } from '@prisma/client';
 export {
+  AccessEventDirection,
+  AccessEventSource,
   AuditAction,
   ConnectionStatus,
   CredentialStatus,
@@ -19,6 +21,7 @@ export type {
   CredentialAssignment,
   CredentialProvider,
   AuditLog,
+  AccessEvent,
   OrganizationProviderConnection,
   WalletPass,
   PresentationToken,
@@ -31,6 +34,7 @@ export type {
 } from '@prisma/client';
 export {
   ensureCombinedDemoForClerkUser,
+  ensureHolderAccessEventsForClerkUser,
   ensureHolderDemoForClerkUser,
   ensureOrgAdminForClerkUser,
   resolveDemoClerkUserId,

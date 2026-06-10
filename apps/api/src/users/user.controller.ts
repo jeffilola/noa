@@ -1,6 +1,7 @@
-import { Body, Controller, Get, Patch, Req, UseGuards } from '@nestjs/common';
+import { Body, Controller, Get, Patch, Query, Req, UseGuards } from '@nestjs/common';
 import type { Request } from 'express';
-import { ensureCombinedDemoForClerkUser } from '@noa/database';
+import { ensureCombinedDemoForClerkUser, ensureHolderAccessEventsForClerkUser } from '@noa/database';
+import { AccessEventService } from '../access-events/access-event.service';
 import { AccessService } from '../auth/access.service';
 import { RbacService } from '../auth/rbac.service';
 import { ClerkAuthGuard } from '../common/guards/clerk-auth.guard';
@@ -15,6 +16,7 @@ export class UserController {
     private readonly access: AccessService,
     private readonly rbac: RbacService,
     private readonly prisma: PrismaService,
+    private readonly accessEvents: AccessEventService,
   ) {}
 
   @Get('me')
@@ -33,6 +35,33 @@ export class UserController {
   @Get('me/memberships')
   listMemberships(@Req() req: Request) {
     return this.users.listMemberships(req.auth!.userId);
+  }
+
+  @Get('me/access-events')
+  async listMyAccessEvents(@Req() req: Request, @Query('limit') limit?: string) {
+    const auth = req.auth!;
+
+    if (process.env.NODE_ENV !== 'production') {
+      await ensureCombinedDemoForClerkUser(this.prisma, auth.clerkUserId).catch((error) => {
+        console.warn('[UserController] Dev holder demo bootstrap failed:', error);
+      });
+      await ensureHolderAccessEventsForClerkUser(this.prisma, auth.clerkUserId).catch((error) => {
+        console.warn('[UserController] Dev access event bootstrap failed:', error);
+      });
+    }
+
+    const holder = await this.prisma.user.findUnique({
+      where: { clerkUserId: auth.clerkUserId },
+      select: { id: true },
+    });
+    if (!holder) {
+      return [];
+    }
+
+    return this.accessEvents.listForHolder(
+      holder.id,
+      limit ? Number(limit) : undefined,
+    );
   }
 
   @Get('me/access')

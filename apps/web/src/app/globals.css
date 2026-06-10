@@ -535,6 +535,104 @@ a:hover {
   line-height: 1.65;
 }
 
+.text-link {
+  color: var(--accent);
+  font-weight: 600;
+  text-decoration: none;
+}
+
+.text-link:hover {
+  text-decoration: underline;
+}
+
+.section-heading {
+  margin: 0 0 0.75rem;
+  font-size: 1.125rem;
+}
+
+.content-stack__section {
+  display: grid;
+  gap: 0.75rem;
+}
+
+.data-table__actions {
+  text-align: right;
+  white-space: nowrap;
+}
+
+.access-decision {
+  display: grid;
+  gap: 1.25rem;
+}
+
+.access-decision__header h2 {
+  margin: 0 0 0.35rem;
+  font-size: 1.25rem;
+}
+
+.access-decision__question {
+  margin: 0;
+  color: var(--text-muted);
+}
+
+.access-decision__grid {
+  display: grid;
+  gap: 0.85rem;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+}
+
+.access-decision__module {
+  border: 1px solid var(--border);
+  border-radius: var(--radius-md);
+  padding: 0.9rem 1rem;
+  background: color-mix(in srgb, var(--surface-glass) 88%, transparent);
+}
+
+.access-decision__module--muted {
+  opacity: 0.92;
+}
+
+.access-decision__module-title {
+  margin: 0 0 0.35rem;
+  font-size: 0.78rem;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: var(--text-muted);
+}
+
+.access-decision__module-status {
+  margin: 0 0 0.35rem;
+  font-weight: 600;
+}
+
+.access-decision__module-detail {
+  margin: 0;
+  color: var(--text-muted);
+  font-size: 0.92rem;
+  line-height: 1.5;
+}
+
+.access-decision__credentials-label {
+  margin: 0 0 0.5rem;
+  font-size: 0.85rem;
+  color: var(--text-muted);
+}
+
+.access-decision__credential-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  gap: 0.5rem;
+}
+
+.access-decision__credential-list li {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.5rem;
+}
+
 .credential-list {
   list-style: none;
   margin: 0;

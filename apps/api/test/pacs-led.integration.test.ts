@@ -76,6 +76,12 @@ describe('PACS ingest integration', () => {
       },
     });
 
+    await prisma.accessEvent.deleteMany({
+      where: { credential: { organizationId: TEST_ORG_ID, externalCredentialId: EXT_CRED_ID } },
+    });
+    await prisma.credentialAssignment.deleteMany({
+      where: { credential: { organizationId: TEST_ORG_ID, externalCredentialId: EXT_CRED_ID } },
+    });
     await prisma.credential.deleteMany({
       where: { organizationId: TEST_ORG_ID, externalCredentialId: EXT_CRED_ID },
     });
@@ -86,6 +92,12 @@ describe('PACS ingest integration', () => {
       await prisma.$disconnect();
       return;
     }
+    await prisma.accessEvent.deleteMany({
+      where: { credential: { organizationId: TEST_ORG_ID, externalCredentialId: EXT_CRED_ID } },
+    });
+    await prisma.credentialAssignment.deleteMany({
+      where: { credential: { organizationId: TEST_ORG_ID, externalCredentialId: EXT_CRED_ID } },
+    });
     await prisma.credential.deleteMany({
       where: { organizationId: TEST_ORG_ID, externalCredentialId: EXT_CRED_ID },
     });

@@ -1,6 +1,7 @@
 import { AuthModule } from './auth/auth.module';
 import { MiddlewareConsumer, Module, NestModule } from '@nestjs/common';
 import { PrismaModule } from './prisma/prisma.module';
+import { AccessEventModule } from './access-events/access-event.module';
 import { AuditModule } from './audit/audit.module';
 import { CredentialModule } from './credential/credential.module';
 import { PacsIngestModule } from './pacs-ingest/pacs-ingest.module';
@@ -26,6 +27,7 @@ import { HealthController } from './health.controller';
     OrganizationModule,
     CredentialModule,
     PacsIngestModule,
+    AccessEventModule,
     IntegrationsModule,
     GdprModule,
     WebhooksModule,

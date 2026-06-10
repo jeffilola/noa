@@ -1,6 +1,8 @@
 import { readFileSync, existsSync } from 'fs';
 import { resolve } from 'path';
 import {
+  AccessEventDirection,
+  AccessEventSource,
   CredentialStatus,
   CredentialType,
   IssuanceSource,
@@ -242,6 +244,84 @@ async function seedHolderDemoAssets(
       });
     }
   }
+
+  await seedHolderAccessEvents(prisma, organizationId, holder.id);
+}
+
+function startOfDayOffset(daysAgo: number, hour = 9, minute = 15) {
+  const date = new Date();
+  date.setHours(hour, minute, 0, 0);
+  date.setDate(date.getDate() - daysAgo);
+  return date;
+}
+
+async function seedHolderAccessEvents(
+  prisma: PrismaClient,
+  organizationId: string,
+  holderUserId: string,
+) {
+  const credential = await prisma.credential.findUnique({
+    where: {
+      organizationId_externalCredentialId: {
+        organizationId,
+        externalCredentialId: 'demo-seed-pacs-badge',
+      },
+    },
+  });
+
+  const demoEvents = [
+    {
+      externalEventId: 'demo-seed-access-main-yesterday',
+      occurredAt: startOfDayOffset(1, 8, 42),
+      locationLabel: 'Main entrance',
+      readerLabel: 'Reader 101',
+      direction: AccessEventDirection.entry,
+    },
+    {
+      externalEventId: 'demo-seed-access-parking',
+      occurredAt: startOfDayOffset(3, 17, 5),
+      locationLabel: 'Parking gate',
+      readerLabel: 'Reader P2',
+      direction: AccessEventDirection.entry,
+    },
+    {
+      externalEventId: 'demo-seed-access-main-week',
+      occurredAt: startOfDayOffset(7, 7, 30),
+      locationLabel: 'Main entrance',
+      readerLabel: 'Reader 101',
+      direction: AccessEventDirection.exit,
+    },
+  ] as const;
+
+  for (const event of demoEvents) {
+    await prisma.accessEvent.upsert({
+      where: {
+        organizationId_externalEventId: {
+          organizationId,
+          externalEventId: event.externalEventId,
+        },
+      },
+      update: {
+        occurredAt: event.occurredAt,
+        locationLabel: event.locationLabel,
+        readerLabel: event.readerLabel,
+        direction: event.direction,
+        userId: holderUserId,
+        credentialId: credential?.id ?? null,
+      },
+      create: {
+        organizationId,
+        userId: holderUserId,
+        credentialId: credential?.id ?? null,
+        externalEventId: event.externalEventId,
+        occurredAt: event.occurredAt,
+        locationLabel: event.locationLabel,
+        readerLabel: event.readerLabel,
+        direction: event.direction,
+        source: AccessEventSource.PACS,
+      },
+    });
+  }
 }
 
 export async function seedHolderDemoData(
@@ -289,6 +369,22 @@ export async function seedHolderDemoData(
   };
 }
 
+async function ensureHolderAccessEvents(
+  prisma: PrismaClient,
+  organizationId: string,
+  holderUserId: string,
+) {
+  const demoEventCount = await prisma.accessEvent.count({
+    where: {
+      userId: holderUserId,
+      organizationId,
+      externalEventId: { startsWith: 'demo-seed-access-' },
+    },
+  });
+  if (demoEventCount >= 3) return;
+  await seedHolderAccessEvents(prisma, organizationId, holderUserId);
+}
+
 export async function ensureHolderDemoForClerkUser(
   prisma: PrismaClient,
   clerkUserId: string,
@@ -305,9 +401,11 @@ export async function ensureHolderDemoForClerkUser(
   const activeAssignments = await prisma.credentialAssignment.count({
     where: { userId: holder.id, unassignedAt: null },
   });
-  if (activeAssignments >= HOLDER_CREDENTIALS.length) return;
-
-  await seedHolderDemoAssets(prisma, org.id, holder);
+  if (activeAssignments < HOLDER_CREDENTIALS.length) {
+    await seedHolderDemoAssets(prisma, org.id, holder);
+  } else {
+    await ensureHolderAccessEvents(prisma, org.id, holder.id);
+  }
 
   const membership = await prisma.membership.findUnique({
     where: {
@@ -434,4 +532,55 @@ export async function ensureCombinedDemoForClerkUser(
 
   await ensureHolderDemoForClerkUser(prisma, clerkUserId);
   await ensureOrgAdminForClerkUser(prisma, clerkUserId);
+  await ensureHolderAccessEventsForClerkUser(prisma, clerkUserId);
+}
+
+export async function ensureHolderAccessEventsForClerkUser(
+  prisma: PrismaClient,
+  clerkUserId: string,
+) {
+  if (process.env.NODE_ENV === 'production') return;
+  if (clerkUserId.startsWith('user_demo_')) return;
+
+  const org = await prisma.organization.findUnique({ where: { slug: 'demo-org' } });
+  if (!org) return;
+
+  const holder = await prisma.user.findUnique({ where: { clerkUserId } });
+  if (!holder) return;
+
+  await ensureHolderAccessEvents(prisma, org.id, holder.id);
+  await reconcileDevIngestEventsForUser(prisma, org.id, holder.id);
+}
+
+/** In dev, attach recent mock webhook events that used the demo badge but wrong user row. */
+async function reconcileDevIngestEventsForUser(
+  prisma: PrismaClient,
+  organizationId: string,
+  userId: string,
+) {
+  const assignment = await prisma.credentialAssignment.findFirst({
+    where: {
+      userId,
+      organizationId,
+      unassignedAt: null,
+      credential: { cardNumber: 'DEMO-1001' },
+    },
+    select: { credentialId: true },
+  });
+  if (!assignment) return;
+
+  await prisma.accessEvent.updateMany({
+    where: {
+      organizationId,
+      userId: { not: userId },
+      OR: [
+        { externalEventId: { startsWith: 'demo-access-' } },
+        { externalEventId: { startsWith: 'evt-' } },
+      ],
+    },
+    data: {
+      userId,
+      credentialId: assignment.credentialId,
+    },
+  });
 }

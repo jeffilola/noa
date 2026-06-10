@@ -1,6 +1,7 @@
 'use client';
 
 import { useAuth } from '@clerk/nextjs';
+import { useCallback } from 'react';
 import type { ApiErrorBody } from '@noa/shared';
 import {
   normalizeProfilePhone,
@@ -91,7 +92,10 @@ export async function clientApiFetch<T>(
 export function useClientApi() {
   const { getToken } = useAuth();
 
-  return {
-    fetch: <T>(path: string, init?: RequestInit) => clientApiFetch<T>(path, getToken, init),
-  };
+  const fetch = useCallback(
+    <T,>(path: string, init?: RequestInit) => clientApiFetch<T>(path, getToken, init),
+    [getToken],
+  );
+
+  return { fetch };
 }

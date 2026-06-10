@@ -107,6 +107,17 @@ enum IssuanceSource {
   NOA
 }
 
+enum AccessEventDirection {
+  entry
+  exit
+  unknown
+}
+
+enum AccessEventSource {
+  PACS
+  NOA
+}
+
 model User {
   id                   String    @id @default(uuid())
   clerkUserId          String    @unique
@@ -135,6 +146,7 @@ model User {
   auditLogsAsActor     AuditLog[] @relation("AuditActor")
   userRoles            UserRole[] @relation("UserRoleSubject")
   grantedUserRoles     UserRole[] @relation("UserRoleGranter")
+  accessEvents         AccessEvent[]
 }
 
 model Organization {
@@ -151,6 +163,7 @@ model Organization {
   assignments         CredentialAssignment[]
   providerConnections OrganizationProviderConnection[]
   userRoles           UserRole[]
+  accessEvents        AccessEvent[]
 }
 
 model Membership {
@@ -231,9 +244,33 @@ model Credential {
   assignments        CredentialAssignment[]
   walletPasses       WalletPass[]
   presentationTokens PresentationToken[]
+  accessEvents       AccessEvent[]
 
   @@unique([organizationId, externalCredentialId])
   @@index([organizationId, cardNumber])
+}
+
+model AccessEvent {
+  id               String               @id @default(uuid())
+  organizationId   String
+  userId           String
+  credentialId     String?
+  externalEventId  String?
+  occurredAt       DateTime
+  locationLabel    String
+  readerLabel      String?
+  direction        AccessEventDirection @default(unknown)
+  source           AccessEventSource    @default(PACS)
+  metadata         Json?
+  createdAt        DateTime             @default(now())
+
+  organization Organization @relation(fields: [organizationId], references: [id])
+  user         User         @relation(fields: [userId], references: [id])
+  credential   Credential?  @relation(fields: [credentialId], references: [id])
+
+  @@unique([organizationId, externalEventId])
+  @@index([organizationId, occurredAt])
+  @@index([userId, organizationId, occurredAt])
 }
 
 model CredentialAssignment {

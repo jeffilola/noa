@@ -6,17 +6,24 @@ Legend: **S** / **M** / **L** size · **Epic** tag · Milestone when scheduled
 
 ---
 
-## Now — Sprint 5 (M5: Design system & light/dark UI)
+## Now — Sprint 6 (M6: Site access history)
 
 | P | Size | Item | Epic | Issue |
 |---|------|------|------|-------|
-| 1 | M | Semantic design tokens + theme provider | Platform | #39 |
-| 2 | M | Theme toggle + Clerk appearance sync | Platform | #40 |
-| 3 | M | Marketing pages theme-aware | Platform | #41 |
-| 4 | S | UX visual QA pass (holder + org) | Platform | #42 |
+| 1 | M | AccessEvent schema + migration + demo seed | Integrations | #44 |
+| 2 | M | Mock PACS access event ingest (webhook + script) | Integrations | #45 |
+| 3 | M | Access events read API (org + holder) | Org | #46 |
+| 4 | M | Org member access decision panel + last access | Org | #47 |
+| 5 | S | Holder access history view | Holder | #48 |
 
-**Milestone:** [M5: Design system & light/dark UI](https://github.com/jeffilola/noa/milestone/5)  
-**Goal:** Cohesive light/dark experience across marketing and dashboards before staging.
+**Milestone:** [M6: Site access history](https://github.com/jeffilola/noa/milestone/6)  
+**Goal:** Real access events and the org “does this contractor have access?” demo ([product-vision](./product-vision.md)).
+
+---
+
+## Done — Sprint 5 (M5: Design system & light/dark UI)
+
+Issues #39–#42 merged in PR #43. Light/dark tokens, theme toggle, marketing parity, mobile nav fixes, QA scripts.
 
 ---
 
@@ -46,7 +53,7 @@ Issues #1–#4 merged. Holder dashboard demo-ready with seed data.
 
 ---
 
-## Later — unscheduled (after M5)
+## Later — unscheduled (after M6)
 
 ### Identity Holder
 - ~~Privacy: GDPR export download UX~~ → M4 #35
@@ -98,4 +105,4 @@ Use GitHub labels when creating issues:
 4. Move issues to **Ready** on the project board.
 4. When done, check off here or remove the row (GitHub Issues are the source of truth during the sprint).
 
-Last updated: 2026-06-05
+Last updated: 2026-06-10

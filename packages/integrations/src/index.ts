@@ -1,3 +1,4 @@
+export * from './access-events/access-event-payload.js';
 export * from './brivo/brivo.adapter.js';
 export * from './hid-origo/hid-origo.adapter.js';
 export * from './hid-origo/hid-origo-ingest.mapper.js';
