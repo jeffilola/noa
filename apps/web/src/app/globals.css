@@ -1694,6 +1694,59 @@ a:hover {
   padding-inline: 0;
 }
 
+.capability-card__media {
+  position: relative;
+  overflow: hidden;
+  border-top: 1px solid var(--border);
+  background: linear-gradient(
+    180deg,
+    color-mix(in srgb, var(--noa-ink) 3%, transparent),
+    color-mix(in srgb, var(--noa-ink) 8%, transparent)
+  );
+}
+
+.capability-card__svg {
+  display: block;
+  width: 100%;
+  height: auto;
+  min-height: 16rem;
+  max-height: 18rem;
+}
+
+.solution-tile__art {
+  position: relative;
+  flex-shrink: 0;
+  height: 11.5rem;
+  overflow: hidden;
+  border-bottom: 1px solid var(--border);
+  background: linear-gradient(
+    180deg,
+    color-mix(in srgb, var(--noa-ink) 2%, transparent),
+    color-mix(in srgb, var(--noa-ink) 6%, transparent)
+  );
+}
+
+.solution-tile__svg {
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+
+.solution-tile__body {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  min-height: 0;
+}
+
+.solutions-grid {
+  align-items: stretch;
+}
+
+.solutions-grid .solution-tile {
+  min-height: 100%;
+}
+
 .faq-card {
   overflow: hidden;
 }
