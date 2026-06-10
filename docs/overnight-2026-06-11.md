@@ -17,12 +17,11 @@
 
 ## Automated test commands
 
-To be filled with final results after this branch's QA run:
-
 ```bash
-pnpm qa:prepare
-pnpm --filter @noa/api test
-pnpm --filter @noa/web build
+pnpm qa:prepare                         # blocked: Docker is not running in this environment
+pnpm --filter @noa/api test             # passed; DB-backed cases skipped because Postgres was unavailable
+pnpm --filter @noa/web build            # passed
+pnpm lint                               # passed
 ```
 
 ## Prioritized manual E2E for morning review
