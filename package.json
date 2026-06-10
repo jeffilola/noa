@@ -3,7 +3,8 @@
   "private": true,
   "scripts": {
     "build": "turbo run build",
-    "dev": "turbo run dev --parallel",
+    "dev": "node scripts/qa-servers.mjs",
+    "dev:all": "turbo run dev --parallel",
     "test": "turbo run test",
     "lint": "turbo run lint",
     "db:generate": "pnpm --filter @noa/database generate",

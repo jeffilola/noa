@@ -179,7 +179,7 @@ export class OrganizationService {
     });
   }
 
-  private async assertOrgAccess(
+  async assertOrgAccess(
     userId: string,
     organizationId: string,
     isPlatformAdmin: boolean,

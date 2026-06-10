@@ -1,3 +1,4 @@
+import Link from 'next/link';
 import type { OrgMember } from '@/lib/org-data';
 import { formatCredentialDate } from '@/lib/user-dashboard';
 
@@ -28,6 +29,7 @@ export function OrgMembersTable({ members }: { members: OrgMember[] }) {
             <th>Role</th>
             <th>Status</th>
             <th>Joined</th>
+            <th aria-label="Actions" />
           </tr>
         </thead>
         <tbody>
@@ -50,6 +52,11 @@ export function OrgMembersTable({ members }: { members: OrgMember[] }) {
                 </span>
               </td>
               <td>{formatDate(member.joinedAt ?? member.invitedAt)}</td>
+              <td className="data-table__actions">
+                <Link href={`/org/users/${member.userId}`} className="text-link">
+                  Access view
+                </Link>
+              </td>
             </tr>
           ))}
         </tbody>

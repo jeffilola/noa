@@ -22,6 +22,8 @@ Two-week cadence for Noa. Lightweight — suitable for solo or pair work.
 | **M2: Org admin read-only** | Org Admin read-only dashboards | Sprint 2 |
 | **M3: Webhook ingest demo** | Mock HID webhook → credential in UI | Sprint 3 ✓ |
 | **M4: Holder trust (GDPR & privacy)** | Export UX + deletion flow | Sprint 4 |
+| **M5: Design system & light/dark UI** | Tokens, theme toggle, marketing parity | Sprint 5 ✓ |
+| **M6: Site access history** | Access events + org access-decision demo | Sprint 6 |
 
 View on GitHub: https://github.com/jeffilola/noa/milestones
 
@@ -66,14 +68,16 @@ Backlog → Ready → In Progress → Review (PR open) → Done
 
 ## Current sprint
 
-**Sprint 2 · M2: Org admin read-only**
+**Sprint 6 · M6: Site access history**
 
-Focus issues (GitHub milestone M2):
+Focus issues (GitHub milestone M6):
 
-1. Org overview with real membership + credential counts  
-2. Org users list (read-only)  
-3. Org credentials list (read-only, scoped)  
-4. Org audit log view (read-only)  
-5. Role-based nav: hide dashboards user cannot access  
+1. #44 — AccessEvent schema + migration + demo seed  
+2. #45 — Mock PACS access event ingest (webhook + script)  
+3. #46 — Access events read API (org-scoped + holder own)  
+4. #47 — Org member access decision panel + last access  
+5. #48 — Holder access history view  
+
+**Demo target:** [hero contractor access](./demos/hero-contractor-access.md) — last access from real events, not stubs.
 
 Update this section at each planning session.

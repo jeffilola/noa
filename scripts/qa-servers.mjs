@@ -96,6 +96,7 @@ async function main() {
 
     console.log('\nPorts :3000 / :3001 are in use but not responding as Noa dev servers.');
     console.log('Stopping stale listeners…\n');
+    console.log('(If you only wanted to attach to existing servers, run  pnpm qa:smoke  instead.)\n');
 
     if (!runNodeScript('qa-stop.mjs')) {
       return;

@@ -86,6 +86,12 @@ export default async function OrgOverviewPage() {
           statUnavailable={apiOffline}
         />
         <UserQuickLink
+          href="/org/access"
+          title="Site access"
+          description="Recent door and badge events for this organization."
+          statUnavailable={apiOffline}
+        />
+        <UserQuickLink
           href="/org/credentials"
           title="Credentials"
           description="Browse credential inventory for this organization."

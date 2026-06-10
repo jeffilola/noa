@@ -49,6 +49,18 @@ export async function resolveDemoWebhookContext(
     };
   }
 
+  const { clerkUserId, source } = await resolveDemoClerkUserId(prisma);
+  const configuredUser = await lookupUserByClerkId(prisma, clerkUserId);
+  if (configuredUser) {
+    return {
+      orgId: org.id,
+      userId: configuredUser.id,
+      orgName: org.name,
+      clerkUserId: configuredUser.clerkUserId,
+      source,
+    };
+  }
+
   const recentHolder = await prisma.user.findFirst({
     where: {
       clerkUserId: { not: { startsWith: 'user_demo' } },
@@ -67,17 +79,7 @@ export async function resolveDemoWebhookContext(
     };
   }
 
-  const { clerkUserId, source } = await resolveDemoClerkUserId(prisma);
-  const user = await lookupUserByClerkId(prisma, clerkUserId);
-  if (!user) {
-    throw new Error(`Demo holder user not found for ${clerkUserId}. Run pnpm db:seed.`);
-  }
-
-  return {
-    orgId: org.id,
-    userId: user.id,
-    orgName: org.name,
-    clerkUserId: user.clerkUserId,
-    source,
-  };
+  throw new Error(
+    `Demo holder user not found for ${clerkUserId}. Set DEMO_CLERK_USER_ID in packages/database/.env and run pnpm db:seed.`,
+  );
 }

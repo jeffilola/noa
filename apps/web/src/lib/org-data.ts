@@ -71,6 +71,31 @@ export interface OrgIntegrationRow {
   connection: OrgIntegrationConnection | null;
 }
 
+export interface AccessEventRecord {
+  id: string;
+  organizationId: string;
+  userId: string;
+  credentialId: string | null;
+  externalEventId: string | null;
+  occurredAt: string;
+  locationLabel: string;
+  readerLabel: string | null;
+  direction: string;
+  source: string;
+  createdAt: string;
+  organization?: { id: string; name: string; slug: string };
+}
+
+export interface AccessSummary {
+  lastAccess: {
+    occurredAt: string;
+    locationLabel: string;
+    readerLabel: string | null;
+    direction: string;
+  } | null;
+  recentCount: number;
+}
+
 function orgFromMemberships(memberships: UserMembership[]): OrgSummary | null {
   const orgAdminMembership =
     memberships.find((membership) => membership.role === 'org_admin' && membership.organization?.id) ??
@@ -129,11 +154,12 @@ export async function fetchOrgMembers(organizationId: string) {
   };
 }
 
-export async function fetchOrgCredentials(organizationId: string) {
+export async function fetchOrgCredentials(organizationId: string, userId?: string) {
   const query = new URLSearchParams({
     organizationId,
     all: 'true',
   });
+  if (userId) query.set('userId', userId);
   const credentials = await apiFetch<UserCredential[]>(`/credentials?${query.toString()}`, {
     organizationId,
   }).catch(() => null);
@@ -168,6 +194,50 @@ export async function fetchOrgIntegrations(organizationId: string) {
   return {
     integrations: integrations ?? [],
     apiReachable: integrations !== null,
+  };
+}
+
+export async function fetchOrgAccessEvents(
+  organizationId: string,
+  options?: { userId?: string; limit?: number },
+) {
+  const query = new URLSearchParams();
+  if (options?.userId) query.set('userId', options.userId);
+  if (options?.limit) query.set('limit', String(options.limit));
+
+  const suffix = query.size > 0 ? `?${query.toString()}` : '';
+  const events = await apiFetch<AccessEventRecord[]>(
+    `/organizations/${organizationId}/access-events${suffix}`,
+    { organizationId },
+  ).catch(() => null);
+
+  return {
+    events: events ?? [],
+    apiReachable: events !== null,
+  };
+}
+
+export async function fetchOrgAccessSummary(organizationId: string, userId: string) {
+  const summary = await apiFetch<AccessSummary>(
+    `/organizations/${organizationId}/users/${userId}/access-summary`,
+    { organizationId },
+  ).catch(() => null);
+
+  return {
+    summary,
+    apiReachable: summary !== null,
+  };
+}
+
+export async function fetchHolderAccessEvents(limit = 50) {
+  const query = new URLSearchParams({ limit: String(limit) });
+  const events = await apiFetch<AccessEventRecord[]>(`/users/me/access-events?${query.toString()}`).catch(
+    () => null,
+  );
+
+  return {
+    events: events ?? [],
+    apiReachable: events !== null,
   };
 }
 
