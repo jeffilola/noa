@@ -44,5 +44,29 @@ export const noaColorsLight = {
   hubShadow: '0 24px 60px rgb(0 0 0 / 14%)',
 };
 
+/** CSS-variable palette — tracks .dark / system preference without waiting for React. */
+export const noaColorsThemed = {
+  ink: 'var(--noa-ink)',
+  sage: 'var(--noa-sage)',
+  mist: 'var(--noa-mist)',
+  surface: 'var(--noa-surface)',
+  surfaceAlt: 'var(--noa-surface-alt)',
+  card: 'var(--noa-surface)',
+  deep: 'var(--noa-mist)',
+  accent: 'var(--noa-accent)',
+  accentHover: 'var(--noa-accent-hover)',
+  accentSoft: 'var(--noa-accent-soft)',
+  glow: 'var(--noa-glow)',
+  onAccent: 'var(--noa-on-accent)',
+  glass: 'var(--noa-glass)',
+  glassNav: 'var(--noa-glass-nav)',
+  cardBg: 'var(--noa-card-bg)',
+  cardBgSoft: 'var(--noa-card-bg-soft)',
+  ctaBg: 'var(--noa-cta-bg)',
+  cardShadow: 'var(--noa-card-shadow)',
+  elevatedShadow: 'var(--noa-elevated-shadow)',
+  hubShadow: 'var(--noa-hub-shadow)',
+};
+
 /** @deprecated Prefer useNoaColors() for theme-aware UI */
 export const noaColors = noaColorsDark;

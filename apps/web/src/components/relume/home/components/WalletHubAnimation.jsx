@@ -13,7 +13,7 @@ export function WalletHubAnimation() {
   const c = useNoaColors();
   return (
     <div
-      className="hero-wallet-hub rounded-[1.25rem] border p-6 md:p-8"
+      className="hero-wallet-hub rounded-[1.25rem] border p-4 sm:p-6 md:p-8"
       style={{
         borderColor: `color-mix(in srgb, ${c.ink} 12%, transparent)`,
         background: c.cardBgSoft,

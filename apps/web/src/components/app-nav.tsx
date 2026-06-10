@@ -25,7 +25,7 @@ export function AppNav({
             <button
               type="button"
               className="drawer-menu-button"
-              onClick={sidebar.toggle}
+              onClick={() => sidebar?.toggle()}
               aria-expanded={sidebar.open}
               aria-label={sidebar.open ? 'Close navigation menu' : 'Open navigation menu'}
             >
@@ -41,7 +41,7 @@ export function AppNav({
         </div>
 
         <div className="site-header-end">
-          <ThemeToggle compact />
+          {!isDrawer ? <ThemeToggle compact /> : null}
           <AuthNavControls switcherLinks={switcherLinks} />
         </div>
       </div>

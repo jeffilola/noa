@@ -1,13 +1,12 @@
 'use client';
 
 import { ClerkProvider } from '@clerk/nextjs';
-import { useTheme } from 'next-themes';
 import type { ReactNode } from 'react';
+import { useResolvedThemeMode } from '@/hooks/use-resolved-theme-mode';
 import { getClerkAppearance } from '@/lib/clerk-appearance';
 
 export function ThemedClerkProvider({ children }: { children: ReactNode }) {
-  const { resolvedTheme } = useTheme();
-  const mode = resolvedTheme === 'dark' ? 'dark' : 'light';
+  const mode = useResolvedThemeMode();
 
   return <ClerkProvider appearance={getClerkAppearance(mode)}>{children}</ClerkProvider>;
 }

@@ -7,7 +7,7 @@ import { RxChevronRight } from 'react-icons/rx';
 import { useNoaColors } from '@/hooks/use-noa-colors';
 import { CredentialWalletArt, SingleIdentityArt } from './CapabilityIllustrations';
 
-function CapabilityCard({ eyebrow, title, body, primaryHref, primaryLabel, secondaryHref, secondaryLabel, art }) {
+function CapabilityCard({ eyebrow, title, body, primaryHref, primaryLabel, art, secondaryHref, secondaryLabel }) {
   const c = useNoaColors();
 
   return (
@@ -36,15 +36,11 @@ function CapabilityCard({ eyebrow, title, body, primaryHref, primaryLabel, secon
           <Button title={primaryLabel} variant="secondary" asChild>
             <Link href={primaryHref}>{primaryLabel}</Link>
           </Button>
-          <Button
-            title={secondaryLabel}
-            variant="link"
-            size="link"
-            iconRight={<RxChevronRight />}
-            asChild
-          >
-            <Link href={secondaryHref}>{secondaryLabel}</Link>
-          </Button>
+          {secondaryHref && secondaryLabel ? (
+            <Button title={secondaryLabel} variant="link" size="link" iconRight={<RxChevronRight />} asChild>
+              <Link href={secondaryHref}>{secondaryLabel}</Link>
+            </Button>
+          ) : null}
         </div>
       </div>
       <div className="capability-card__media mt-auto">{art}</div>
@@ -82,8 +78,6 @@ export function Layout360() {
             body="Administrators control issuance, revocation, and access across multiple organizations effortlessly."
             primaryHref="/admin/credentials"
             primaryLabel="Explore"
-            secondaryHref="/about"
-            secondaryLabel="More"
             art={<SingleIdentityArt />}
           />
           <CapabilityCard

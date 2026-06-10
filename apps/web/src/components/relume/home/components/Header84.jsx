@@ -14,8 +14,8 @@ export function Header84() {
 
   return (
     <section className="marketing-section relative overflow-hidden">
-      <div className="marketing-shell relative grid items-center gap-12 lg:grid-cols-2 lg:gap-20">
-        <div className="max-w-xl">
+      <div className="marketing-shell relative grid min-w-0 items-center gap-10 sm:gap-12 lg:grid-cols-2 lg:gap-20">
+        <div className="min-w-0 max-w-xl">
           <p
             className="mb-5 text-xs font-bold uppercase tracking-[0.2em]"
             style={{ color: c.accent }}
@@ -67,7 +67,7 @@ export function Header84() {
           </div>
         </div>
 
-        <div className="relative mx-auto w-full max-w-lg lg:max-w-none">
+        <div className="relative mx-auto w-full min-w-0 max-w-lg lg:max-w-none">
           <WalletHubAnimation />
         </div>
       </div>

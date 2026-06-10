@@ -4,8 +4,8 @@ import Link from 'next/link';
 import { UserButton, useAuth } from '@clerk/nextjs';
 import { DashboardSwitcher, type DashboardSwitcherLink } from '@/components/dashboard/dashboard-switcher';
 import { useNoaColors } from '@/hooks/use-noa-colors';
+import { useResolvedThemeMode } from '@/hooks/use-resolved-theme-mode';
 import { getClerkAppearance } from '@/lib/clerk-appearance';
-import { useTheme } from 'next-themes';
 import { marketingRoutes } from './relume/shared/routes';
 
 function AuthLink({
@@ -47,9 +47,8 @@ export function AuthNavControls({
   switcherLinks?: DashboardSwitcherLink[];
 }) {
   const { isSignedIn, isLoaded } = useAuth();
-  const { resolvedTheme } = useTheme();
+  const clerkMode = useResolvedThemeMode();
   const c = useNoaColors();
-  const clerkMode = resolvedTheme === 'dark' ? 'dark' : 'light';
 
   if (!isLoaded) {
     return (

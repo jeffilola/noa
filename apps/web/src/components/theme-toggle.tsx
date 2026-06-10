@@ -18,16 +18,7 @@ export function ThemeToggle({ compact = false }: { compact?: boolean }) {
     setMounted(true);
   }, []);
 
-  if (!mounted) {
-    return (
-      <div
-        className={`theme-toggle theme-toggle--placeholder${compact ? ' theme-toggle--compact' : ''}`}
-        aria-hidden
-      />
-    );
-  }
-
-  const active = theme ?? 'system';
+  const active = mounted ? (theme ?? 'system') : 'system';
 
   return (
     <div
