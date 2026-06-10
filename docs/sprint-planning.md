@@ -23,7 +23,7 @@ Two-week cadence for Noa. Lightweight — suitable for solo or pair work.
 | **M3: Webhook ingest demo** | Mock HID webhook → credential in UI | Sprint 3 ✓ |
 | **M4: Holder trust (GDPR & privacy)** | Export UX + deletion flow | Sprint 4 |
 | **M5: Design system & light/dark UI** | Tokens, theme toggle, marketing parity | Sprint 5 ✓ |
-| **M6: Site access history** | Access events + org access-decision demo | Sprint 6 |
+| **M6: Site access history** | Access events + org access-decision demo | Sprint 6 ✓ |
 
 View on GitHub: https://github.com/jeffilola/noa/milestones
 
@@ -68,16 +68,14 @@ Backlog → Ready → In Progress → Review (PR open) → Done
 
 ## Current sprint
 
-**Sprint 6 · M6: Site access history**
+**Sprint 7 · planning (M7 not scheduled yet)**
 
-Focus issues (GitHub milestone M6):
+M6 shipped in PR #49 (2026-06-10). All milestone issues #44–#48 closed.
 
-1. #44 — AccessEvent schema + migration + demo seed  
-2. #45 — Mock PACS access event ingest (webhook + script)  
-3. #46 — Access events read API (org-scoped + holder own)  
-4. #47 — Org member access decision panel + last access  
-5. #48 — Holder access history view  
+**Before Day 1 planning:** run the [M6 demo script](./demos/hero-contractor-access.md) using [2026-06-10 demo note](./demos/2026-06-10.md).
 
-**Demo target:** [hero contractor access](./demos/hero-contractor-access.md) — last access from real events, not stubs.
+**Day 1 checklist:** review [backlog.md](./backlog.md) → create **M7** milestone + issues → move to **Ready** → branch `feature/m7-…`.
+
+**Post-M6 follow-up:** org **Site access** sidebar visible after `@noa/domain` rebuild (see PR for nav/qa fix).
 
 Update this section at each planning session.
