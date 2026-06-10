@@ -47,6 +47,11 @@ export function resolveOrgContextFromAccess(access: UserAccessSummary): OrgSumma
     }
   }
 
+  const orgScopedAssignment = assignments.find((assignment) => assignment.organization?.id);
+  if (orgScopedAssignment?.organization) {
+    return orgScopedAssignment.organization;
+  }
+
   return null;
 }
 

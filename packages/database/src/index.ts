@@ -22,6 +22,7 @@ export type {
   CredentialProvider,
   AuditLog,
   AccessEvent,
+  ComplianceRecord,
   OrganizationProviderConnection,
   WalletPass,
   PresentationToken,
@@ -33,6 +34,8 @@ export type {
   UserRole,
 } from '@prisma/client';
 export {
+  ensureComplianceRecordsForClerkUser,
+  ensureComplianceRecordsForUser,
   ensureCombinedDemoForClerkUser,
   ensureHolderAccessEventsForClerkUser,
   ensureHolderDemoForClerkUser,

@@ -40,6 +40,23 @@ const HOLDER_DEVICES = [
   { name: 'Demo Apple Watch', platform: 'watchos' },
 ] as const;
 
+const COMPLIANCE_RECORDS = [
+  {
+    recordType: 'training',
+    title: 'Site safety orientation',
+    status: 'complete',
+    issuedAt: new Date('2026-01-15T00:00:00.000Z'),
+    expiresAt: new Date('2027-01-15T00:00:00.000Z'),
+  },
+  {
+    recordType: 'certification',
+    title: 'Electrical safety certification',
+    status: 'valid',
+    issuedAt: new Date('2026-02-01T00:00:00.000Z'),
+    expiresAt: new Date('2027-02-01T00:00:00.000Z'),
+  },
+] as const;
+
 function seedEmailHash(clerkUserId: string) {
   return `seed-${clerkUserId.replace(/[^a-zA-Z0-9-]/g, '').slice(-32)}`;
 }
@@ -246,6 +263,7 @@ async function seedHolderDemoAssets(
   }
 
   await seedHolderAccessEvents(prisma, organizationId, holder.id);
+  await seedComplianceRecords(prisma, organizationId, holder.id);
 }
 
 function startOfDayOffset(daysAgo: number, hour = 9, minute = 15) {
@@ -385,6 +403,50 @@ async function ensureHolderAccessEvents(
   await seedHolderAccessEvents(prisma, organizationId, holderUserId);
 }
 
+async function seedComplianceRecords(
+  prisma: PrismaClient,
+  organizationId: string,
+  holderUserId: string,
+) {
+  for (const record of COMPLIANCE_RECORDS) {
+    await prisma.complianceRecord.upsert({
+      where: {
+        userId_organizationId_recordType_title: {
+          userId: holderUserId,
+          organizationId,
+          recordType: record.recordType,
+          title: record.title,
+        },
+      },
+      update: {
+        status: record.status,
+        issuedAt: record.issuedAt,
+        expiresAt: record.expiresAt,
+        source: 'demo',
+      },
+      create: {
+        userId: holderUserId,
+        organizationId,
+        recordType: record.recordType,
+        title: record.title,
+        status: record.status,
+        issuedAt: record.issuedAt,
+        expiresAt: record.expiresAt,
+        source: 'demo',
+      },
+    });
+  }
+}
+
+export async function ensureComplianceRecordsForUser(
+  prisma: PrismaClient,
+  organizationId: string,
+  holderUserId: string,
+) {
+  if (process.env.NODE_ENV === 'production') return;
+  await seedComplianceRecords(prisma, organizationId, holderUserId);
+}
+
 export async function ensureHolderDemoForClerkUser(
   prisma: PrismaClient,
   clerkUserId: string,
@@ -405,6 +467,7 @@ export async function ensureHolderDemoForClerkUser(
     await seedHolderDemoAssets(prisma, org.id, holder);
   } else {
     await ensureHolderAccessEvents(prisma, org.id, holder.id);
+    await ensureComplianceRecordsForUser(prisma, org.id, holder.id);
   }
 
   const membership = await prisma.membership.findUnique({
@@ -533,6 +596,7 @@ export async function ensureCombinedDemoForClerkUser(
   await ensureHolderDemoForClerkUser(prisma, clerkUserId);
   await ensureOrgAdminForClerkUser(prisma, clerkUserId);
   await ensureHolderAccessEventsForClerkUser(prisma, clerkUserId);
+  await ensureComplianceRecordsForClerkUser(prisma, clerkUserId);
 }
 
 export async function ensureHolderAccessEventsForClerkUser(
@@ -550,6 +614,22 @@ export async function ensureHolderAccessEventsForClerkUser(
 
   await ensureHolderAccessEvents(prisma, org.id, holder.id);
   await reconcileDevIngestEventsForUser(prisma, org.id, holder.id);
+}
+
+export async function ensureComplianceRecordsForClerkUser(
+  prisma: PrismaClient,
+  clerkUserId: string,
+) {
+  if (process.env.NODE_ENV === 'production') return;
+  if (clerkUserId.startsWith('user_demo_')) return;
+
+  const org = await prisma.organization.findUnique({ where: { slug: 'demo-org' } });
+  if (!org) return;
+
+  const holder = await prisma.user.findUnique({ where: { clerkUserId } });
+  if (!holder) return;
+
+  await ensureComplianceRecordsForUser(prisma, org.id, holder.id);
 }
 
 /** In dev, attach recent mock webhook events that used the demo badge but wrong user row. */

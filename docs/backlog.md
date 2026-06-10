@@ -6,19 +6,23 @@ Legend: **S** / **M** / **L** size · **Epic** tag · Milestone when scheduled
 
 ---
 
-## Now — Sprint 7 (planning)
+## Now — Overnight review queue
 
-**Status:** M6 complete. Pick the next milestone slice from [Later](#later--unscheduled) below and create GitHub issues + milestone **M7** at sprint planning (Day 1).
+**Status:** M7-M11 slices are prepared for human review. GitHub milestones/issues still need final human-side reconciliation if automation write access is unavailable.
 
-**Candidates (pick one theme):**
+| Milestone | Theme | Test guide |
+|-----------|-------|------------|
+| M7 | Learning records on access decisions | [m7-testing.md](./m7-testing.md) |
+| M8 | Wallet pass preview stub | [m8-testing.md](./m8-testing.md) |
+| M9 | Platform admin org list with search | [m9-testing.md](./m9-testing.md) |
+| M10 | Integration admin test-mode provider form | [m10-testing.md](./m10-testing.md) |
+| M11 | CI lint/build split | [m11-testing.md](./m11-testing.md) |
 
-| Theme | Examples from backlog |
-|-------|------------------------|
-| Hero demo polish | Training + certification records on membership (replace stubs) |
-| Go live | Staging: Vercel + API host + managed Postgres |
-| Platform | Platform admin org list with search |
+---
 
-See [sprint-planning.md](./sprint-planning.md) for the Day 1 checklist.
+## Done — Sprint 7 (M7: Learning records for access decisions)
+
+Issues #52–#56 target this milestone. Compliance records replace training/certification stubs in the org member access panel. Testing: [m7-testing.md](./m7-testing.md). Demo: [demos/2026-06-11-m7.md](./demos/2026-06-11-m7.md).
 
 ---
 
@@ -65,19 +69,19 @@ Issues #1–#4 merged. Holder dashboard demo-ready with seed data.
 ### Identity Holder
 - ~~Privacy: GDPR export download UX~~ → M4 #35
 - ~~Privacy: account deletion request flow~~ → M4 #36
-- Wallet pass preview (stub UI)
+- ~~Wallet pass preview (stub UI)~~ → M8
 - Mobile app shell (Expo) smoke screen
 
 ### Org / Platform / Security / Compliance
-- Platform admin: org list with search
+- ~~Platform admin: org list with search~~ → M9
 - Security admin: revocation request workflow (orchestration only)
 - Compliance: export job + download
-- Integration admin: provider connection form (stub test)
+- ~~Integration admin: provider connection form (stub test)~~ → M10
 
 ### Infrastructure & quality
 - Staging: Vercel (web) + API host + managed Postgres
 - Sentry for web + API
-- Split CI: lint job vs build job
+- ~~Split CI: lint job vs build job~~ → M11
 - API integration tests for `/users/me`, `/credentials` scoping
 - Runbook: Clerk key mismatch
 

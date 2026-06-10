@@ -76,6 +76,84 @@ export class OrganizationService {
     });
   }
 
+  async listComplianceRecords(organizationId: string, userId: string, actorUserId: string, isPlatformAdmin: boolean) {
+    await this.assertOrgAccess(actorUserId, organizationId, isPlatformAdmin);
+
+    const membership = await this.prisma.membership.findFirst({
+      where: { organizationId, userId, status: { not: 'removed' } },
+      select: { id: true },
+    });
+    if (!membership) throw new NotFoundException('Member not found in this organization');
+
+    const records = await this.prisma.complianceRecord.findMany({
+      where: { organizationId, userId },
+      orderBy: [{ recordType: 'asc' }, { expiresAt: 'asc' }, { title: 'asc' }],
+      select: {
+        id: true,
+        userId: true,
+        organizationId: true,
+        recordType: true,
+        title: true,
+        status: true,
+        issuedAt: true,
+        expiresAt: true,
+        evidenceUrl: true,
+        source: true,
+      },
+    });
+
+    return records.map((record) => ({
+      ...record,
+      issuedAt: record.issuedAt?.toISOString() ?? null,
+      expiresAt: record.expiresAt?.toISOString() ?? null,
+    }));
+  }
+
+  async listPlatformOrganizations(search?: string) {
+    const query = search?.trim();
+
+    const organizations = await this.prisma.organization.findMany({
+      where: query
+        ? {
+            OR: [
+              { name: { contains: query, mode: 'insensitive' } },
+              { slug: { contains: query, mode: 'insensitive' } },
+              { clerkOrgId: { contains: query, mode: 'insensitive' } },
+            ],
+          }
+        : undefined,
+      orderBy: { name: 'asc' },
+      take: 50,
+      select: {
+        id: true,
+        name: true,
+        slug: true,
+        clerkOrgId: true,
+        createdAt: true,
+        updatedAt: true,
+        _count: {
+          select: {
+            memberships: { where: { status: { not: 'removed' } } },
+            credentials: true,
+            providerConnections: true,
+          },
+        },
+      },
+    });
+
+    return organizations.map((org) => ({
+      id: org.id,
+      name: org.name,
+      slug: org.slug,
+      clerkOrgId: org.clerkOrgId,
+      createdAt: org.createdAt.toISOString(),
+      updatedAt: org.updatedAt.toISOString(),
+      memberCount: org._count.memberships,
+      credentialCount: org._count.credentials,
+      providerConnectionCount: org._count.providerConnections,
+    }));
+  }
+
   async inviteMember(organizationId: string, userId: string, role: string, actorUserId: string) {
     const validRole = this.parseAssignableRole(role);
     const membership = await this.prisma.membership.upsert({

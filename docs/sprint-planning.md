@@ -24,6 +24,11 @@ Two-week cadence for Noa. Lightweight — suitable for solo or pair work.
 | **M4: Holder trust (GDPR & privacy)** | Export UX + deletion flow | Sprint 4 |
 | **M5: Design system & light/dark UI** | Tokens, theme toggle, marketing parity | Sprint 5 ✓ |
 | **M6: Site access history** | Access events + org access-decision demo | Sprint 6 ✓ |
+| **M7: Learning records** | Training/certification records in access decisions | Sprint 7 ✓ |
+| **M8: Wallet pass preview** | Holder Apple/Google Wallet preview stubs | Review |
+| **M9: Platform org list** | Platform admin organization list with search | Review |
+| **M10: Integration admin stub** | Provider connection test-mode form | Review |
+| **M11: CI quality split** | Separate lint and build CI checks | Review |
 
 View on GitHub: https://github.com/jeffilola/noa/milestones
 
@@ -68,14 +73,16 @@ Backlog → Ready → In Progress → Review (PR open) → Done
 
 ## Current sprint
 
-**Sprint 7 · planning (M7 not scheduled yet)**
+**Overnight review queue · M7-M11**
 
-M6 shipped in PR #49 (2026-06-10). All milestone issues #44–#48 closed.
+M6 shipped in PR #49 (2026-06-10). M7-M11 are prepared as small review slices:
 
-**Before Day 1 planning:** run the [M6 demo script](./demos/hero-contractor-access.md) using [2026-06-10 demo note](./demos/2026-06-10.md).
+| Milestone | Review focus | Test guide |
+|-----------|--------------|------------|
+| M7 | Learning records replace org access training/cert stubs | [m7-testing.md](./m7-testing.md) |
+| M8 | Holder wallet pass preview route under `/user/wallet` | [m8-testing.md](./m8-testing.md) |
+| M9 | Platform org list search under `/platform/organizations` | [m9-testing.md](./m9-testing.md) |
+| M10 | Integration admin test-mode provider validation | [m10-testing.md](./m10-testing.md) |
+| M11 | CI has separate lint and build jobs | [m11-testing.md](./m11-testing.md) |
 
-**Day 1 checklist:** review [backlog.md](./backlog.md) → create **M7** milestone + issues → move to **Ready** → branch `feature/m7-…`.
-
-**Post-M6 follow-up:** org **Site access** sidebar visible after `@noa/domain` rebuild (see PR for nav/qa fix).
-
-Update this section at each planning session.
+**Human follow-up:** reconcile GitHub milestones/issues and split into separate milestone PRs if branch automation could not create them directly.

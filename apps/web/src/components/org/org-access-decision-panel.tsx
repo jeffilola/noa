@@ -1,4 +1,4 @@
-import type { AccessSummary, OrgMember } from '@/lib/org-data';
+import type { AccessSummary, ComplianceRecord, OrgMember } from '@/lib/org-data';
 import type { UserCredential } from '@/lib/user-types';
 import {
   formatCredentialDate,
@@ -42,17 +42,37 @@ function DecisionModule({
   );
 }
 
+function formatComplianceStatus(record: ComplianceRecord | undefined, fallback: string) {
+  if (!record) return fallback;
+
+  const expires = record.expiresAt ? ` until ${formatCredentialDate(record.expiresAt)}` : '';
+  return `${record.title} ${record.status}${expires}`;
+}
+
+function formatComplianceDetail(record: ComplianceRecord | undefined, fallback: string) {
+  if (!record) return fallback;
+
+  const issued = record.issuedAt ? `Issued ${formatCredentialDate(record.issuedAt)}. ` : '';
+  return `${issued}Source: ${record.source}.`;
+}
+
 export function OrgAccessDecisionPanel({
   member,
   credentials,
   accessSummary,
+  complianceRecords,
 }: {
   member: OrgMember;
   credentials: UserCredential[];
   accessSummary: AccessSummary | null;
+  complianceRecords: ComplianceRecord[];
 }) {
   const activeCredentials = credentials.filter((credential) => credential.status === 'active');
   const primaryCredential = activeCredentials[0];
+  const trainingRecord = complianceRecords.find((record) => record.recordType === 'training');
+  const certificationRecord = complianceRecords.find(
+    (record) => record.recordType === 'certification',
+  );
 
   const identityStatus = member.user.isDisabled ? 'Disabled account' : 'Verified — signed in';
   const identityDetail = member.user.isDisabled
@@ -99,9 +119,12 @@ export function OrgAccessDecisionPanel({
         />
         <DecisionModule
           title="Training & compliance"
-          status="Safety training complete (demo stub)"
-          detail="Policy acknowledgements current — real LMS records ship in a later sprint."
-          muted
+          status={formatComplianceStatus(trainingRecord, 'No training record on file')}
+          detail={formatComplianceDetail(
+            trainingRecord,
+            'Sync LMS records or seed demo data to complete the access picture.',
+          )}
+          muted={!trainingRecord}
         />
         <DecisionModule
           title="Credential"
@@ -119,9 +142,12 @@ export function OrgAccessDecisionPanel({
         />
         <DecisionModule
           title="Certification"
-          status="Electrical certification valid until 2027 (demo stub)"
-          detail="Expiry and renewal tracking ships in a later sprint."
-          muted
+          status={formatComplianceStatus(certificationRecord, 'No certification on file')}
+          detail={formatComplianceDetail(
+            certificationRecord,
+            'Certification expiry and renewal dates appear here once recorded.',
+          )}
+          muted={!certificationRecord}
         />
       </div>
 

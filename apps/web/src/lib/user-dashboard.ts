@@ -1,4 +1,12 @@
-import { FiCreditCard, FiHome, FiMapPin, FiShield, FiSmartphone, FiUser, FiUsers } from 'react-icons/fi';
+import {
+  FiCreditCard,
+  FiHome,
+  FiMapPin,
+  FiShield,
+  FiSmartphone,
+  FiUser,
+  FiUsers,
+} from 'react-icons/fi';
 import type { UserProfile } from '@/lib/user-types';
 
 export function formatCredentialType(type: string) {
@@ -45,6 +53,7 @@ export const identitySubNav = [
 export const userNavLinks = [
   { href: '/user', label: 'Overview', icon: FiHome },
   { href: '/user/identity', label: 'My Identity', subNav: identitySubNav, icon: FiUser },
+  { href: '/user/wallet', label: 'Wallet preview', icon: FiCreditCard },
   { href: '/user/access', label: 'Site access', icon: FiMapPin },
   { href: '/user/security', label: 'Security', icon: FiShield },
 ] as const;

@@ -126,6 +126,11 @@ export default async function UserOverviewPage() {
           description="Wallet passes, PACS badges, and presentation methods."
         />
         <UserQuickLink
+          href="/user/wallet"
+          title="Wallet preview"
+          description="Apple and Google Wallet placeholders for holder review."
+        />
+        <UserQuickLink
           href="/user/identity#organizations"
           title="Organizations"
           stat={tileStat(memberships.length)}

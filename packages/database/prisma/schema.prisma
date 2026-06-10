@@ -139,24 +139,25 @@ model User {
   createdAt            DateTime  @default(now())
   updatedAt            DateTime  @updatedAt
 
-  memberships          Membership[]
+  memberships           Membership[]
   credentialAssignments CredentialAssignment[]
-  devices              Device[]
-  walletPasses         WalletPass[]
-  auditLogsAsActor     AuditLog[] @relation("AuditActor")
-  userRoles            UserRole[] @relation("UserRoleSubject")
-  grantedUserRoles     UserRole[] @relation("UserRoleGranter")
-  accessEvents         AccessEvent[]
+  devices               Device[]
+  walletPasses          WalletPass[]
+  auditLogsAsActor      AuditLog[]             @relation("AuditActor")
+  userRoles             UserRole[]             @relation("UserRoleSubject")
+  grantedUserRoles      UserRole[]             @relation("UserRoleGranter")
+  accessEvents          AccessEvent[]
+  complianceRecords     ComplianceRecord[]
 }
 
 model Organization {
-  id          String   @id @default(uuid())
-  clerkOrgId  String?  @unique
-  name        String
-  slug        String   @unique
-  settings    Json?
-  createdAt   DateTime @default(now())
-  updatedAt   DateTime @updatedAt
+  id         String   @id @default(uuid())
+  clerkOrgId String?  @unique
+  name       String
+  slug       String   @unique
+  settings   Json?
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
 
   memberships         Membership[]
   credentials         Credential[]
@@ -164,6 +165,7 @@ model Organization {
   providerConnections OrganizationProviderConnection[]
   userRoles           UserRole[]
   accessEvents        AccessEvent[]
+  complianceRecords   ComplianceRecord[]
 }
 
 model Membership {
@@ -178,8 +180,8 @@ model Membership {
   joinedAt       DateTime?
   removedAt      DateTime?
 
-  user           User             @relation(fields: [userId], references: [id])
-  organization   Organization     @relation(fields: [organizationId], references: [id])
+  user         User         @relation(fields: [userId], references: [id])
+  organization Organization @relation(fields: [organizationId], references: [id])
 
   @@unique([userId, organizationId])
 }
@@ -239,8 +241,8 @@ model Credential {
   createdAt            DateTime         @default(now())
   updatedAt            DateTime         @updatedAt
 
-  organization       Organization         @relation(fields: [organizationId], references: [id])
-  provider           CredentialProvider   @relation(fields: [providerId], references: [id])
+  organization       Organization           @relation(fields: [organizationId], references: [id])
+  provider           CredentialProvider     @relation(fields: [providerId], references: [id])
   assignments        CredentialAssignment[]
   walletPasses       WalletPass[]
   presentationTokens PresentationToken[]
@@ -251,18 +253,18 @@ model Credential {
 }
 
 model AccessEvent {
-  id               String               @id @default(uuid())
-  organizationId   String
-  userId           String
-  credentialId     String?
-  externalEventId  String?
-  occurredAt       DateTime
-  locationLabel    String
-  readerLabel      String?
-  direction        AccessEventDirection @default(unknown)
-  source           AccessEventSource    @default(PACS)
-  metadata         Json?
-  createdAt        DateTime             @default(now())
+  id              String               @id @default(uuid())
+  organizationId  String
+  userId          String
+  credentialId    String?
+  externalEventId String?
+  occurredAt      DateTime
+  locationLabel   String
+  readerLabel     String?
+  direction       AccessEventDirection @default(unknown)
+  source          AccessEventSource    @default(PACS)
+  metadata        Json?
+  createdAt       DateTime             @default(now())
 
   organization Organization @relation(fields: [organizationId], references: [id])
   user         User         @relation(fields: [userId], references: [id])
@@ -271,6 +273,28 @@ model AccessEvent {
   @@unique([organizationId, externalEventId])
   @@index([organizationId, occurredAt])
   @@index([userId, organizationId, occurredAt])
+}
+
+model ComplianceRecord {
+  id             String    @id @default(uuid())
+  userId         String
+  organizationId String
+  recordType     String
+  title          String
+  status         String
+  issuedAt       DateTime?
+  expiresAt      DateTime?
+  evidenceUrl    String?
+  source         String    @default("demo")
+  createdAt      DateTime  @default(now())
+  updatedAt      DateTime  @updatedAt
+
+  user         User         @relation(fields: [userId], references: [id])
+  organization Organization @relation(fields: [organizationId], references: [id])
+
+  @@unique([userId, organizationId, recordType, title])
+  @@index([organizationId, userId])
+  @@index([expiresAt])
 }
 
 model CredentialAssignment {
@@ -302,17 +326,17 @@ model Device {
 }
 
 model AuditLog {
-  id                String      @id @default(uuid())
-  action            AuditAction
-  actorUserId       String?
-  actorUserIdAnon   String?
-  organizationId    String?
-  resourceType      String
-  resourceId        String?
-  ipAddress         String?
-  userAgent         String?
-  metadata          Json?
-  createdAt         DateTime    @default(now())
+  id              String      @id @default(uuid())
+  action          AuditAction
+  actorUserId     String?
+  actorUserIdAnon String?
+  organizationId  String?
+  resourceType    String
+  resourceId      String?
+  ipAddress       String?
+  userAgent       String?
+  metadata        Json?
+  createdAt       DateTime    @default(now())
 
   actor User? @relation("AuditActor", fields: [actorUserId], references: [id])
 

@@ -96,6 +96,19 @@ export interface AccessSummary {
   recentCount: number;
 }
 
+export interface ComplianceRecord {
+  id: string;
+  userId: string;
+  organizationId: string;
+  recordType: string;
+  title: string;
+  status: string;
+  issuedAt: string | null;
+  expiresAt: string | null;
+  evidenceUrl: string | null;
+  source: string;
+}
+
 function orgFromMemberships(memberships: UserMembership[]): OrgSummary | null {
   const orgAdminMembership =
     memberships.find((membership) => membership.role === 'org_admin' && membership.organization?.id) ??
@@ -226,6 +239,18 @@ export async function fetchOrgAccessSummary(organizationId: string, userId: stri
   return {
     summary,
     apiReachable: summary !== null,
+  };
+}
+
+export async function fetchOrgComplianceRecords(organizationId: string, userId: string) {
+  const records = await apiFetch<ComplianceRecord[]>(
+    `/organizations/${organizationId}/users/${userId}/compliance-records`,
+    { organizationId },
+  ).catch(() => null);
+
+  return {
+    records: records ?? [],
+    apiReachable: records !== null,
   };
 }
 
