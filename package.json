@@ -6,7 +6,7 @@
     "dev": "node scripts/qa-servers.mjs",
     "dev:all": "turbo run dev --parallel",
     "test": "turbo run test",
-    "lint": "turbo run lint",
+    "lint": "pnpm db:generate && turbo run lint",
     "db:generate": "pnpm --filter @noa/database generate",
     "db:migrate": "pnpm --filter @noa/database migrate",
     "db:seed": "pnpm --filter @noa/database seed",
