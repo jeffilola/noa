@@ -5,7 +5,8 @@
 - Automation branch: `cursor/noa-milestone-preparation-727c`
 - Requested M7 branch `feature/m7-learning-records`: not visible on origin from this checkout at run start.
 - GitHub issue/milestone creation/closure: not performed by this run because only read-only `gh` access was available.
-- Review PR URLs: pending PR creation from the automation branch.
+- Review PR URL: https://github.com/jeffilola/noa/pull/57
+- PR #57 CI: `lint` and `build` checks passing on GitHub.
 
 ## What shipped
 
@@ -18,10 +19,10 @@
 ## Automated test commands
 
 ```bash
-pnpm qa:prepare                         # blocked: Docker is not running in this environment
-pnpm --filter @noa/api test             # passed; DB-backed cases skipped because Postgres was unavailable
-pnpm --filter @noa/web build            # passed
-pnpm lint                               # passed
+pnpm qa:prepare                         # 2026-06-11 rerun blocked: Docker is not running in this environment
+pnpm --filter @noa/api test             # 2026-06-11 rerun passed; DB-backed cases skipped because Postgres was unavailable
+pnpm --filter @noa/web build            # 2026-06-11 rerun passed
+pnpm lint                               # passed in CI and prior local run
 ```
 
 ## Prioritized manual E2E for morning review
