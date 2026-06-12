@@ -6,7 +6,7 @@
     "build": "nest build",
     "dev": "nest start --watch",
     "start": "node dist/src/main.js",
-    "test": "node --import tsx --test test/**/*.test.ts"
+    "test": "pnpm --filter @noa/domain build && pnpm --filter @noa/shared build && pnpm --filter @noa/encryption build && pnpm --filter @noa/wallet build && pnpm --filter @noa/integrations build && pnpm --filter @noa/database generate && pnpm --filter @noa/database build && node --import tsx --test test/**/*.test.ts"
   },
   "dependencies": {
     "@clerk/backend": "^3.5.0",
