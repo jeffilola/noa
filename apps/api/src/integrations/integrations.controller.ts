@@ -9,12 +9,17 @@ import {
   UseGuards,
 } from '@nestjs/common';
 import type { Request } from 'express';
+import { Permission } from '@noa/domain';
 import { ClerkAuthGuard } from '../common/guards/clerk-auth.guard';
-import { RequireOrgAdmin } from '../common/guards/org-role.guard';
+import { RequireOrgScope, RequirePermission } from '../common/guards/permission.guard';
 import { IntegrationsService } from './integrations.service';
 
 @Controller('organizations/:orgId/integrations')
-@UseGuards(ClerkAuthGuard, RequireOrgAdmin())
+@UseGuards(
+  ClerkAuthGuard,
+  RequireOrgScope(),
+  RequirePermission(Permission.INTEGRATIONS_PROVIDERS_CONFIGURE),
+)
 export class IntegrationsController {
   constructor(private readonly integrations: IntegrationsService) {}
 
@@ -36,6 +41,13 @@ export class IntegrationsController {
       body.credentials,
       req.auth!.userId,
     );
+  }
+
+  @Post('validate-test-mode')
+  validateTestModeConnection(
+    @Body() body: { providerId?: string; apiBaseUrl?: string; mode?: string },
+  ) {
+    return this.integrations.validateTestModeConnection(body);
   }
 
   @Post(':connectionId/test')
