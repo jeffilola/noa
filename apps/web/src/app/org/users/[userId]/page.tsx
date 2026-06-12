@@ -7,6 +7,7 @@ import { ApiOfflineBanner, EmptyPanel } from '@/components/user/dashboard-primit
 import {
   fetchOrgAccessEvents,
   fetchOrgAccessSummary,
+  fetchOrgComplianceRecords,
   fetchOrgCredentials,
   fetchOrgMembers,
   ORG_ADMIN_ACCESS_EMPTY,
@@ -30,12 +31,19 @@ export default async function OrgMemberAccessPage({
     );
   }
 
-  const [{ members }, { credentials }, { summary, apiReachable: summaryReachable }, accessEventsResult] =
+  const [
+    { members },
+    { credentials },
+    { summary, apiReachable: summaryReachable },
+    accessEventsResult,
+    complianceResult,
+  ] =
     await Promise.all([
       fetchOrgMembers(orgContext.id),
       fetchOrgCredentials(orgContext.id, userId),
       fetchOrgAccessSummary(orgContext.id, userId),
       fetchOrgAccessEvents(orgContext.id, { userId, limit: 10 }),
+      fetchOrgComplianceRecords(orgContext.id, userId),
     ]);
 
   const member = members.find((entry) => entry.userId === userId);
@@ -43,7 +51,8 @@ export default async function OrgMemberAccessPage({
     notFound();
   }
 
-  const apiOffline = !summaryReachable || !accessEventsResult.apiReachable;
+  const apiOffline =
+    !summaryReachable || !accessEventsResult.apiReachable || !complianceResult.apiReachable;
 
   return (
     <div className="content-stack">
@@ -69,6 +78,7 @@ export default async function OrgMemberAccessPage({
         member={member}
         credentials={credentials}
         accessSummary={summary}
+        complianceRecords={complianceResult.records}
       />
 
       <section className="content-stack__section">

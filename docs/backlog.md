@@ -6,19 +6,25 @@ Legend: **S** / **M** / **L** size · **Epic** tag · Milestone when scheduled
 
 ---
 
-## Now — Sprint 7 (planning)
+## Now — Sprint 8 (planning)
 
-**Status:** M6 complete. Pick the next milestone slice from [Later](#later--unscheduled) below and create GitHub issues + milestone **M7** at sprint planning (Day 1).
+**Status:** M7 is ready for human review. Pick the next milestone slice from [Later](#later--unscheduled) below and create GitHub issues + milestone **M8** at sprint planning.
 
 **Candidates (pick one theme):**
 
 | Theme | Examples from backlog |
 |-------|------------------------|
-| Hero demo polish | Training + certification records on membership (replace stubs) |
+| Holder UX | Wallet pass preview (stub UI) |
 | Go live | Staging: Vercel + API host + managed Postgres |
 | Platform | Platform admin org list with search |
 
 See [sprint-planning.md](./sprint-planning.md) for the Day 1 checklist.
+
+---
+
+## Done — Sprint 7 (M7: Learning records for access decisions)
+
+Issues #52-#56 target this milestone. Compliance records replace training/certification stubs in the org member access panel. Testing: [m7-testing.md](./m7-testing.md). Demo: [demos/2026-06-11-m7.md](./demos/2026-06-11-m7.md).
 
 ---
 

@@ -22,6 +22,7 @@ export class OrganizationController {
   constructor(private readonly orgs: OrganizationService) {}
 
   @Post()
+  @UseGuards(RequirePermission(Permission.PLATFORM_ORGANIZATIONS_MANAGE))
   create(@Body() body: { name: string; slug: string }) {
     return this.orgs.create(body.name, body.slug);
   }
@@ -36,6 +37,29 @@ export class OrganizationController {
   @UseGuards(RequireOrgScope(), RequirePermission(Permission.ORG_USERS_MANAGE))
   listMembers(@Param('id') id: string, @Req() req: Request) {
     return this.orgs.listMembers(id, req.auth!.userId, req.auth!.isPlatformAdmin);
+  }
+
+  @Get(':id/users/:userId/compliance-records')
+  @UseGuards(
+    RequireOrgScope(),
+    RequirePermission(
+      Permission.ORG_USERS_MANAGE,
+      Permission.USERS_VIEW_ORG,
+      Permission.COMPLIANCE_REPORTS_GENERATE,
+      Permission.AUDIT_VIEW_ORG,
+    ),
+  )
+  listComplianceRecords(
+    @Param('id') id: string,
+    @Param('userId') userId: string,
+    @Req() req: Request,
+  ) {
+    return this.orgs.listComplianceRecords(
+      id,
+      userId,
+      req.auth!.userId,
+      req.auth!.isPlatformAdmin,
+    );
   }
 
   @Post(':id/members/invite')

@@ -24,6 +24,7 @@ Two-week cadence for Noa. Lightweight — suitable for solo or pair work.
 | **M4: Holder trust (GDPR & privacy)** | Export UX + deletion flow | Sprint 4 |
 | **M5: Design system & light/dark UI** | Tokens, theme toggle, marketing parity | Sprint 5 ✓ |
 | **M6: Site access history** | Access events + org access-decision demo | Sprint 6 ✓ |
+| **M7: Learning records** | Training/certification records in access decisions | Sprint 7 ✓ |
 
 View on GitHub: https://github.com/jeffilola/noa/milestones
 
@@ -68,14 +69,14 @@ Backlog → Ready → In Progress → Review (PR open) → Done
 
 ## Current sprint
 
-**Sprint 7 · planning (M7 not scheduled yet)**
+**Sprint 8 · planning**
 
-M6 shipped in PR #49 (2026-06-10). All milestone issues #44–#48 closed.
+M7 learning records are ready for review. Keep M8 scoped to the next single milestone branch and PR.
 
-**Before Day 1 planning:** run the [M6 demo script](./demos/hero-contractor-access.md) using [2026-06-10 demo note](./demos/2026-06-10.md).
+**Before Day 1 planning:** run the [M7 testing guide](./m7-testing.md) and demo note [2026-06-11-m7.md](./demos/2026-06-11-m7.md).
 
-**Day 1 checklist:** review [backlog.md](./backlog.md) → create **M7** milestone + issues → move to **Ready** → branch `feature/m7-…`.
+**Day 1 checklist:** review [backlog.md](./backlog.md) -> create **M8** milestone + issues -> move to **Ready** -> branch `feature/m8-...`.
 
-**Post-M6 follow-up:** org **Site access** sidebar visible after `@noa/domain` rebuild (see PR for nav/qa fix).
+**Post-M7 follow-up:** reconcile GitHub milestone/issue status once the M7 PR is ready for human review.
 
 Update this section at each planning session.
