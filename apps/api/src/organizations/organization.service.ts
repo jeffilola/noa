@@ -76,6 +76,51 @@ export class OrganizationService {
     });
   }
 
+  async listPlatformOrganizations(search?: string) {
+    const query = search?.trim();
+
+    const organizations = await this.prisma.organization.findMany({
+      where: query
+        ? {
+            OR: [
+              { name: { contains: query, mode: 'insensitive' } },
+              { slug: { contains: query, mode: 'insensitive' } },
+              { clerkOrgId: { contains: query, mode: 'insensitive' } },
+            ],
+          }
+        : undefined,
+      orderBy: { name: 'asc' },
+      take: 50,
+      select: {
+        id: true,
+        name: true,
+        slug: true,
+        clerkOrgId: true,
+        createdAt: true,
+        updatedAt: true,
+        _count: {
+          select: {
+            memberships: { where: { status: { not: 'removed' } } },
+            credentials: true,
+            providerConnections: true,
+          },
+        },
+      },
+    });
+
+    return organizations.map((org) => ({
+      id: org.id,
+      name: org.name,
+      slug: org.slug,
+      clerkOrgId: org.clerkOrgId,
+      createdAt: org.createdAt.toISOString(),
+      updatedAt: org.updatedAt.toISOString(),
+      memberCount: org._count.memberships,
+      credentialCount: org._count.credentials,
+      providerConnectionCount: org._count.providerConnections,
+    }));
+  }
+
   async inviteMember(organizationId: string, userId: string, role: string, actorUserId: string) {
     const validRole = this.parseAssignableRole(role);
     const membership = await this.prisma.membership.upsert({

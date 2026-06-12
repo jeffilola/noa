@@ -21,7 +21,14 @@ import { OrganizationService } from './organization.service';
 export class OrganizationController {
   constructor(private readonly orgs: OrganizationService) {}
 
+  @Get()
+  @UseGuards(RequirePermission(Permission.PLATFORM_ORGANIZATIONS_MANAGE))
+  listPlatform(@Req() req: Request) {
+    return this.orgs.listPlatformOrganizations(req.query.search as string | undefined);
+  }
+
   @Post()
+  @UseGuards(RequirePermission(Permission.PLATFORM_ORGANIZATIONS_MANAGE))
   create(@Body() body: { name: string; slug: string }) {
     return this.orgs.create(body.name, body.slug);
   }

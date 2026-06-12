@@ -528,6 +528,40 @@ a:hover {
   background: color-mix(in srgb, var(--accent-soft) 40%, transparent);
 }
 
+.dashboard-search-form {
+  display: grid;
+  gap: 0.5rem;
+  padding: 1rem;
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  background: var(--surface-panel);
+}
+
+.dashboard-search-form label {
+  color: var(--text-muted);
+  font-size: 0.8125rem;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+
+.dashboard-search-form div {
+  display: flex;
+  gap: 0.75rem;
+  flex-wrap: wrap;
+}
+
+.dashboard-search-form input {
+  flex: 1 1 16rem;
+  min-width: 0;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  background: var(--bg);
+  color: var(--text);
+  font: inherit;
+  padding: 0.625rem 0.75rem;
+}
+
 .empty-state {
   text-align: center;
   padding: 3.5rem 2rem;
