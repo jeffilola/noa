@@ -8,6 +8,8 @@ The focused milestone branches are pushed and validated for morning review, but 
 
 GitHub milestone/issue writes for M8-M11 and aggregate check-run writes were not available in this automation. I did not use `gh` for writes.
 
+Docs summary PR: https://github.com/jeffilola/noa/pull/60
+
 ## Review branches
 
 | Milestone | Branch | Review URL | Status |
