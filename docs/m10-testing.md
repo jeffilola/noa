@@ -1,26 +1,70 @@
-# M10 testing: Integration admin provider test-mode stub
+# M10 testing — Integration admin (test mode)
 
-## Automated checks
+**What this is:** A fake “connect your PACS provider” form for demos. It checks that a URL looks OK. It does **not** save passwords, API keys, or connect to HID/Brivo for real.
 
-Run from the repo root:
+**GitHub issue:** [#71](https://github.com/jeffilola/noa/issues/71)
 
-```bash
+**Where the form lives:** Integration Admin → **Providers** → http://localhost:3000/integrations-admin/providers
+
+---
+
+## Before you start
+
+```powershell
+cd C:\Users\jeffe\Projects\noa
+pnpm db:seed
+pnpm qa:dev
+```
+
+Sign in as your demo Clerk user (`DEMO_CLERK_USER_ID` in `packages/database/.env`).
+
+---
+
+## Browser test (do this)
+
+1. In the top dashboard switcher, choose **Integration Admin**.
+   - If you do not see it, run `pnpm db:seed` again and restart `pnpm qa:dev`.
+2. Click **Providers** in the sidebar.
+3. You should see a form with:
+   - **Provider** dropdown (HID Origo, Brivo, LenelS2)
+   - **Test API base URL** field (default `https://api.origo.test`)
+   - Yellow warning about not using live keys
+   - **Validate test settings** button
+
+If you only see “Integration admin setup needed”, run seed + restart dev servers (see above).
+
+**Good URL test**
+
+4. Click **Validate test settings** with the default HTTPS URL.
+5. You should see a **success** message below the button.
+
+**Bad URL test**
+
+6. Change the URL to `http://example.com` (note: **http**, not https).
+7. Click **Validate test settings** again.
+8. You should see an **error** message.
+
+---
+
+## Pass criteria
+
+- [ ] Integration Admin → Providers shows the form (not a blank placeholder page)
+- [ ] `https://…` URL → success message
+- [ ] `http://…` URL → error message
+- [ ] Warning about no live keys is visible
+
+---
+
+## What this is NOT
+
+- Not a real HID Origo connection
+- Not storing provider credentials in the database
+
+---
+
+## Optional — run tests in terminal
+
+```powershell
 pnpm --filter @noa/api test
 pnpm --filter @noa/web build
 ```
-
-## Manual E2E checklist
-
-- [ ] Sign in with a user that has integration admin access.
-- [ ] Open `/integrations-admin/providers`.
-- [ ] Confirm the provider connection form renders for the demo organization.
-- [ ] Submit the default HID Origo test URL and confirm validation succeeds.
-- [ ] Change the URL to an `http://` value and confirm validation fails.
-- [ ] Confirm the screen warns not to enter live API keys, client secrets, or production provider URLs.
-- [ ] Confirm no provider credentials are requested or stored.
-
-## API checks
-
-- [ ] `POST /api/v1/organizations/:orgId/integrations/validate-test-mode` accepts `providerId`, `apiBaseUrl`, and `mode`.
-- [ ] HTTPS URLs return a success message.
-- [ ] Missing provider ids or non-HTTPS URLs return `400`.

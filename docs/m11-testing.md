@@ -1,23 +1,44 @@
-# M11 testing: CI quality split
+# M11 testing — CI split (lint vs build)
 
-## Expected CI behavior
+**What this is:** GitHub Actions now runs **two separate checks** on each PR instead of one big job — so you can tell “lint problem” from “build/test problem” faster.
 
-The `CI` workflow now has two top-level jobs:
+**GitHub issue:** [#72](https://github.com/jeffilola/noa/issues/72)
 
-- `lint`: installs dependencies, generates the Prisma client, and runs `pnpm lint`.
-- `build`: starts Postgres, applies migrations, builds the repo, and runs tests.
+---
 
-## Manual verification
+## What changed (simple)
 
-- [ ] Open a PR and confirm GitHub shows separate `lint` and `build` checks.
-- [ ] Confirm the `lint` job can fail independently from build/test.
-- [ ] Confirm the `build` job still runs database migrations against the Postgres service.
-- [ ] Confirm `pnpm build` and `pnpm test` still run in the `build` job.
+| Check name | What it does |
+|------------|----------------|
+| **lint** | Installs deps, generates Prisma client, runs `pnpm lint` |
+| **build** | Starts Postgres, runs migrations, builds the repo, runs tests |
 
-## Local commands
+---
 
-```bash
+## How to verify on GitHub
+
+1. Open [PR #57](https://github.com/jeffilola/noa/pull/57) (or any open PR on this branch).
+2. Scroll to **Checks**.
+3. You should see **two** jobs: `lint` and `build` (not one combined job).
+4. Both should be green on a good branch.
+
+---
+
+## Pass criteria
+
+- [ ] PR shows separate `lint` and `build` checks
+- [ ] `build` job still uses Postgres and runs tests
+- [ ] If lint fails, build may still run (or vice versa) — they are independent
+
+---
+
+## Optional — run the same stuff locally
+
+```powershell
+cd C:\Users\jeffe\Projects\noa
 pnpm lint
 pnpm build
 pnpm test
 ```
+
+Fix anything that fails before merging.

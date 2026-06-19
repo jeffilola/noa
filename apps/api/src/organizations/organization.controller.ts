@@ -6,6 +6,7 @@ import {
   Param,
   Patch,
   Post,
+  Query,
   Req,
   UseGuards,
 } from '@nestjs/common';
@@ -15,6 +16,39 @@ import { ClerkAuthGuard } from '../common/guards/clerk-auth.guard';
 import { RequireOrgAdmin } from '../common/guards/org-role.guard';
 import { RequireOrgScope, RequirePermission } from '../common/guards/permission.guard';
 import { OrganizationService } from './organization.service';
+import type {
+  PlatformOrganizationFilter,
+  PlatformOrganizationSearchField,
+  PlatformOrganizationSort,
+} from './organization.service';
+
+const PLATFORM_SEARCH_FIELDS = new Set<PlatformOrganizationSearchField>(['all', 'name', 'clerkOrgId']);
+const PLATFORM_FILTERS = new Set<PlatformOrganizationFilter>([
+  'all',
+  'hasMembers',
+  'hasCredentials',
+  'hasProviders',
+  'missingClerkOrg',
+]);
+const PLATFORM_SORTS = new Set<PlatformOrganizationSort>(['name', 'updated']);
+
+function parsePlatformOrganizationField(value?: string): PlatformOrganizationSearchField {
+  return value && PLATFORM_SEARCH_FIELDS.has(value as PlatformOrganizationSearchField)
+    ? (value as PlatformOrganizationSearchField)
+    : 'all';
+}
+
+function parsePlatformOrganizationFilter(value?: string): PlatformOrganizationFilter {
+  return value && PLATFORM_FILTERS.has(value as PlatformOrganizationFilter)
+    ? (value as PlatformOrganizationFilter)
+    : 'all';
+}
+
+function parsePlatformOrganizationSort(value?: string): PlatformOrganizationSort {
+  return value && PLATFORM_SORTS.has(value as PlatformOrganizationSort)
+    ? (value as PlatformOrganizationSort)
+    : 'name';
+}
 
 @Controller('organizations')
 @UseGuards(ClerkAuthGuard)
@@ -23,8 +57,18 @@ export class OrganizationController {
 
   @Get()
   @UseGuards(RequirePermission(Permission.PLATFORM_ORGANIZATIONS_MANAGE))
-  listPlatform(@Req() req: Request) {
-    return this.orgs.listPlatformOrganizations(req.query.search as string | undefined);
+  listPlatform(
+    @Query('search') search?: string,
+    @Query('field') field?: string,
+    @Query('filter') filter?: string,
+    @Query('sort') sort?: string,
+  ) {
+    return this.orgs.listPlatformOrganizations({
+      search,
+      field: parsePlatformOrganizationField(field),
+      filter: parsePlatformOrganizationFilter(filter),
+      sort: parsePlatformOrganizationSort(sort),
+    });
   }
 
   @Post()

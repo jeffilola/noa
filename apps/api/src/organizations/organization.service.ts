@@ -1,9 +1,20 @@
 import { BadRequestException, ForbiddenException, Injectable, NotFoundException } from '@nestjs/common';
-import type { Organization } from '@noa/database';
+import { Prisma, type Organization } from '@noa/database';
 import { assertNoaRoleKey, NoaRole, parseOrganizationSettings, type NoaRoleKey } from '@noa/domain';
 import { PrismaService } from '../prisma/prisma.service';
 import { AuditService } from '../audit/audit.service';
 import { RbacService } from '../auth/rbac.service';
+
+export type PlatformOrganizationSearchField = 'all' | 'name' | 'clerkOrgId';
+export type PlatformOrganizationFilter = 'all' | 'hasMembers' | 'hasCredentials' | 'hasProviders' | 'missingClerkOrg';
+export type PlatformOrganizationSort = 'name' | 'updated';
+
+export interface ListPlatformOrganizationsQuery {
+  search?: string;
+  field?: PlatformOrganizationSearchField;
+  filter?: PlatformOrganizationFilter;
+  sort?: PlatformOrganizationSort;
+}
 
 const ASSIGNABLE_ORG_ROLES: NoaRoleKey[] = [
   NoaRole.ORG_ADMIN,
@@ -109,20 +120,42 @@ export class OrganizationService {
     }));
   }
 
-  async listPlatformOrganizations(search?: string) {
-    const query = search?.trim();
+  async listPlatformOrganizations(options?: ListPlatformOrganizationsQuery | string) {
+    const params: ListPlatformOrganizationsQuery =
+      typeof options === 'string' ? { search: options } : options ?? {};
+    const query = params.search?.trim();
+    const field = params.field ?? 'all';
+    const filter = params.filter ?? 'all';
+    const sort = params.sort ?? 'name';
+
+    const where: Prisma.OrganizationWhereInput = {};
+
+    if (query) {
+      if (field === 'name') {
+        where.name = { contains: query, mode: 'insensitive' };
+      } else if (field === 'clerkOrgId') {
+        where.clerkOrgId = { contains: query, mode: 'insensitive' };
+      } else {
+        where.OR = [
+          { name: { contains: query, mode: 'insensitive' } },
+          { clerkOrgId: { contains: query, mode: 'insensitive' } },
+        ];
+      }
+    }
+
+    if (filter === 'hasMembers') {
+      where.memberships = { some: { status: { not: 'removed' } } };
+    } else if (filter === 'hasCredentials') {
+      where.credentials = { some: {} };
+    } else if (filter === 'hasProviders') {
+      where.providerConnections = { some: {} };
+    } else if (filter === 'missingClerkOrg') {
+      where.clerkOrgId = null;
+    }
 
     const organizations = await this.prisma.organization.findMany({
-      where: query
-        ? {
-            OR: [
-              { name: { contains: query, mode: 'insensitive' } },
-              { slug: { contains: query, mode: 'insensitive' } },
-              { clerkOrgId: { contains: query, mode: 'insensitive' } },
-            ],
-          }
-        : undefined,
-      orderBy: { name: 'asc' },
+      where: Object.keys(where).length > 0 ? where : undefined,
+      orderBy: sort === 'updated' ? { updatedAt: 'desc' } : { name: 'asc' },
       take: 50,
       select: {
         id: true,

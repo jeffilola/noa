@@ -3,7 +3,7 @@
 import Link from 'next/link';
 import { FiMenu } from 'react-icons/fi';
 import { AuthNavControls } from '@/components/auth-nav-controls';
-import type { DashboardSwitcherLink } from '@/components/dashboard/dashboard-switcher';
+import type { DashboardSwitcherLink } from '@/lib/dashboard-switcher';
 import { useSidebarOptional } from '@/components/dashboard/sidebar-context';
 import { ThemeToggle } from '@/components/theme-toggle';
 

@@ -610,12 +610,14 @@ a:hover {
   font-weight: 700;
   letter-spacing: 0.04em;
   text-transform: uppercase;
+  line-height: 1.2;
 }
 
-.dashboard-search-form div {
-  display: flex;
-  gap: 0.75rem;
-  flex-wrap: wrap;
+.dashboard-search-form input,
+.dashboard-filter-form select,
+.dashboard-filter-form .btn {
+  min-height: 2.75rem;
+  box-sizing: border-box;
 }
 
 .dashboard-search-form input {
@@ -627,6 +629,81 @@ a:hover {
   color: var(--text);
   font: inherit;
   padding: 0.625rem 0.75rem;
+}
+
+.dashboard-filter-form {
+  gap: 1rem;
+}
+
+.dashboard-filter-form__section {
+  display: grid;
+  gap: 0.5rem;
+}
+
+.dashboard-filter-form__inline-row {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: end;
+  gap: 0.75rem 1rem;
+  padding-top: 0.75rem;
+  border-top: 1px solid var(--border);
+}
+
+.dashboard-filter-form__field {
+  display: grid;
+  gap: 0.375rem;
+  flex: 1 1 12rem;
+  min-width: 12rem;
+}
+
+.dashboard-filter-form__field--actions {
+  flex: 0 1 auto;
+  min-width: 0;
+}
+
+.dashboard-filter-form__field label,
+.dashboard-filter-form__field-spacer {
+  color: var(--text-muted);
+  font-size: 0.8125rem;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  line-height: 1.2;
+}
+
+.dashboard-filter-form__field-spacer {
+  visibility: hidden;
+  user-select: none;
+}
+
+.dashboard-filter-form__search-row {
+  display: flex;
+  gap: 0.75rem;
+  flex-wrap: wrap;
+  align-items: center;
+}
+
+.dashboard-filter-form select {
+  width: 100%;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  background: var(--bg);
+  color: var(--text);
+  font: inherit;
+  padding: 0.625rem 0.75rem;
+}
+
+.dashboard-filter-form__actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  align-items: center;
+}
+
+.dashboard-result-summary {
+  margin: 0;
+  color: var(--text-muted);
+  font-size: 0.9375rem;
 }
 
 .provider-test-form {

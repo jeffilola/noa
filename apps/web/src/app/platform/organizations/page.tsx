@@ -1,6 +1,11 @@
+import Link from 'next/link';
 import { PageHeader } from '@/components/page-header';
-import { ApiOfflineBanner, EmptyPanel } from '@/components/user/dashboard-primitives';
-import { fetchPlatformOrganizations } from '@/lib/platform-data';
+import { ApiErrorBanner, ApiOfflineBanner, EmptyPanel } from '@/components/user/dashboard-primitives';
+import {
+  fetchPlatformOrganizations,
+  hasActivePlatformOrganizationFilters,
+  parsePlatformOrganizationQuery,
+} from '@/lib/platform-data';
 
 function formatDate(value: string) {
   return value.slice(0, 10);
@@ -9,10 +14,12 @@ function formatDate(value: string) {
 export default async function PlatformOrganizationsPage({
   searchParams,
 }: {
-  searchParams: Promise<{ search?: string }>;
+  searchParams: Promise<Record<string, string | undefined>>;
 }) {
-  const { search = '' } = await searchParams;
-  const { organizations, apiReachable } = await fetchPlatformOrganizations(search);
+  const params = await searchParams;
+  const query = parsePlatformOrganizationQuery(params);
+  const { organizations, apiReachable, forbidden } = await fetchPlatformOrganizations(query);
+  const filtersActive = hasActivePlatformOrganizationFilters(query);
 
   return (
     <div className="content-stack">
@@ -21,22 +28,76 @@ export default async function PlatformOrganizationsPage({
         description="Search and review customer organizations across the Noa platform."
       />
 
+      {forbidden ? (
+        <ApiErrorBanner message="Platform admin access is required to list organizations. Sign in with a platform admin account, or re-run pnpm db:seed after pulling the latest changes so your demo Clerk user receives the platform_admin role." />
+      ) : null}
       {!apiReachable ? <ApiOfflineBanner /> : null}
 
-      <form className="dashboard-search-form" action="/platform/organizations">
-        <label htmlFor="platform-org-search">Search organizations</label>
-        <div>
-          <input
-            id="platform-org-search"
-            name="search"
-            defaultValue={search}
-            placeholder="Name, slug, or Clerk org id"
-          />
-          <button className="btn btn-primary" type="submit">
-            Search
-          </button>
+      <form className="dashboard-search-form dashboard-filter-form" action="/platform/organizations" method="get">
+        <div className="dashboard-filter-form__section">
+          <label htmlFor="platform-org-search">Search organizations</label>
+          <div className="dashboard-filter-form__search-row">
+            <input
+              id="platform-org-search"
+              name="search"
+              defaultValue={query.search ?? ''}
+              placeholder="Name or Clerk org id"
+            />
+            <select name="field" defaultValue={query.field ?? 'all'} aria-label="Search by">
+              <option value="all">All fields</option>
+              <option value="name">Name only</option>
+              <option value="clerkOrgId">Clerk org id only</option>
+            </select>
+            <button className="btn btn-primary" type="submit">
+              Search
+            </button>
+          </div>
+        </div>
+
+        <div className="dashboard-filter-form__inline-row">
+          <div className="dashboard-filter-form__field">
+            <label htmlFor="platform-org-filter">Show</label>
+            <select id="platform-org-filter" name="filter" defaultValue={query.filter ?? 'all'}>
+              <option value="all">All organizations</option>
+              <option value="hasMembers">Has members</option>
+              <option value="hasCredentials">Has credentials</option>
+              <option value="hasProviders">Connected to a provider</option>
+              <option value="missingClerkOrg">Missing Clerk org id</option>
+            </select>
+          </div>
+
+          <div className="dashboard-filter-form__field">
+            <label htmlFor="platform-org-sort">Sort by</label>
+            <select id="platform-org-sort" name="sort" defaultValue={query.sort ?? 'name'}>
+              <option value="name">Name (A–Z)</option>
+              <option value="updated">Recently updated</option>
+            </select>
+          </div>
+
+          <div className="dashboard-filter-form__field dashboard-filter-form__field--actions">
+            <span className="dashboard-filter-form__field-spacer" aria-hidden="true">
+              Actions
+            </span>
+            <div className="dashboard-filter-form__actions">
+              <button className="btn btn-ghost" type="submit">
+                Apply filters
+              </button>
+              {filtersActive ? (
+                <Link className="btn btn-ghost" href="/platform/organizations">
+                  Clear all
+                </Link>
+              ) : null}
+            </div>
+          </div>
         </div>
       </form>
+
+      {apiReachable && !forbidden ? (
+        <p className="dashboard-result-summary">
+          Showing {organizations.length} organization{organizations.length === 1 ? '' : 's'}
+          {filtersActive ? ' matching your filters' : ''}
+        </p>
+      ) : null}
 
       {organizations.length > 0 ? (
         <div className="data-table-wrap">
@@ -71,8 +132,12 @@ export default async function PlatformOrganizationsPage({
         </div>
       ) : (
         <EmptyPanel
-          title={search ? 'No organizations matched' : 'No organizations found'}
-          body="Create or seed organizations before reviewing the platform admin list."
+          title={filtersActive ? 'No organizations matched your filters' : 'No organizations found'}
+          body={
+            filtersActive
+              ? 'Try a different search term, choose All organizations, or clear filters to see everything.'
+              : 'Create or seed organizations before reviewing the platform admin list.'
+          }
         />
       )}
     </div>

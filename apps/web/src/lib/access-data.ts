@@ -5,6 +5,7 @@ import {
   type DashboardNavConfig,
   type PermissionName,
 } from '@/lib/rbac/navigation';
+import { dashboardLandingPath, type DashboardSwitcherLink } from '@/lib/dashboard-switcher';
 import type { OrgSummary } from '@/lib/org-data';
 
 export interface UserAccessSummary {
@@ -66,16 +67,22 @@ export function canAccessOrgDashboard(access: UserAccessSummary | null): boolean
   return filterNavItems(DASHBOARD_NAVIGATION.org_admin, permissions).length > 0;
 }
 
-export function dashboardSwitcherLinks(access: UserAccessSummary | null) {
-  const links: Array<{ label: string; basePath: string }> = [
-    { label: 'Identity Holder', basePath: '/user' },
+export function dashboardSwitcherLinks(access: UserAccessSummary | null): DashboardSwitcherLink[] {
+  const links: DashboardSwitcherLink[] = [
+    { label: 'Identity Holder', basePath: '/user', href: '/user' },
   ];
 
   if (!access?.dashboards?.length) return links;
 
   for (const dashboard of access.dashboards) {
     if (dashboard.basePath === '/user') continue;
-    links.push({ label: dashboard.label, basePath: dashboard.basePath });
+    const permissions = (access.permissions ?? []) as PermissionName[];
+    const items = filterNavItems(dashboard, permissions);
+    links.push({
+      label: dashboard.label,
+      basePath: dashboard.basePath,
+      href: dashboardLandingPath(dashboard.basePath, items[0]?.href),
+    });
   }
 
   return links;

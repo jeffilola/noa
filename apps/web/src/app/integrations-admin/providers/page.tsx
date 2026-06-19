@@ -1,19 +1,25 @@
 import { ProviderTestModeForm } from '@/components/integrations/provider-test-mode-form';
 import { PageHeader } from '@/components/page-header';
 import { EmptyPanel } from '@/components/user/dashboard-primitives';
-import { resolveOrgContext, ORG_ADMIN_ACCESS_EMPTY } from '@/lib/org-data';
+import {
+  INTEGRATION_ADMIN_ACCESS_EMPTY,
+  resolveIntegrationAdminOrgContext,
+} from '@/lib/org-data';
 
 export default async function IntegrationProvidersPage() {
-  const orgContext = await resolveOrgContext();
+  const orgContext = await resolveIntegrationAdminOrgContext();
 
   if (!orgContext) {
     return (
       <div className="content-stack">
         <PageHeader
           title="Provider connections"
-          description="Configure provider connection stubs for integration administrators."
+          description="Validate test-mode provider settings for integration administrators."
         />
-        <EmptyPanel title={ORG_ADMIN_ACCESS_EMPTY.title} body={ORG_ADMIN_ACCESS_EMPTY.body} />
+        <EmptyPanel
+          title={INTEGRATION_ADMIN_ACCESS_EMPTY.title}
+          body={INTEGRATION_ADMIN_ACCESS_EMPTY.body}
+        />
       </div>
     );
   }
@@ -22,7 +28,7 @@ export default async function IntegrationProvidersPage() {
     <div className="content-stack">
       <PageHeader
         title="Provider connections"
-        description={`Validate test-mode provider settings for ${orgContext.name}. Noa does not manage doors, readers, or access levels.`}
+        description={`Validate test-mode provider settings for ${orgContext.name}. No live API keys are stored.`}
       />
 
       <ProviderTestModeForm organizationId={orgContext.id} />
