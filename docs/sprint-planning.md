@@ -24,7 +24,7 @@ Two-week cadence for Noa. Lightweight — suitable for solo or pair work.
 | **M9: Platform org list** | Platform admin org search/list | Done (PR #57) |
 | **M10: Integration admin stub** | Test-mode provider validation | Done (PR #57) |
 | **M11: CI quality split** | Separate lint and build jobs | Done (PR #57) |
-| **M12: Mobile smoke screen** | Expo holder app shell | **Current** (#73) |
+| **M12: Mobile smoke screen** | Expo holder app shell | **In progress** (#73) |
 | **M13: Revocation workflow** | Security admin revocation orchestration | Planned (#74) |
 | **M14: Compliance export** | Export job + download | Planned (#75) |
 | **M15: API scoping tests** | Cross-org integration tests | Planned (#76) |
@@ -36,7 +36,7 @@ View on GitHub: https://github.com/jeffilola/noa/milestones
 
 **Sprint 12 · M12: Expo mobile smoke screen**
 
-Focus: [#73](https://github.com/jeffilola/noa/issues/73) — scaffold `apps/mobile`, one signed-in smoke screen, README + test doc.
+Focus: [#73](https://github.com/jeffilola/noa/issues/73) — `apps/wallet-mobile` holder smoke screen, README, [m12-testing.md](./m12-testing.md).
 
 **Up next (same epic batch):** M13 → M16 per [backlog.md](./backlog.md).
 

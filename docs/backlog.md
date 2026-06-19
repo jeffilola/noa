@@ -10,14 +10,14 @@ Legend: **S** / **M** / **L** size · **Epic** tag · Milestone when scheduled
 
 | P | Size | Item | Epic | Issue |
 |---|------|------|------|-------|
-| 1 | M | Expo mobile app smoke screen | Holder | #73 |
+| 1 | M | Expo mobile app smoke screen (`apps/wallet-mobile`) | Holder | #73 |
 | 2 | M | Security admin revocation workflow (orchestration) | Org | #74 |
 | 3 | L | Compliance export job + download | Compliance | #75 |
 | 4 | M | API scoping tests (`/users/me`, `/credentials`) | Quality | #76 |
 | 5 | S | Ops runbooks + sprint doc updates | Quality | #77 |
 
 **Milestone:** [M12–M16 on GitHub](https://github.com/jeffilola/noa/milestones)  
-**Goal:** Mobile shell, security/compliance workflows, API test coverage, and operator runbooks.
+**Goal:** Mobile shell, security/compliance workflows, API test coverage, and operator runbooks. M12 test guide: [m12-testing.md](./m12-testing.md).
 
 ---
 

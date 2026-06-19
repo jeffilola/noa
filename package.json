@@ -16,7 +16,8 @@
     "qa:stop": "node scripts/qa-stop.mjs",
     "qa:servers": "node scripts/qa-servers.mjs",
     "qa:smoke": "node scripts/qa-smoke.mjs",
-    "qa:dev": "node scripts/qa-prepare.mjs && node scripts/qa-servers.mjs"
+    "qa:dev": "node scripts/qa-prepare.mjs && node scripts/qa-servers.mjs",
+    "mobile:dev": "pnpm --filter @noa/wallet-mobile dev"
   },
   "devDependencies": {
     "@types/node": "^25.9.2",

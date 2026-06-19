@@ -1,10 +1,11 @@
 {
   "expo": {
-    "name": "Noa Wallet",
-    "slug": "noa-wallet",
+    "name": "Noa Holder",
+    "slug": "noa-holder",
     "version": "1.0.0",
     "orientation": "portrait",
     "platforms": ["ios", "android"],
-    "userInterfaceStyle": "light"
+    "userInterfaceStyle": "automatic",
+    "scheme": "noa-holder"
   }
 }
