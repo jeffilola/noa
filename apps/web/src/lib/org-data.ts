@@ -96,6 +96,19 @@ export interface AccessSummary {
   recentCount: number;
 }
 
+export interface ComplianceRecord {
+  id: string;
+  userId: string;
+  organizationId: string;
+  recordType: string;
+  title: string;
+  status: string;
+  issuedAt: string | null;
+  expiresAt: string | null;
+  evidenceUrl: string | null;
+  source: string;
+}
+
 function orgFromMemberships(memberships: UserMembership[]): OrgSummary | null {
   const orgAdminMembership =
     memberships.find((membership) => membership.role === 'org_admin' && membership.organization?.id) ??
@@ -104,6 +117,11 @@ function orgFromMemberships(memberships: UserMembership[]): OrgSummary | null {
 
   return orgAdminMembership?.organization ?? null;
 }
+
+export const INTEGRATION_ADMIN_ACCESS_EMPTY = {
+  title: 'Integration admin setup needed',
+  body: 'This page needs an Integration Admin role on Demo Organization. Run pnpm db:seed, restart pnpm qa:dev, sign in again, then open Integration Admin → Providers.',
+} as const;
 
 export async function resolveOrgContext(): Promise<OrgSummary | null> {
   const access = await fetchUserAccess();
@@ -127,6 +145,24 @@ export async function resolveOrgContext(): Promise<OrgSummary | null> {
     if (overview) {
       return { id: overview.id, name: overview.name, slug: overview.slug };
     }
+  }
+
+  return null;
+}
+
+export async function resolveIntegrationAdminOrgContext(): Promise<OrgSummary | null> {
+  const orgContext = await resolveOrgContext();
+  if (orgContext) return orgContext;
+
+  const access = await fetchUserAccess();
+  if (!access) return null;
+
+  try {
+    const memberships = await apiFetch<UserMembership[]>('/users/me/memberships');
+    const fromMemberships = orgFromMemberships(memberships);
+    if (fromMemberships) return fromMemberships;
+  } catch {
+    // ignore
   }
 
   return null;
@@ -226,6 +262,18 @@ export async function fetchOrgAccessSummary(organizationId: string, userId: stri
   return {
     summary,
     apiReachable: summary !== null,
+  };
+}
+
+export async function fetchOrgComplianceRecords(organizationId: string, userId: string) {
+  const records = await apiFetch<ComplianceRecord[]>(
+    `/organizations/${organizationId}/users/${userId}/compliance-records`,
+    { organizationId },
+  ).catch(() => null);
+
+  return {
+    records: records ?? [],
+    apiReachable: records !== null,
   };
 }
 

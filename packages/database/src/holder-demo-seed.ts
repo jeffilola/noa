@@ -9,7 +9,7 @@ import {
   type PrismaClient,
   type User,
 } from '@prisma/client';
-import { NoaRole } from '@noa/domain';
+import { NoaRole, PLATFORM_SCOPE_KEY } from '@noa/domain';
 
 export const DEFAULT_HOLDER_CLERK_USER_ID = 'user_demo_holder';
 
@@ -38,6 +38,23 @@ const HOLDER_CREDENTIALS = [
 const HOLDER_DEVICES = [
   { name: 'Demo iPhone', platform: 'ios' },
   { name: 'Demo Apple Watch', platform: 'watchos' },
+] as const;
+
+const COMPLIANCE_RECORDS = [
+  {
+    recordType: 'training',
+    title: 'Site safety orientation',
+    status: 'complete',
+    issuedAt: new Date('2026-01-15T00:00:00.000Z'),
+    expiresAt: new Date('2027-01-15T00:00:00.000Z'),
+  },
+  {
+    recordType: 'certification',
+    title: 'Electrical safety certification',
+    status: 'valid',
+    issuedAt: new Date('2026-02-01T00:00:00.000Z'),
+    expiresAt: new Date('2027-02-01T00:00:00.000Z'),
+  },
 ] as const;
 
 function seedEmailHash(clerkUserId: string) {
@@ -246,6 +263,7 @@ async function seedHolderDemoAssets(
   }
 
   await seedHolderAccessEvents(prisma, organizationId, holder.id);
+  await seedComplianceRecords(prisma, organizationId, holder.id);
 }
 
 function startOfDayOffset(daysAgo: number, hour = 9, minute = 15) {
@@ -385,6 +403,50 @@ async function ensureHolderAccessEvents(
   await seedHolderAccessEvents(prisma, organizationId, holderUserId);
 }
 
+async function seedComplianceRecords(
+  prisma: PrismaClient,
+  organizationId: string,
+  holderUserId: string,
+) {
+  for (const record of COMPLIANCE_RECORDS) {
+    await prisma.complianceRecord.upsert({
+      where: {
+        userId_organizationId_recordType_title: {
+          userId: holderUserId,
+          organizationId,
+          recordType: record.recordType,
+          title: record.title,
+        },
+      },
+      update: {
+        status: record.status,
+        issuedAt: record.issuedAt,
+        expiresAt: record.expiresAt,
+        source: 'demo',
+      },
+      create: {
+        userId: holderUserId,
+        organizationId,
+        recordType: record.recordType,
+        title: record.title,
+        status: record.status,
+        issuedAt: record.issuedAt,
+        expiresAt: record.expiresAt,
+        source: 'demo',
+      },
+    });
+  }
+}
+
+export async function ensureComplianceRecordsForUser(
+  prisma: PrismaClient,
+  organizationId: string,
+  holderUserId: string,
+) {
+  if (process.env.NODE_ENV === 'production') return;
+  await seedComplianceRecords(prisma, organizationId, holderUserId);
+}
+
 export async function ensureHolderDemoForClerkUser(
   prisma: PrismaClient,
   clerkUserId: string,
@@ -405,6 +467,7 @@ export async function ensureHolderDemoForClerkUser(
     await seedHolderDemoAssets(prisma, org.id, holder);
   } else {
     await ensureHolderAccessEvents(prisma, org.id, holder.id);
+    await ensureComplianceRecordsForUser(prisma, org.id, holder.id);
   }
 
   const membership = await prisma.membership.findUnique({
@@ -495,6 +558,77 @@ export async function seedOrgAdminForClerkUser(
   return { userId: user.id, clerkUserId };
 }
 
+async function assignPlatformAdminRole(prisma: PrismaClient, userId: string) {
+  const role = await prisma.role.findUniqueOrThrow({ where: { key: NoaRole.PLATFORM_ADMIN } });
+
+  await prisma.user.update({
+    where: { id: userId },
+    data: { isPlatformAdmin: true },
+  });
+
+  await prisma.userRole.upsert({
+    where: {
+      userId_roleId_scopeKey: {
+        userId,
+        roleId: role.id,
+        scopeKey: PLATFORM_SCOPE_KEY,
+      },
+    },
+    update: { revokedAt: null, grantedAt: new Date() },
+    create: {
+      userId,
+      roleId: role.id,
+      scopeKey: PLATFORM_SCOPE_KEY,
+    },
+  });
+}
+
+export async function seedPlatformAdminForClerkUser(
+  prisma: PrismaClient,
+  clerkUserId: string,
+) {
+  if (!isValidClerkUserId(clerkUserId) || clerkUserId.startsWith('user_demo_')) {
+    return null;
+  }
+
+  const user = await prisma.user.upsert({
+    where: { clerkUserId },
+    update: { isPlatformAdmin: true },
+    create: {
+      clerkUserId,
+      emailHash: seedEmailHash(clerkUserId),
+      isPlatformAdmin: true,
+    },
+  });
+
+  await assignPlatformAdminRole(prisma, user.id);
+
+  return { userId: user.id, clerkUserId };
+}
+
+export async function seedIntegrationAdminForClerkUser(
+  prisma: PrismaClient,
+  organizationId: string,
+  clerkUserId: string,
+) {
+  if (!isValidClerkUserId(clerkUserId) || clerkUserId.startsWith('user_demo_')) {
+    return null;
+  }
+
+  const user = await prisma.user.upsert({
+    where: { clerkUserId },
+    update: {},
+    create: {
+      clerkUserId,
+      emailHash: seedEmailHash(clerkUserId),
+    },
+  });
+
+  await assignOrgScopedRole(prisma, user.id, organizationId, NoaRole.INTEGRATION_ADMIN);
+
+  return { userId: user.id, clerkUserId };
+}
+
 export async function seedCombinedDemoUser(
   prisma: PrismaClient,
   organizationId: string,
@@ -506,8 +640,14 @@ export async function seedCombinedDemoUser(
 
   const holderDemo = await seedHolderDemoData(prisma, organizationId, clerkUserId);
   const orgAdminDemo = await seedOrgAdminForClerkUser(prisma, organizationId, clerkUserId);
+  const platformAdminDemo = await seedPlatformAdminForClerkUser(prisma, clerkUserId);
+  const integrationAdminDemo = await seedIntegrationAdminForClerkUser(
+    prisma,
+    organizationId,
+    clerkUserId,
+  );
 
-  return { holderDemo, orgAdminDemo, clerkUserId };
+  return { holderDemo, orgAdminDemo, platformAdminDemo, integrationAdminDemo, clerkUserId };
 }
 
 export async function ensureOrgAdminForClerkUser(
@@ -532,7 +672,33 @@ export async function ensureCombinedDemoForClerkUser(
 
   await ensureHolderDemoForClerkUser(prisma, clerkUserId);
   await ensureOrgAdminForClerkUser(prisma, clerkUserId);
+  await ensurePlatformAdminForClerkUser(prisma, clerkUserId);
+  await ensureIntegrationAdminForClerkUser(prisma, clerkUserId);
   await ensureHolderAccessEventsForClerkUser(prisma, clerkUserId);
+  await ensureComplianceRecordsForClerkUser(prisma, clerkUserId);
+}
+
+export async function ensureIntegrationAdminForClerkUser(
+  prisma: PrismaClient,
+  clerkUserId: string,
+) {
+  if (process.env.NODE_ENV === 'production') return;
+  if (clerkUserId.startsWith('user_demo_')) return;
+
+  const org = await prisma.organization.findUnique({ where: { slug: 'demo-org' } });
+  if (!org) return;
+
+  await seedIntegrationAdminForClerkUser(prisma, org.id, clerkUserId);
+}
+
+export async function ensurePlatformAdminForClerkUser(
+  prisma: PrismaClient,
+  clerkUserId: string,
+) {
+  if (process.env.NODE_ENV === 'production') return;
+  if (clerkUserId.startsWith('user_demo_')) return;
+
+  await seedPlatformAdminForClerkUser(prisma, clerkUserId);
 }
 
 export async function ensureHolderAccessEventsForClerkUser(
@@ -550,6 +716,22 @@ export async function ensureHolderAccessEventsForClerkUser(
 
   await ensureHolderAccessEvents(prisma, org.id, holder.id);
   await reconcileDevIngestEventsForUser(prisma, org.id, holder.id);
+}
+
+export async function ensureComplianceRecordsForClerkUser(
+  prisma: PrismaClient,
+  clerkUserId: string,
+) {
+  if (process.env.NODE_ENV === 'production') return;
+  if (clerkUserId.startsWith('user_demo_')) return;
+
+  const org = await prisma.organization.findUnique({ where: { slug: 'demo-org' } });
+  if (!org) return;
+
+  const holder = await prisma.user.findUnique({ where: { clerkUserId } });
+  if (!holder) return;
+
+  await ensureComplianceRecordsForUser(prisma, org.id, holder.id);
 }
 
 /** In dev, attach recent mock webhook events that used the demo badge but wrong user row. */

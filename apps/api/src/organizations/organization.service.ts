@@ -1,9 +1,20 @@
 import { BadRequestException, ForbiddenException, Injectable, NotFoundException } from '@nestjs/common';
-import type { Organization } from '@noa/database';
+import { Prisma, type Organization } from '@noa/database';
 import { assertNoaRoleKey, NoaRole, parseOrganizationSettings, type NoaRoleKey } from '@noa/domain';
 import { PrismaService } from '../prisma/prisma.service';
 import { AuditService } from '../audit/audit.service';
 import { RbacService } from '../auth/rbac.service';
+
+export type PlatformOrganizationSearchField = 'all' | 'name' | 'clerkOrgId';
+export type PlatformOrganizationFilter = 'all' | 'hasMembers' | 'hasCredentials' | 'hasProviders' | 'missingClerkOrg';
+export type PlatformOrganizationSort = 'name' | 'updated';
+
+export interface ListPlatformOrganizationsQuery {
+  search?: string;
+  field?: PlatformOrganizationSearchField;
+  filter?: PlatformOrganizationFilter;
+  sort?: PlatformOrganizationSort;
+}
 
 const ASSIGNABLE_ORG_ROLES: NoaRoleKey[] = [
   NoaRole.ORG_ADMIN,
@@ -74,6 +85,106 @@ export class OrganizationService {
       where: { organizationId, status: { not: 'removed' } },
       include: { user: { select: { id: true, clerkUserId: true, isDisabled: true } } },
     });
+  }
+
+  async listComplianceRecords(organizationId: string, userId: string, actorUserId: string, isPlatformAdmin: boolean) {
+    await this.assertOrgAccess(actorUserId, organizationId, isPlatformAdmin);
+
+    const membership = await this.prisma.membership.findFirst({
+      where: { organizationId, userId, status: { not: 'removed' } },
+      select: { id: true },
+    });
+    if (!membership) throw new NotFoundException('Member not found in this organization');
+
+    const records = await this.prisma.complianceRecord.findMany({
+      where: { organizationId, userId },
+      orderBy: [{ recordType: 'asc' }, { expiresAt: 'asc' }, { title: 'asc' }],
+      select: {
+        id: true,
+        userId: true,
+        organizationId: true,
+        recordType: true,
+        title: true,
+        status: true,
+        issuedAt: true,
+        expiresAt: true,
+        evidenceUrl: true,
+        source: true,
+      },
+    });
+
+    return records.map((record) => ({
+      ...record,
+      issuedAt: record.issuedAt?.toISOString() ?? null,
+      expiresAt: record.expiresAt?.toISOString() ?? null,
+    }));
+  }
+
+  async listPlatformOrganizations(options?: ListPlatformOrganizationsQuery | string) {
+    const params: ListPlatformOrganizationsQuery =
+      typeof options === 'string' ? { search: options } : options ?? {};
+    const query = params.search?.trim();
+    const field = params.field ?? 'all';
+    const filter = params.filter ?? 'all';
+    const sort = params.sort ?? 'name';
+
+    const where: Prisma.OrganizationWhereInput = {};
+
+    if (query) {
+      if (field === 'name') {
+        where.name = { contains: query, mode: 'insensitive' };
+      } else if (field === 'clerkOrgId') {
+        where.clerkOrgId = { contains: query, mode: 'insensitive' };
+      } else {
+        where.OR = [
+          { name: { contains: query, mode: 'insensitive' } },
+          { clerkOrgId: { contains: query, mode: 'insensitive' } },
+        ];
+      }
+    }
+
+    if (filter === 'hasMembers') {
+      where.memberships = { some: { status: { not: 'removed' } } };
+    } else if (filter === 'hasCredentials') {
+      where.credentials = { some: {} };
+    } else if (filter === 'hasProviders') {
+      where.providerConnections = { some: {} };
+    } else if (filter === 'missingClerkOrg') {
+      where.clerkOrgId = null;
+    }
+
+    const organizations = await this.prisma.organization.findMany({
+      where: Object.keys(where).length > 0 ? where : undefined,
+      orderBy: sort === 'updated' ? { updatedAt: 'desc' } : { name: 'asc' },
+      take: 50,
+      select: {
+        id: true,
+        name: true,
+        slug: true,
+        clerkOrgId: true,
+        createdAt: true,
+        updatedAt: true,
+        _count: {
+          select: {
+            memberships: { where: { status: { not: 'removed' } } },
+            credentials: true,
+            providerConnections: true,
+          },
+        },
+      },
+    });
+
+    return organizations.map((org) => ({
+      id: org.id,
+      name: org.name,
+      slug: org.slug,
+      clerkOrgId: org.clerkOrgId,
+      createdAt: org.createdAt.toISOString(),
+      updatedAt: org.updatedAt.toISOString(),
+      memberCount: org._count.memberships,
+      credentialCount: org._count.credentials,
+      providerConnectionCount: org._count.providerConnections,
+    }));
   }
 
   async inviteMember(organizationId: string, userId: string, role: string, actorUserId: string) {

@@ -16,38 +16,47 @@ Two-week cadence for Noa. Lightweight — suitable for solo or pair work.
 
 ## Milestones
 
-| Milestone | Target outcome | Due (approx) |
-|-----------|----------------|--------------|
-| **M1: Holder dashboard usable** | Demo-ready holder UX, local seed data | Sprint 1 |
-| **M2: Org admin read-only** | Org Admin read-only dashboards | Sprint 2 |
-| **M3: Webhook ingest demo** | Mock HID webhook → credential in UI | Sprint 3 ✓ |
-| **M4: Holder trust (GDPR & privacy)** | Export UX + deletion flow | Sprint 4 |
-| **M5: Design system & light/dark UI** | Tokens, theme toggle, marketing parity | Sprint 5 ✓ |
-| **M6: Site access history** | Access events + org access-decision demo | Sprint 6 ✓ |
+| Milestone | Target outcome | Status |
+|-----------|----------------|--------|
+| **M1–M6** | Holder, org admin, PACS, GDPR, design system, access history | Done |
+| **M7: Learning records** | Training/cert on access decision panel | Done (PR #57) |
+| **M8: Wallet pass preview** | Holder wallet preview stub | Done (PR #57) |
+| **M9: Platform org list** | Platform admin org search/list | Done (PR #57) |
+| **M10: Integration admin stub** | Test-mode provider validation | Done (PR #57) |
+| **M11: CI quality split** | Separate lint and build jobs | Done (PR #57) |
+| **M12: Mobile smoke screen** | Expo holder app shell | **Current** (#73) |
+| **M13: Revocation workflow** | Security admin revocation orchestration | Planned (#74) |
+| **M14: Compliance export** | Export job + download | Planned (#75) |
+| **M15: API scoping tests** | Cross-org integration tests | Planned (#76) |
+| **M16: Ops docs** | Clerk runbook + roadmap docs | Planned (#77) |
 
 View on GitHub: https://github.com/jeffilola/noa/milestones
+
+## Current sprint
+
+**Sprint 12 · M12: Expo mobile smoke screen**
+
+Focus: [#73](https://github.com/jeffilola/noa/issues/73) — scaffold `apps/mobile`, one signed-in smoke screen, README + test doc.
+
+**Up next (same epic batch):** M13 → M16 per [backlog.md](./backlog.md).
 
 ## Planning checklist (Day 1)
 
 1. **Review** [backlog.md](./backlog.md) and open milestone on GitHub.
 2. **Close** or carry over unfinished issues from last sprint.
-3. **Select** 5–10 issues for this sprint (total size ≈ one milestone slice).
-4. **Refine** each issue:
-   - User story or bug summary
-   - Acceptance criteria (checkboxes)
-   - Size: S / M / L
-   - Epic label
+3. **Select** issues for this sprint (total size ≈ one milestone slice).
+4. **Refine** each issue: user story, acceptance criteria, size, epic label.
 5. **Move** selected issues to **Ready** on the project board.
-6. **Pick** the first issue → **In Progress** → create branch `feature/…` or `fix/…`.
+6. **Pick** the first issue → **In Progress** → branch `feature/m12-expo-smoke`.
 
 ## Size guide
 
 | Size | Guide | Examples |
 |------|-------|----------|
-| **S** | < 1 day, one file or small UI | Copy, nav fix, empty state |
-| **M** | 1–3 days, API + UI slice | Devices panel, org users list |
-| **L** | 3–5 days, multiple packages | Webhook ingest E2E, staging env |
-| **XL** | > 5 days | Split into smaller issues or spike first |
+| **S** | < 1 day | Copy, nav fix, runbook |
+| **M** | 1–3 days | API + UI slice, Expo shell |
+| **L** | 3–5 days | Export job E2E, staging |
+| **XL** | > 5 days | Split into smaller issues |
 
 ## During the sprint
 
@@ -55,27 +64,15 @@ View on GitHub: https://github.com/jeffilola/noa/milestones
 Backlog → Ready → In Progress → Review (PR open) → Done
 ```
 
-- One PR per issue when possible.
-- CI must pass (`build` check).
+- One PR per milestone when possible.
+- CI must pass (`lint` + `build`).
 - Merge only when [Definition of Done](./definition-of-done.md) is met.
 
 ## End of sprint
 
-1. Demo what merged (even if partial).
-2. Write a demo note: `docs/demos/YYYY-MM-DD.md` (copy [template](./demos/TEMPLATE.md)).
-3. Move incomplete **Ready** / **In Progress** items back to **Backlog** or next milestone.
-4. Optional retro if anything felt slow or unclear.
+1. Demo what merged.
+2. Write a demo note: `docs/demos/YYYY-MM-DD.md`.
+3. Close milestone issues on GitHub.
+4. Optional retro.
 
-## Current sprint
-
-**Sprint 7 · planning (M7 not scheduled yet)**
-
-M6 shipped in PR #49 (2026-06-10). All milestone issues #44–#48 closed.
-
-**Before Day 1 planning:** run the [M6 demo script](./demos/hero-contractor-access.md) using [2026-06-10 demo note](./demos/2026-06-10.md).
-
-**Day 1 checklist:** review [backlog.md](./backlog.md) → create **M7** milestone + issues → move to **Ready** → branch `feature/m7-…`.
-
-**Post-M6 follow-up:** org **Site access** sidebar visible after `@noa/domain` rebuild (see PR for nav/qa fix).
-
-Update this section at each planning session.
+Last updated: 2026-06-16

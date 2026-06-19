@@ -1,4 +1,4 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
+import { BadRequestException, Injectable, NotFoundException } from '@nestjs/common';
 import { ConnectionStatus, type CredentialProvider, type OrganizationProviderConnection } from '@noa/database';
 import { EncryptionService } from '@noa/encryption';
 import { providerIntegrationService } from '@noa/integrations';
@@ -62,6 +62,33 @@ export class IntegrationsService {
     });
 
     return connection;
+  }
+
+  validateTestModeConnection(body: {
+    providerId?: string;
+    apiBaseUrl?: string;
+    mode?: string;
+  }) {
+    const providerId = body.providerId?.trim();
+    const apiBaseUrl = body.apiBaseUrl?.trim();
+
+    if (!providerId) {
+      throw new BadRequestException('providerId is required');
+    }
+    if (!apiBaseUrl) {
+      throw new BadRequestException('apiBaseUrl is required');
+    }
+    if (!apiBaseUrl.startsWith('https://')) {
+      throw new BadRequestException('apiBaseUrl must use https://');
+    }
+
+    return {
+      ok: true,
+      mode: body.mode === 'test' ? 'test' : 'stub',
+      providerId,
+      apiBaseUrl,
+      message: 'Connection settings validated in test mode. No provider keys were stored.',
+    };
   }
 
   async testConnection(organizationId: string, connectionId: string, actorUserId: string) {

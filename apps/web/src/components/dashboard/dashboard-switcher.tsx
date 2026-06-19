@@ -3,11 +3,9 @@
 import Link from 'next/link';
 import { usePathname, useRouter } from 'next/navigation';
 import { useNoaColors } from '@/hooks/use-noa-colors';
+import type { DashboardSwitcherLink } from '@/lib/dashboard-switcher';
 
-export interface DashboardSwitcherLink {
-  label: string;
-  basePath: string;
-}
+export type { DashboardSwitcherLink } from '@/lib/dashboard-switcher';
 
 export function DashboardSwitcher({ links }: { links: DashboardSwitcherLink[] }) {
   const pathname = usePathname();
@@ -21,7 +19,7 @@ export function DashboardSwitcher({ links }: { links: DashboardSwitcherLink[] })
   if (links.length === 1) {
     return (
       <Link
-        href={links[0].basePath}
+        href={links[0].href}
         className="rounded-full px-5 py-2 text-sm font-semibold no-underline transition-opacity hover:opacity-90"
         style={{ background: c.accent, color: c.onAccent }}
       >
@@ -41,7 +39,10 @@ export function DashboardSwitcher({ links }: { links: DashboardSwitcherLink[] })
       <select
         className="dashboard-switcher__select"
         value={current}
-        onChange={(event) => router.push(event.target.value)}
+        onChange={(event) => {
+          const next = links.find((link) => link.basePath === event.target.value);
+          router.push(next?.href ?? event.target.value);
+        }}
       >
         {links.map((link) => (
           <option key={link.basePath} value={link.basePath}>

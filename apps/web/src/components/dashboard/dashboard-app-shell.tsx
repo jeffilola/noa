@@ -2,7 +2,7 @@
 
 import type { ReactNode } from 'react';
 import { AppNav } from '@/components/app-nav';
-import type { DashboardSwitcherLink } from '@/components/dashboard/dashboard-switcher';
+import type { DashboardSwitcherLink } from '@/lib/dashboard-switcher';
 import { SidebarProvider, useSidebar } from '@/components/dashboard/sidebar-context';
 
 const MOBILE_DRAWER_TOP = 'calc(3.5rem + env(safe-area-inset-top, 0px))';
