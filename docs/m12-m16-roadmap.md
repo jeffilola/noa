@@ -4,7 +4,7 @@ Next milestone batch after M7–M11 (merged in PR #57).
 
 | Milestone | Issue | What to build | Size |
 |-----------|-------|---------------|------|
-| **M12** | [#73](https://github.com/jeffilola/noa/issues/73) | Expo app in `apps/mobile`, one holder smoke screen, README | M |
+| **M12** | [#73](https://github.com/jeffilola/noa/issues/73) | Expo holder smoke screen in `apps/wallet-mobile` | M |
 | **M13** | [#74](https://github.com/jeffilola/noa/issues/74) | Revocation request UI + API (orchestration only, no live PACS) | M |
 | **M14** | [#75](https://github.com/jeffilola/noa/issues/75) | Compliance export job create/poll/download | L |
 | **M15** | [#76](https://github.com/jeffilola/noa/issues/76) | Integration tests for `/users/me` and `/credentials` scoping | M |
