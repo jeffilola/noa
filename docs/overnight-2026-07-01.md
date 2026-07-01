@@ -4,7 +4,7 @@
 
 - Current automation branch: `cursor/noa-milestone-preparation-6dc8`
 - M7-M11 implementation PR: https://github.com/jeffilola/noa/pull/57 — merged 2026-06-19.
-- Follow-up documentation PR: pending from `cursor/noa-milestone-preparation-6dc8`.
+- Follow-up documentation PR: https://github.com/jeffilola/noa/pull/83.
 - Focused historical branches still exist on origin:
   - `feature/m7-learning-records`
   - `feature/m8-wallet-pass-preview`
