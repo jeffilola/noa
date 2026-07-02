@@ -23,7 +23,7 @@ scoped to the current docs/status branch.
 | M9 platform admin org list | Merged | PR #57, issue #70 closed |
 | M10 integration admin stub | Merged | PR #57, issue #71 closed |
 | M11 CI quality split | Merged | PR #57, issue #72 closed |
-| Current review/status PR | Opened by this run | Pending automation PR URL |
+| Current review/status PR | Opened by this run | PR #84 |
 
 ## Code spot-checks
 
