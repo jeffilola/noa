@@ -48,7 +48,17 @@ pnpm --filter @noa/web build
 
 Results from this run:
 
-- Pending: tests had not yet been rerun when this report was first committed.
+- `pnpm install --frozen-lockfile` passed after the checkout reported missing
+  `node_modules`.
+- `pnpm qa:prepare` failed before migrations/seeding because Docker is not running in
+  this cloud environment.
+- `pnpm --filter @noa/api test` passed: 12 tests discovered, 2 passed, 10
+  DB-backed tests skipped because the database was unavailable.
+- `pnpm --filter @noa/web build` passed.
+- Extra M11 confidence checks:
+  - `pnpm lint` passed.
+  - `pnpm build` passed across all 9 workspace packages.
+  - `pnpm test` passed across all 10 test tasks, with the same 10 DB-backed API skips.
 
 `manageCheckRun` was not available in the current automation MCP toolset, so no
 aggregate check run was reported.
