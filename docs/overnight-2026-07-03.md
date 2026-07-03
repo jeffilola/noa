@@ -6,7 +6,7 @@
 - Base branch: `main`
 - Branch start point: `cae785f` (`origin/main`)
 - M7-M11 implementation PR: https://github.com/jeffilola/noa/pull/57
-- Current status PR: to be opened from this branch after this report is committed.
+- Current status PR: https://github.com/jeffilola/noa/pull/85
 
 The original M7-M11 sprint work has already merged to `main` in PR #57. No new
 M7-M11 feature branches or feature PRs were created tonight because the feature
