@@ -6,7 +6,7 @@ Cron run: 2026-07-05 23:02 UTC
 
 - M7-M11 implementation PR: https://github.com/jeffilola/noa/pull/57 - merged into `main` on 2026-06-19.
 - Most recent prior overnight verification PR: https://github.com/jeffilola/noa/pull/86 - open, with `lint` and `build` checks passing.
-- Current overnight verification PR: to be opened from `cursor/noa-milestone-preparation-a82f` after this note is committed.
+- Current overnight verification PR: https://github.com/jeffilola/noa/pull/87.
 
 Separate M7-M11 feature PRs are no longer applicable because the combined M7-M11 milestone batch is already merged on `main`. No PRs were merged, no force-push was used, and no secrets were added.
 
