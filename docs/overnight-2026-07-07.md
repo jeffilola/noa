@@ -12,7 +12,7 @@
 | Scope | PR | Status |
 |-------|----|--------|
 | M7–M11 combined implementation | [#57 — Prepare M7-M11 milestone review slices](https://github.com/jeffilola/noa/pull/57) | Merged to `main` |
-| 2026-07-07 overnight verification note | This docs PR | Opened for review by automation |
+| 2026-07-07 overnight verification note | [#90 — Record 2026-07-07 overnight milestone status](https://github.com/jeffilola/noa/pull/90) | Open for review; CI `lint` and `build` passed |
 
 ## Milestone status
 
@@ -36,6 +36,7 @@
 | `pnpm build` | Pass | Full workspace build passed. |
 | `pnpm test` | Pass | 10 turbo tasks passed; API DB-backed tests skipped for unavailable database. |
 | `gh pr checks 57 --watch=false` | Pass | PR #57 has green `lint` and `build`; automation/label jobs are pass or skipped. |
+| `gh pr checks 90 --watch=false` | Pass | PR #90 has green `lint` and `build`; automation/label jobs are pass or skipped. |
 
 ## Prioritized manual E2E checklist for morning review
 
