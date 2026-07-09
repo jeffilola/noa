@@ -107,6 +107,7 @@ export interface ComplianceRecord {
   expiresAt: string | null;
   evidenceUrl: string | null;
   source: string;
+  organization?: OrgSummary;
 }
 
 function orgFromMemberships(memberships: UserMembership[]): OrgSummary | null {
@@ -286,6 +287,15 @@ export async function fetchHolderAccessEvents(limit = 50) {
   return {
     events: events ?? [],
     apiReachable: events !== null,
+  };
+}
+
+export async function fetchHolderComplianceRecords() {
+  const records = await apiFetch<ComplianceRecord[]>('/users/me/compliance-records').catch(() => null);
+
+  return {
+    records: records ?? [],
+    apiReachable: records !== null,
   };
 }
 

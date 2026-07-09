@@ -23,6 +23,7 @@ export const DASHBOARD_NAVIGATION: Record<NoaRoleKey, DashboardNavConfig> = {
       { href: '/user/identity', label: 'My Identity', requiredPermission: Permission.PROFILE_VIEW },
       { href: '/user/credentials', label: 'My Credentials', requiredPermission: Permission.CREDENTIALS_VIEW_OWN },
       { href: '/user/organizations', label: 'Organizations', requiredPermission: Permission.ORGANIZATIONS_VIEW },
+      { href: '/user/compliance', label: 'Training & certs', requiredPermission: Permission.ORGANIZATIONS_VIEW },
       { href: '/user/devices', label: 'Devices', requiredPermission: Permission.DEVICES_MANAGE },
       { href: '/user/security', label: 'Security', requiredPermission: Permission.PRIVACY_SETTINGS },
     ],
