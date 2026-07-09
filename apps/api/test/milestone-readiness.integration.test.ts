@@ -7,12 +7,14 @@ import { AuditService } from '../src/audit/audit.service';
 import { RbacService } from '../src/auth/rbac.service';
 import { IntegrationsService } from '../src/integrations/integrations.service';
 import { OrganizationService } from '../src/organizations/organization.service';
+import { UserService } from '../src/users/user.service';
 
 const prisma = new PrismaClient();
 const audit = new AuditService(prisma as never);
 const rbac = new RbacService(prisma as never);
 const orgs = new OrganizationService(prisma as never, audit, rbac);
 const integrations = new IntegrationsService(prisma as never, audit, {} as never);
+const users = new UserService({} as never, prisma as never);
 
 const TEST_ORG_ID = 'test-org-milestone-readiness';
 const TEST_USER_ID = 'test-user-milestone-readiness';
@@ -88,6 +90,18 @@ describe('Milestone readiness services', () => {
     assert.equal(records.length, 2);
     assert.ok(records.some((record) => record.recordType === 'training'));
     assert.ok(records.some((record) => record.recordType === 'certification'));
+  });
+
+  it('lists holder compliance records for the signed-in user', async (t) => {
+    if (!dbAvailable) return t.skip('database not available');
+
+    await ensureComplianceRecordsForUser(prisma, TEST_ORG_ID, TEST_USER_ID);
+
+    const records = await users.listComplianceRecords(TEST_USER_ID);
+
+    assert.equal(records.length, 2);
+    assert.ok(records.every((record) => record.userId === TEST_USER_ID));
+    assert.ok(records.every((record) => record.organization?.name === 'Milestone Readiness Org'));
   });
 
   it('lists platform organizations with search counts', async (t) => {
