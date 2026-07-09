@@ -39,6 +39,7 @@ const iconByLabel: Record<string, ElementType> = {
   'Sync Monitoring': FiRefreshCw,
   'Integration Health': FiActivity,
   Organizations: FiGlobe,
+  'Training & certs': FiFileText,
   'System Health': FiActivity,
   Billing: FiSettings,
 };
