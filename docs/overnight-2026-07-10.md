@@ -5,7 +5,7 @@
 - Automation branch: `cursor/noa-milestone-preparation-365f`
 - M7-M11 merged review slice: https://github.com/jeffilola/noa/pull/57
 - Active M7 holder compliance follow-up: https://github.com/jeffilola/noa/pull/91
-- This status-only docs PR: pending creation from this branch.
+- This status-only docs PR: https://github.com/jeffilola/noa/pull/92
 
 ## Milestone and issue status
 
