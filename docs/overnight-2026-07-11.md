@@ -20,13 +20,24 @@
 
 ## Automated checks from this run
 
-Validation commands will be run after this document is committed and pushed from the designated automation branch.
-
 ```bash
 pnpm qa:prepare
+# Blocked: Docker is not running in Cursor Cloud, so the Postgres QA stack could not start.
+
+pnpm install --frozen-lockfile
+# Passed; node_modules was missing before install.
+
 pnpm --filter @noa/api test
+# Passed: 12 tests total, 2 passed, 10 DB-backed tests skipped because Postgres was unavailable.
+
 pnpm --filter @noa/web build
+# Passed on the merged M7-M11 baseline/status branch.
 ```
+
+Build output for this checkout includes the merged M8-M11 routes such as `/user/wallet`,
+`/platform/organizations`, and `/integrations-admin/providers`. The holder
+`/user/compliance` route is in the open M7 follow-up PR #91, so review that PR before
+running the holder compliance page checklist.
 
 ## Prioritized manual E2E for morning review
 
