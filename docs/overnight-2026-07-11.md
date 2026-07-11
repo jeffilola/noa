@@ -16,7 +16,7 @@
 | M7-M11 baseline | https://github.com/jeffilola/noa/pull/57 | Merged |
 | M7 holder compliance follow-up | https://github.com/jeffilola/noa/pull/91 | Open; CI green |
 | 2026-07-10 status | https://github.com/jeffilola/noa/pull/92 | Open; CI green |
-| 2026-07-11 status | Pending for this branch | Pending |
+| 2026-07-11 status | https://github.com/jeffilola/noa/pull/93 | Open |
 
 ## Automated checks from this run
 
