@@ -7,7 +7,7 @@
 - Requested M7 branch `feature/m7-learning-records`: no PR currently exists for that head branch.
 - M7-M11 milestone implementation PR: https://github.com/jeffilola/noa/pull/57 (merged 2026-06-19).
 - Active M7 follow-up PR: https://github.com/jeffilola/noa/pull/91 (open, clean, GitHub `lint` and `build` checks passing).
-- Today's status PR: pending until this branch is pushed and opened.
+- Today's status PR: https://github.com/jeffilola/noa/pull/96
 
 ## Milestone status
 
@@ -23,6 +23,8 @@ The sprint prompt is stale relative to the repository state:
 
 Open GitHub issues now point at M12-M16 (#73-#77). M7 issues #52-#56 are closed. The available automation tools do not include `manageCheckRun`; aggregate status is reported here and in PR comments instead.
 
+This PR is docs-only and is based on `origin/main`. The holder `/user/compliance` follow-up is intentionally isolated in PR #91; review/test that PR for the M7 holder view checklist.
+
 ## What shipped previously
 
 - M7: persisted compliance records and seeded demo training/certification records for org access decisions.
@@ -34,12 +36,11 @@ Open GitHub issues now point at M12-M16 (#73-#77). M7 issues #52-#56 are closed.
 
 ## Automated test commands
 
-Initial status before rerun:
-
 ```bash
-pnpm qa:prepare                         # pending rerun
-pnpm --filter @noa/api test             # pending rerun
-pnpm --filter @noa/web build            # pending rerun
+pnpm qa:prepare                         # failed: Docker is not running in this cloud environment
+pnpm install --frozen-lockfile           # passed; installed locked workspace dependencies
+pnpm --filter @noa/api test             # passed; 12 tests, 2 pass, 10 DB-backed skips
+pnpm --filter @noa/web build            # passed on the main-baseline docs branch
 ```
 
 ## M7 manual E2E checklist for morning review
