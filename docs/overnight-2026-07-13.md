@@ -7,7 +7,7 @@
 - Requested M7 branch `feature/m7-learning-records`: no PR currently exists for that head branch.
 - M7-M11 milestone implementation PR: https://github.com/jeffilola/noa/pull/57 (merged 2026-06-19).
 - Active M7 follow-up PR: https://github.com/jeffilola/noa/pull/91 (open, clean, GitHub `lint` and `build` checks passing).
-- Today's status PR: https://github.com/jeffilola/noa/pull/96
+- Today's status PR: https://github.com/jeffilola/noa/pull/96 (open, clean, GitHub `lint` and `build` checks passing).
 
 ## Milestone status
 
