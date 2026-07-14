@@ -10,8 +10,8 @@
 
 | Check name | What it does |
 |------------|----------------|
-| **lint** | Installs deps, generates Prisma client, runs `pnpm lint` |
-| **build** | Starts Postgres, runs migrations, builds the repo, runs tests |
+| **lint** | Installs deps and runs `pnpm lint` |
+| **build** | Starts Postgres, generates Prisma client, runs migrations, builds the repo, runs tests |
 
 ---
 
