@@ -31,6 +31,7 @@ Two-week cadence for Noa. Lightweight — suitable for solo or pair work.
 | **M16: Ops docs** | Clerk runbook + roadmap docs | Planned (#77) |
 
 View on GitHub: https://github.com/jeffilola/noa/milestones
+Latest M7-M11 overnight status: [overnight-2026-07-14.md](./overnight-2026-07-14.md)
 
 ## Current sprint
 
@@ -75,4 +76,4 @@ Backlog → Ready → In Progress → Review (PR open) → Done
 3. Close milestone issues on GitHub.
 4. Optional retro.
 
-Last updated: 2026-06-16
+Last updated: 2026-07-14
