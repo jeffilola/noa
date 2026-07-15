@@ -21,7 +21,7 @@ No milestone or issue writes were performed in this run because the available Gi
 | M9 platform org list | Done in merged PR #57 | `/platform/organizations`, docs/m9-testing.md |
 | M10 integration admin stub | Done in merged PR #57 | `/integrations-admin/providers`, docs/m10-testing.md |
 | M11 CI quality split | Done in merged PR #57 | Separate `lint` and `build` jobs, docs/m11-testing.md |
-| 2026-07-15 status PR | Opened from automation branch | Tracks this report only |
+| 2026-07-15 status PR | Open and CI green | https://github.com/jeffilola/noa/pull/98 |
 
 ## Automated checks run
 
@@ -39,6 +39,7 @@ Notes:
 - The current `main` web build route list does not include `/user/compliance`; PR #91 adds that route, holder sidebar nav, and `GET /users/me/compliance-records`.
 - PR #57 GitHub CI shows `lint` and `build` success on the merged M7-M11 bundle.
 - PR #91 GitHub CI shows `lint` and `build` success for the M7 holder compliance closeout.
+- PR #98 GitHub CI shows `lint` and `build` success for this documentation/status PR.
 
 ## M7 manual E2E checklist with pass/fail notes
 
