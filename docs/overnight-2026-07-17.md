@@ -10,7 +10,7 @@ The cron prompt for M7–M11 is stale in the current repository state: PR #57 al
 |-------|----|--------|-------|
 | M7–M11 implementation | https://github.com/jeffilola/noa/pull/57 | Merged | Learning records, wallet preview, platform org list, integration admin stub, and CI split are on `main`. |
 | M7 holder compliance follow-up | https://github.com/jeffilola/noa/pull/91 | Open draft | Earlier follow-up branch for `/user/compliance`; this run reapplies the relevant code to the current automation branch. |
-| 2026-07-17 overnight closeout | Pending automation PR | In progress | Adds holder compliance records API/page/sidebar link plus this status note. |
+| 2026-07-17 overnight closeout | https://github.com/jeffilola/noa/pull/99 | Open for review | Adds holder compliance records API/page/sidebar link plus this status note. |
 
 Milestones M7, M8, M9, M10, and M11 are closed on GitHub. Current open milestone work starts at M12 (#73) through M16 (#77).
 
