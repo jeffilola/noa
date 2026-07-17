@@ -1,5 +1,6 @@
 import {
   FiCreditCard,
+  FiFileText,
   FiHome,
   FiMapPin,
   FiShield,
@@ -55,5 +56,6 @@ export const userNavLinks = [
   { href: '/user/identity', label: 'My Identity', subNav: identitySubNav, icon: FiUser },
   { href: '/user/wallet', label: 'Wallet preview', icon: FiCreditCard },
   { href: '/user/access', label: 'Site access', icon: FiMapPin },
+  { href: '/user/compliance', label: 'Training & certs', icon: FiFileText },
   { href: '/user/security', label: 'Security', icon: FiShield },
 ] as const;

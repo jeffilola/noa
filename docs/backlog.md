@@ -25,6 +25,8 @@ Legend: **S** / **M** / **L** size · **Epic** tag · Milestone when scheduled
 
 Merged in PR #57. Learning records, wallet preview stub, platform org list, integration test-mode form, CI lint/build split.
 
+2026-07-17 overnight closeout: holder Training & certs route/API follow-up prepared on a review PR so the M7 testing guide's `/user/compliance` checklist is covered before morning review.
+
 | Milestone | Theme | Test guide |
 |-----------|-------|------------|
 | M7 | Learning records on access decisions | [m7-testing.md](./m7-testing.md) |
@@ -98,4 +100,4 @@ Issues #1–#4 merged.
 | `epic:infra` | CI, staging, observability |
 | `epic:quality` | Tests, DoD, tooling |
 
-Last updated: 2026-06-16
+Last updated: 2026-07-17
