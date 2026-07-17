@@ -1,6 +1,10 @@
 import { Body, Controller, Get, Patch, Query, Req, UseGuards } from '@nestjs/common';
 import type { Request } from 'express';
-import { ensureCombinedDemoForClerkUser, ensureHolderAccessEventsForClerkUser } from '@noa/database';
+import {
+  ensureCombinedDemoForClerkUser,
+  ensureComplianceRecordsForClerkUser,
+  ensureHolderAccessEventsForClerkUser,
+} from '@noa/database';
 import { AccessEventService } from '../access-events/access-event.service';
 import { AccessService } from '../auth/access.service';
 import { RbacService } from '../auth/rbac.service';
@@ -35,6 +39,22 @@ export class UserController {
   @Get('me/memberships')
   listMemberships(@Req() req: Request) {
     return this.users.listMemberships(req.auth!.userId);
+  }
+
+  @Get('me/compliance-records')
+  async listMyComplianceRecords(@Req() req: Request) {
+    const auth = req.auth!;
+
+    if (process.env.NODE_ENV !== 'production') {
+      await ensureCombinedDemoForClerkUser(this.prisma, auth.clerkUserId).catch((error) => {
+        console.warn('[UserController] Dev holder demo bootstrap failed:', error);
+      });
+      await ensureComplianceRecordsForClerkUser(this.prisma, auth.clerkUserId).catch((error) => {
+        console.warn('[UserController] Dev compliance bootstrap failed:', error);
+      });
+    }
+
+    return this.users.listComplianceRecords(auth.userId);
   }
 
   @Get('me/access-events')

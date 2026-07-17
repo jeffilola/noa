@@ -70,6 +70,16 @@ describe('dashboard navigation', () => {
     assert.equal(dashboards.length, 2);
     assert.ok(dashboards.some((dashboard) => dashboard.basePath === '/org'));
   });
+
+  it('links identity holders to their training and certification records', () => {
+    const holderNav = DASHBOARD_NAVIGATION[NoaRole.IDENTITY_HOLDER];
+
+    assert.ok(
+      holderNav.items.some(
+        (item) => item.href === '/user/compliance' && item.label === 'Training & certs',
+      ),
+    );
+  });
 });
 
 describe('role permission catalog', () => {
