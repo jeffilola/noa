@@ -20,8 +20,9 @@ Milestones M7, M8, M9, M10, and M11 are closed on GitHub. Current open milestone
 |---------|--------|-------|
 | `pnpm install --frozen-lockfile` | Pass | Installed all 10 workspace projects from the lockfile. |
 | `pnpm qa:prepare` | Blocked | Docker daemon is unavailable in this cloud environment: `Docker is not running`. Run locally with Docker before manual browser QA. |
-| `pnpm --filter @noa/api test` | Pass | 12 tests total; 2 pass, 10 DB-backed tests skipped because the database is unavailable. |
-| `pnpm --filter @noa/web build` | Pass after workspace prebuild | Initial direct web build could not resolve `@noa/domain` until `pnpm --filter @noa/domain build` generated the workspace package artifact; retry completed successfully. |
+| `pnpm --filter @noa/api test` | Pass | 13 tests total; 2 pass, 11 DB-backed tests skipped because the database is unavailable. The new holder compliance records test is present and DB-gated. |
+| `pnpm --filter @noa/domain test` | Pass | 13 tests pass, including the navigation assertion for the holder Training & certs link. |
+| `pnpm --filter @noa/web build` | Pass | Completed successfully after the API test built workspace packages; build output includes `/user/compliance`. |
 
 `manageCheckRun` is not available in the Cursor Automation Tools MCP server for this run.
 
