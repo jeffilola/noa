@@ -5,7 +5,7 @@
 - Automation branch: `cursor/noa-milestone-preparation-d25f`
 - M7-M11 implementation PR: https://github.com/jeffilola/noa/pull/57 (merged)
 - Active M7 holder compliance follow-up PR: https://github.com/jeffilola/noa/pull/99 (open, draft, CI `lint` and `build` green)
-- This status-doc PR: pending at the time of first commit
+- This status-doc PR: https://github.com/jeffilola/noa/pull/100
 - Open product issues are M12-M16 (#73-#77); M7-M11 issues (#52-#56, #69-#72) are already closed from the merged milestone work.
 
 ## What shipped / review posture
