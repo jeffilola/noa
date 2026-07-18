@@ -19,7 +19,7 @@ Two-week cadence for Noa. Lightweight — suitable for solo or pair work.
 | Milestone | Target outcome | Status |
 |-----------|----------------|--------|
 | **M1–M6** | Holder, org admin, PACS, GDPR, design system, access history | Done |
-| **M7: Learning records** | Training/cert on access decision panel | Done (PR #57) |
+| **M7: Learning records** | Training/cert on access decision panel | Done (PR #57); holder page follow-up in PR #99 |
 | **M8: Wallet pass preview** | Holder wallet preview stub | Done (PR #57) |
 | **M9: Platform org list** | Platform admin org search/list | Done (PR #57) |
 | **M10: Integration admin stub** | Test-mode provider validation | Done (PR #57) |
@@ -31,6 +31,8 @@ Two-week cadence for Noa. Lightweight — suitable for solo or pair work.
 | **M16: Ops docs** | Clerk runbook + roadmap docs | Planned (#77) |
 
 View on GitHub: https://github.com/jeffilola/noa/milestones
+
+Latest overnight status: [overnight-2026-07-18.md](./overnight-2026-07-18.md)
 
 ## Current sprint
 
@@ -75,4 +77,4 @@ Backlog → Ready → In Progress → Review (PR open) → Done
 3. Close milestone issues on GitHub.
 4. Optional retro.
 
-Last updated: 2026-06-16
+Last updated: 2026-07-18
