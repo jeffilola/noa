@@ -28,17 +28,17 @@ This document is the July 19 review packet for the morning handoff. It avoids du
 
 ## Automated validation
 
-> Results will be filled in after this initial status commit is pushed, per the branch workflow requirement to commit before testing.
-
 | Command | Result | Notes |
 |---------|--------|-------|
-| `pnpm qa:prepare` | Pending | Requires Docker/Postgres. |
-| `pnpm --filter @noa/api test` | Pending | Run on the current main-baseline status branch. |
-| `pnpm --filter @noa/web build` | Pending | Run on the current main-baseline status branch. |
-| PR #99 `pnpm qa:prepare` | Pending | Run in a detached worktree for the active M7 holder follow-up. |
-| PR #99 `pnpm --filter @noa/api test` | Pending | Confirms M7 API follow-up branch remains healthy. |
-| PR #99 `pnpm --filter @noa/domain test` | Pending | Confirms domain package remains healthy. |
-| PR #99 `pnpm --filter @noa/web build` | Pending | Must include `/user/compliance`. |
+| `pnpm install --frozen-lockfile` | Pass | Current status branch dependencies installed cleanly. |
+| `pnpm qa:prepare` | Blocked | Docker is not running in this cloud environment; run locally with Docker/Postgres for DB-backed setup. |
+| `pnpm --filter @noa/api test` | Pass | Current main-baseline status branch: 12 tests, 2 pass, 10 DB-backed skips because Postgres is unavailable. |
+| `pnpm --filter @noa/web build` | Pass | Current main-baseline status branch builds successfully; route list does not include `/user/compliance` because that follow-up is still in PR #99. |
+| PR #99 `pnpm install --frozen-lockfile --force` | Pass | Detached worktree required a forced install after an initial no-op install left `node_modules` absent. |
+| PR #99 `pnpm qa:prepare` | Blocked | Same Docker daemon limitation as the current branch. |
+| PR #99 `pnpm --filter @noa/api test` | Pass | 13 tests, 2 pass, 11 DB-backed skips; includes the holder compliance records test but skips it without Postgres. |
+| PR #99 `pnpm --filter @noa/domain test` | Pass | 13 tests pass. |
+| PR #99 `pnpm --filter @noa/web build` | Pass | Route list includes `/user/compliance`. |
 
 ## M7 manual E2E checklist for morning review
 
