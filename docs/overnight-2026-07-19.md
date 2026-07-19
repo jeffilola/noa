@@ -13,7 +13,7 @@ This document is the July 19 review packet for the morning handoff. It avoids du
 | [#57](https://github.com/jeffilola/noa/pull/57) | Merged | M7-M11 milestone implementation slices. |
 | [#99](https://github.com/jeffilola/noa/pull/99) | Open draft, review-ready follow-up | M7 holder compliance page/API/sidebar/dev bootstrap gap from `docs/m7-testing.md`. |
 | [#100](https://github.com/jeffilola/noa/pull/100) | Open draft | July 18 overnight status packet. |
-| Current July 19 status PR | Pending | This review packet and validation summary. |
+| [#101](https://github.com/jeffilola/noa/pull/101) | Open draft | This review packet and validation summary. |
 
 ## Milestone status
 
