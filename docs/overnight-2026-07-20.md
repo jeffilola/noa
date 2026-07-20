@@ -4,7 +4,7 @@
 
 - Automation branch: `cursor/noa-milestone-preparation-2505`
 - Base branch at validation start: `origin/main` (`cae785f`)
-- This status PR: to be filled after PR creation.
+- This status PR: https://github.com/jeffilola/noa/pull/103
 - Main M7-M11 implementation PR: https://github.com/jeffilola/noa/pull/57 (merged 2026-06-19).
 - Active M7 holder follow-up PR: https://github.com/jeffilola/noa/pull/99 (open, CI `lint` and `build` successful).
 - Previous overnight status PR: https://github.com/jeffilola/noa/pull/101 (open, CI `lint` and `build` successful).
