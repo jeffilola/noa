@@ -21,9 +21,10 @@ Legend: **S** / **M** / **L** size · **Epic** tag · Milestone when scheduled
 
 ---
 
-## Done — Sprint 7–11 (M7–M11)
+## Done — Sprint 7-11 (M7-M11)
 
 Merged in PR #57. Learning records, wallet preview stub, platform org list, integration test-mode form, CI lint/build split.
+Active follow-up: PR #99 restores the holder `/user/compliance` page and dev compliance-record bootstrap coverage for M7 review.
 
 | Milestone | Theme | Test guide |
 |-----------|-------|------------|
@@ -33,7 +34,7 @@ Merged in PR #57. Learning records, wallet preview stub, platform org list, inte
 | M10 | Integration admin test-mode form | [m10-testing.md](./m10-testing.md) |
 | M11 | CI lint/build split | [m11-testing.md](./m11-testing.md) |
 
-Issues #52–#56 (M7), #69–#72 (M8–M11). Demo: [demos/2026-06-11-m7.md](./demos/2026-06-11-m7.md).
+Issues #52-#56 (M7), #69-#72 (M8-M11). Demo: [demos/2026-06-11-m7.md](./demos/2026-06-11-m7.md). Latest overnight status: [overnight-2026-07-20.md](./overnight-2026-07-20.md).
 
 ---
 
@@ -98,4 +99,4 @@ Issues #1–#4 merged.
 | `epic:infra` | CI, staging, observability |
 | `epic:quality` | Tests, DoD, tooling |
 
-Last updated: 2026-06-16
+Last updated: 2026-07-20
