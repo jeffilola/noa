@@ -19,7 +19,7 @@ Two-week cadence for Noa. Lightweight — suitable for solo or pair work.
 | Milestone | Target outcome | Status |
 |-----------|----------------|--------|
 | **M1–M6** | Holder, org admin, PACS, GDPR, design system, access history | Done |
-| **M7: Learning records** | Training/cert on access decision panel | Done (PR #57) |
+| **M7: Learning records** | Training/cert on access decision panel | Done (PR #57); holder follow-up in review (PR #99) |
 | **M8: Wallet pass preview** | Holder wallet preview stub | Done (PR #57) |
 | **M9: Platform org list** | Platform admin org search/list | Done (PR #57) |
 | **M10: Integration admin stub** | Test-mode provider validation | Done (PR #57) |
@@ -39,6 +39,8 @@ View on GitHub: https://github.com/jeffilola/noa/milestones
 Focus: [#73](https://github.com/jeffilola/noa/issues/73) — scaffold `apps/mobile`, one signed-in smoke screen, README + test doc.
 
 **Up next (same epic batch):** M13 → M16 per [backlog.md](./backlog.md).
+
+**Latest overnight status:** [2026-07-20](./overnight-2026-07-20.md). M7-M11 remain merged via PR #57; PR #99 is the active M7 holder compliance review follow-up.
 
 ## Planning checklist (Day 1)
 
@@ -75,4 +77,4 @@ Backlog → Ready → In Progress → Review (PR open) → Done
 3. Close milestone issues on GitHub.
 4. Optional retro.
 
-Last updated: 2026-06-16
+Last updated: 2026-07-20
