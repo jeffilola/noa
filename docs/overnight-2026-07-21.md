@@ -20,13 +20,27 @@
 
 ## Automated validation
 
-Initial docs update committed before validation. Final command results will be recorded after rerunning:
+Local setup:
 
 ```bash
-pnpm qa:prepare
-pnpm --filter @noa/api test
-pnpm --filter @noa/web build
+pnpm install --frozen-lockfile # passed on status branch and PR #99 worktree
 ```
+
+Status branch `cursor/noa-milestone-preparation-3393`:
+
+| Command | Result | Notes |
+|---------|--------|-------|
+| `pnpm qa:prepare` | Blocked | Docker is not running in this environment, so Postgres-backed bootstrap could not start. |
+| `pnpm --filter @noa/api test` | Passed | 12 tests, 0 failures, 10 DB-backed tests skipped because the database was unavailable. |
+| `pnpm --filter @noa/web build` | Passed | Next build completed; routes include M8-M11 merged pages. |
+
+Active M7 follow-up PR #99 (`origin/cursor/noa-milestone-preparation-01f8`) in a detached `/tmp/noa-pr99` worktree:
+
+| Command | Result | Notes |
+|---------|--------|-------|
+| `pnpm qa:prepare` | Blocked | Same Docker-not-running environment limitation. |
+| `pnpm --filter @noa/api test` | Passed | 13 tests, 0 failures, 11 DB-backed tests skipped; suite includes `ensureComplianceRecordsForUser` coverage for org access decisions and holder compliance records. |
+| `pnpm --filter @noa/web build` | Passed | Next build completed and includes `/user/compliance`. |
 
 `manageCheckRun` was not available in the Cursor Automation Tools server for this run.
 
