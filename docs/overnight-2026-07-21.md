@@ -3,7 +3,7 @@
 ## Branch and PR status
 
 - Automation branch: `cursor/noa-milestone-preparation-3393`
-- Status PR: pending creation from this branch.
+- Status PR: [#104 Record 2026-07-21 overnight milestone status](https://github.com/jeffilola/noa/pull/104)
 - Active M7 follow-up PR: [#99 M7 closeout: restore holder compliance records page](https://github.com/jeffilola/noa/pull/99)
 - Historical M7-M11 implementation PR: [#57 Prepare M7-M11 milestone review slices](https://github.com/jeffilola/noa/pull/57) (merged 2026-06-19)
 - Requested historical branch `feature/m7-learning-records`: present on origin but has no open or closed PR; no duplicate PR opened.
