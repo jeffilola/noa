@@ -6,7 +6,7 @@
 - Base branch: `main` at `cae785f`
 - M7-M11 implementation PR: [#57](https://github.com/jeffilola/noa/pull/57) — merged; GitHub checks `lint` and `build` passed.
 - Active M7 follow-up PR: [#99](https://github.com/jeffilola/noa/pull/99) — open draft, mergeable, GitHub checks `lint` and `build` passed.
-- Current overnight status PR: pending until this document is committed and opened.
+- Current overnight status PR: [#105](https://github.com/jeffilola/noa/pull/105).
 - Requested stale branch `feature/m7-learning-records`: exists on origin, but is behind `main` and omits the already-merged M8-M11 slices; it should not be opened as a new review PR without rebasing/replacing it.
 - GitHub issue/milestone creation or closure: not performed by this run because the available GitHub CLI is read-only and no issue/milestone write tool is configured.
 
