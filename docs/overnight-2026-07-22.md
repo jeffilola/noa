@@ -30,12 +30,20 @@
 
 ## Automated test commands
 
-Results will be updated after the committed docs pass is pushed and the local validation commands complete.
+Current branch (`cursor/noa-milestone-preparation-5a25`):
 
 ```bash
-pnpm qa:prepare
-pnpm --filter @noa/api test
-pnpm --filter @noa/web build
+pnpm qa:prepare             # blocked: Docker is not running in the cloud environment
+pnpm --filter @noa/api test # passed; 12 tests, 0 failures, 10 DB-backed skips
+pnpm --filter @noa/web build # passed; Next route generation completed for 35 routes
+```
+
+Active M7 follow-up PR #99 (`cursor/noa-milestone-preparation-01f8`):
+
+```bash
+pnpm qa:prepare             # blocked: Docker is not running in the cloud environment
+pnpm --filter @noa/api test # passed; 13 tests, 0 failures, 11 DB-backed skips
+pnpm --filter @noa/web build # passed; Next route generation completed and includes /user/compliance
 ```
 
 ## Prioritized manual E2E for morning review
