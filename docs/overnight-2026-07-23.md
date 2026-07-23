@@ -16,7 +16,7 @@ Automation prompt: overnight closeout for M7 and review slices for M8-M11.
 |------|----|--------|
 | M7-M11 merged baseline | https://github.com/jeffilola/noa/pull/57 | Merged 2026-06-19; GitHub `lint` and `build` passed before merge |
 | M7 holder compliance follow-up | https://github.com/jeffilola/noa/pull/99 | Open, clean merge state; GitHub `lint` and `build` passed on latest run |
-| 2026-07-23 overnight rollup | TBD | This documentation-only branch |
+| 2026-07-23 overnight rollup | https://github.com/jeffilola/noa/pull/106 | Documentation-only status PR |
 
 ## Milestone status
 
