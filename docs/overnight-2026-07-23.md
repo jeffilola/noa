@@ -30,16 +30,16 @@ Automation prompt: overnight closeout for M7 and review slices for M8-M11.
 
 ## Automated validation
 
-Validation is run after this status commit is pushed, per the automation branch workflow.
-
 | Scope | Command | Result |
 |-------|---------|--------|
-| Current status branch | `pnpm qa:prepare` | Pending |
-| Current status branch | `pnpm --filter @noa/api test` | Pending |
-| Current status branch | `pnpm --filter @noa/web build` | Pending |
-| PR #99 worktree | `pnpm qa:prepare` | Pending |
-| PR #99 worktree | `pnpm --filter @noa/api test` | Pending |
-| PR #99 worktree | `pnpm --filter @noa/web build` | Pending |
+| Current status branch | `pnpm install --frozen-lockfile` | Passed |
+| Current status branch | `pnpm qa:prepare` | Blocked: Docker is not running in Cursor Cloud |
+| Current status branch | `pnpm --filter @noa/api test` | Passed: 12 tests, 0 failures, 10 database-backed skips |
+| Current status branch | `pnpm --filter @noa/web build` | Passed; built current `main` routes, which do not include the PR #99 `/user/compliance` follow-up |
+| PR #99 worktree | `pnpm install --frozen-lockfile` | Passed |
+| PR #99 worktree | `pnpm qa:prepare` | Blocked: Docker is not running in Cursor Cloud |
+| PR #99 worktree | `pnpm --filter @noa/api test` | Passed: 13 tests, 0 failures, 11 database-backed skips |
+| PR #99 worktree | `pnpm --filter @noa/web build` | Passed; route manifest includes `/user/compliance` |
 
 ## M7 manual E2E checklist for morning review
 
