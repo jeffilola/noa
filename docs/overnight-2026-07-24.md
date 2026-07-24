@@ -27,13 +27,25 @@
 
 ## Automated test commands
 
-Pending in this PR until verification completes:
+Current `main`-based docs branch (`cursor/noa-milestone-preparation-145c`):
 
 ```bash
-pnpm qa:prepare
-pnpm --filter @noa/api test
-pnpm --filter @noa/web build
+pnpm install --frozen-lockfile       # passed
+pnpm qa:prepare                      # failed: Docker is not running in this environment
+pnpm --filter @noa/api test          # passed; 12 tests / 0 failures / 10 DB-backed skips
+pnpm --filter @noa/web build         # passed
 ```
+
+Active M7 closeout PR #99 (`cursor/noa-milestone-preparation-01f8`) was also validated in a separate worktree:
+
+```bash
+pnpm install --frozen-lockfile       # passed
+pnpm qa:prepare                      # failed: Docker is not running in this environment
+pnpm --filter @noa/api test          # passed; 13 tests / 0 failures / 11 DB-backed skips
+pnpm --filter @noa/web build         # passed; build output includes /user/compliance
+```
+
+GitHub checks on PR #99 remain green (`lint`, `build`). The unavailable Docker daemon is the only blocker to full local seeded E2E in this cloud run.
 
 ## M7 manual E2E checklist for morning review
 
