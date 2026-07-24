@@ -7,7 +7,7 @@
 - M7-M11 implementation: already merged to `main` in PR #57.
 - Requested legacy branch `feature/m7-learning-records`: exists on origin, but is 8 commits behind and 2 commits ahead of `origin/main`; no open PR is attached to that branch, and it is superseded by the merged M7-M11 work plus the active M7 follow-up PR #99.
 - Active M7 closeout follow-up: https://github.com/jeffilola/noa/pull/99 (`M7 closeout: restore holder compliance records page`), with GitHub `lint` and `build` checks passing.
-- Current run PR: to be opened after this report is committed.
+- Current run PR: https://github.com/jeffilola/noa/pull/107
 
 ## Milestone status
 
