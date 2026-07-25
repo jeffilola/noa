@@ -10,6 +10,7 @@ Active M7 follow-up remains PR #99, which restores the holder-facing compliance 
 
 | Area | Status | Link |
 |------|--------|------|
+| 2026-07-25 overnight docs/status | Open for review | https://github.com/jeffilola/noa/pull/108 |
 | M7-M11 merged implementation | Merged to `main` | https://github.com/jeffilola/noa/pull/57 |
 | M7 holder compliance follow-up | Open, clean, CI green before this run | https://github.com/jeffilola/noa/pull/99 |
 | M8 wallet pass preview | Merged in PR #57; issue #69 closed | https://github.com/jeffilola/noa/issues/69 |
