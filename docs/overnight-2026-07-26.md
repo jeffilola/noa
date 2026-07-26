@@ -3,7 +3,7 @@
 ## Current branch and PR status
 
 - Automation branch: `cursor/noa-milestone-preparation-bdd9`
-- Status PR: to be opened from this branch after validation notes are recorded.
+- Status PR: [#109 — Record 2026-07-26 overnight milestone status](https://github.com/jeffilola/noa/pull/109)
 - M7 follow-up PR: [#99 — M7 closeout: restore holder compliance records page](https://github.com/jeffilola/noa/pull/99)
 - Original M7-M11 milestone PR: [#57 — Prepare M7-M11 milestone review slices](https://github.com/jeffilola/noa/pull/57) (merged)
 - Previous overnight rollup PR: [#108 — Record 2026-07-25 overnight milestone status](https://github.com/jeffilola/noa/pull/108)
