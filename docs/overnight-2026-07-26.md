@@ -26,13 +26,32 @@ Notes:
 
 ## Automated validation
 
-Validation is pending for this run. Commands to record after the initial docs commit:
+### Current `main` + overnight docs branch
 
 ```bash
-pnpm qa:prepare
-pnpm --filter @noa/api test
-pnpm --filter @noa/web build
+pnpm install --frozen-lockfile          # pass
+pnpm qa:prepare                         # fail: Docker is not running in Cursor Cloud
+pnpm --filter @noa/api test             # pass: 12 tests, 2 passed, 10 DB-backed tests skipped
+pnpm --filter @noa/web build            # pass
 ```
+
+Notes:
+
+- `qa:prepare` stops before migrations/seed because this environment has no running Docker daemon.
+- The current branch is based on `origin/main`, so it reflects the M7-M11 work that already merged in PR #57.
+
+### Active M7 follow-up PR #99
+
+Validated in a detached worktree at `origin/cursor/noa-milestone-preparation-01f8`:
+
+```bash
+pnpm install --frozen-lockfile          # pass
+pnpm qa:prepare                         # fail: Docker is not running in Cursor Cloud
+pnpm --filter @noa/api test             # pass: 13 tests, 2 passed, 11 DB-backed tests skipped
+pnpm --filter @noa/web build            # pass; route list includes /user/compliance
+```
+
+GitHub checks on PR #99 are green as of this run: `lint`, `build`, `label`, and `remind-issue-link`.
 
 ## Prioritized manual E2E for morning review
 
