@@ -4,7 +4,7 @@
 
 - Automation branch: `cursor/noa-milestone-preparation-b64c`
 - Main baseline: `cae785f` (`Merge M7-M11: compliance records, wallet preview, platform orgs, integration stub, CI split`)
-- This overnight status PR: https://github.com/jeffilola/noa/pull/110
+- This overnight status PR: https://github.com/jeffilola/noa/pull/110 - GitHub `lint` and `build` checks green.
 - M7-M11 implementation PR: https://github.com/jeffilola/noa/pull/57 - merged 2026-06-19 with green `lint` and `build` checks.
 - Active M7 holder-compliance closeout PR: https://github.com/jeffilola/noa/pull/99 - open draft, mergeable, GitHub `lint` and `build` checks green.
 - Named milestone branches `feature/m7-learning-records`, `feature/m8-wallet-pass-preview`, `feature/m9-platform-org-list`, `feature/m10-integration-admin-stub`, and `feature/m11-ci-quality-split` have no open PRs; their scope is already represented by merged PR #57, with the remaining M7 holder page in PR #99.
