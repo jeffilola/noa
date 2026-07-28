@@ -18,7 +18,7 @@ The cron prompt still describes the original M7-M11 sprint push, but the live re
 | M9: Platform org list | Done | Merged in PR #57: https://github.com/jeffilola/noa/pull/57 |
 | M10: Integration admin stub | Done | Merged in PR #57: https://github.com/jeffilola/noa/pull/57 |
 | M11: CI quality split | Done | Merged in PR #57: https://github.com/jeffilola/noa/pull/57 |
-| Overnight status docs | In review | This PR: pending at initial commit |
+| Overnight status docs | In review | PR #111: https://github.com/jeffilola/noa/pull/111 |
 
 ## Automated validation
 
