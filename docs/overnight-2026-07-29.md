@@ -4,6 +4,7 @@
 
 - Automation branch: `cursor/noa-milestone-preparation-e581`
 - Base branch at run start: `main` (`cae785f`, "Merge M7-M11: compliance records, wallet preview, platform orgs, integration stub, CI split")
+- Overnight status PR: https://github.com/jeffilola/noa/pull/112
 - M7-M11 implementation PR: https://github.com/jeffilola/noa/pull/57 — merged 2026-06-19; GitHub `lint` and `build` checks passed.
 - Active M7 holder compliance follow-up: https://github.com/jeffilola/noa/pull/99 — open draft, clean merge state, GitHub `lint` and `build` checks passed.
 - Requested branch `feature/m7-learning-records`: exists on origin but is stale (`8 behind, 2 ahead` relative to `origin/main`) and has no open PR.
