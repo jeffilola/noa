@@ -6,6 +6,7 @@
 - Base branch: `main`
 - M7-M11 shipped in merged PR: https://github.com/jeffilola/noa/pull/57
 - Active M7 holder compliance follow-up PR: https://github.com/jeffilola/noa/pull/99
+- This overnight status PR: https://github.com/jeffilola/noa/pull/113
 - Prior nightly status PR: https://github.com/jeffilola/noa/pull/112
 - `manageCheckRun`: unavailable in the Cursor Automation Tools MCP server for this run.
 - GitHub issue/milestone mutation: not performed; only read-only `gh` access and PR/comment automation tools were available.
