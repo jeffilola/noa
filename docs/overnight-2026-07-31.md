@@ -7,14 +7,14 @@ Triggered by the recurring overnight sprint automation at 2026-07-31 23:01 UTC.
 - The sprint prompt is stale for current `main`: M7-M11 are already merged and their issues/milestones are closed.
 - Current `main` is commit `cae785f` (`Merge M7-M11: compliance records, wallet preview, platform orgs, integration stub, CI split`).
 - No duplicate M8-M11 feature branches, issues, or milestone PRs were opened.
-- The active M7 follow-up remains PR #99 for the holder compliance records page.
+- The active M7 follow-up remains PR #99 for the holder compliance records page; its GitHub `lint` and `build` checks are green.
 - `manageCheckRun` is not available in the configured Cursor Automation Tools server for this run.
 
 ## Milestone and PR status
 
 | Milestone | Status | PRs / issues |
 |-----------|--------|--------------|
-| M7: Learning records | Done on `main`; holder follow-up remains open for review | Merged PR #57; active follow-up PR #99; issues #52-#56 closed |
+| M7: Learning records | Access-panel learning records are done on `main`; holder compliance page follow-up remains open for review | Merged PR #57; active follow-up PR #99; issues #52-#56 closed |
 | M8: Wallet pass preview | Done on `main` | Merged PR #57; issue #69 closed |
 | M9: Platform admin org list | Done on `main` | Merged PR #57; issue #70 closed |
 | M10: Integration admin stub | Done on `main` | Merged PR #57; issue #71 closed |
@@ -24,11 +24,19 @@ Open next-sprint issues remain M12-M16 (#73-#77). Existing open overnight status
 
 ## Automated validation
 
-To be updated after this branch is committed and pushed:
+Environment setup:
 
-- `pnpm qa:prepare`
-- `pnpm --filter @noa/api test`
-- `pnpm --filter @noa/web build`
+- `pnpm install --frozen-lockfile` — passed.
+
+Requested commands:
+
+| Command | Result | Notes |
+|---------|--------|-------|
+| `pnpm qa:prepare` | Failed, environment-blocked | Exit 1: Docker is not running in this cloud runner. Run locally with Docker/Postgres for full DB seed and browser setup. |
+| `pnpm --filter @noa/api test` | Passed | Exit 0. Node test runner reported 12 tests: 2 passed, 10 DB-backed cases skipped because the database was unavailable. The skipped M7 case covers `ensureComplianceRecordsForUser` plus org access-decision listing. |
+| `pnpm --filter @noa/web build` | Passed | Exit 0. Next build completed successfully. Current `main` route output includes `/user/wallet`, `/platform/organizations`, and `/integrations-admin/providers`; `/user/compliance` is on active follow-up PR #99. |
+
+PR #99 status check snapshot: `lint` success, `build` success, merge state clean.
 
 ## M7 manual E2E checklist for morning review
 
