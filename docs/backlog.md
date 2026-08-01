@@ -19,6 +19,8 @@ Legend: **S** / **M** / **L** size · **Epic** tag · Milestone when scheduled
 **Milestone:** [M12–M16 on GitHub](https://github.com/jeffilola/noa/milestones)  
 **Goal:** Mobile shell, security/compliance workflows, API test coverage, and operator runbooks.
 
+**Latest overnight status:** [2026-08-01](./overnight-2026-08-01.md)
+
 ---
 
 ## Done — Sprint 7–11 (M7–M11)
@@ -98,4 +100,4 @@ Issues #1–#4 merged.
 | `epic:infra` | CI, staging, observability |
 | `epic:quality` | Tests, DoD, tooling |
 
-Last updated: 2026-06-16
+Last updated: 2026-08-01
