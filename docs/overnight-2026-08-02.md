@@ -6,7 +6,7 @@
 - Base checked: `origin/main` at `cae785f` (`Merge M7-M11: compliance records, wallet preview, platform orgs, integration stub, CI split`)
 - M7-M11 implementation PR: [#57](https://github.com/jeffilola/noa/pull/57) — merged to `main`
 - Active M7 follow-up PR: [#99](https://github.com/jeffilola/noa/pull/99) — open draft, clean, latest GitHub `lint` and `build` checks green
-- Tonight's status PR: pending creation from this branch after these validation results are recorded
+- Tonight's status PR: [#116](https://github.com/jeffilola/noa/pull/116)
 
 ## Milestone status
 
