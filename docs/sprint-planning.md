@@ -40,6 +40,8 @@ Focus: [#73](https://github.com/jeffilola/noa/issues/73) — scaffold `apps/mobi
 
 **Up next (same epic batch):** M13 → M16 per [backlog.md](./backlog.md).
 
+**Latest overnight status:** [2026-08-03](./overnight-2026-08-03.md) confirms M7–M11 remain closed/merged and M12–M16 remain the active roadmap.
+
 ## Planning checklist (Day 1)
 
 1. **Review** [backlog.md](./backlog.md) and open milestone on GitHub.
