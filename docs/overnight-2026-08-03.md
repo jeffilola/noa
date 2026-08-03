@@ -29,10 +29,13 @@
 ## Automated test commands
 
 ```bash
-pnpm qa:prepare                         # pending
-pnpm --filter @noa/api test             # pending
-pnpm --filter @noa/web build            # pending
+pnpm qa:prepare                         # blocked: Docker is not running in this cloud environment
+pnpm install --frozen-lockfile           # passed: lockfile unchanged, dependencies installed
+pnpm --filter @noa/api test             # passed: 12 tests, 2 pass, 10 DB-backed skips because Postgres unavailable
+pnpm --filter @noa/web build            # passed: Next.js production build completed
 ```
+
+The web build route list includes the merged M8-M11 surfaces (`/user/wallet`, `/platform/organizations`, `/integrations-admin/providers`, split CI docs). It does not include `/user/compliance` on `main`; that holder compliance page remains isolated for review in PR #99.
 
 ## Prioritized manual E2E for morning review
 
