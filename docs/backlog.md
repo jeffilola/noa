@@ -17,7 +17,8 @@ Legend: **S** / **M** / **L** size · **Epic** tag · Milestone when scheduled
 | 5 | S | Ops runbooks + sprint doc updates | Quality | #77 |
 
 **Milestone:** [M12–M16 on GitHub](https://github.com/jeffilola/noa/milestones)  
-**Goal:** Mobile shell, security/compliance workflows, API test coverage, and operator runbooks.
+**Goal:** Mobile shell, security/compliance workflows, API test coverage, and operator runbooks.  
+**Latest overnight review:** [2026-08-04 milestone status](./overnight-2026-08-04.md).
 
 ---
 
@@ -33,7 +34,7 @@ Merged in PR #57. Learning records, wallet preview stub, platform org list, inte
 | M10 | Integration admin test-mode form | [m10-testing.md](./m10-testing.md) |
 | M11 | CI lint/build split | [m11-testing.md](./m11-testing.md) |
 
-Issues #52–#56 (M7), #69–#72 (M8–M11). Demo: [demos/2026-06-11-m7.md](./demos/2026-06-11-m7.md).
+Issues #52–#56 (M7), #69–#72 (M8–M11). Demo: [demos/2026-06-11-m7.md](./demos/2026-06-11-m7.md). Current M7 holder follow-up: PR #99.
 
 ---
 
@@ -98,4 +99,4 @@ Issues #1–#4 merged.
 | `epic:infra` | CI, staging, observability |
 | `epic:quality` | Tests, DoD, tooling |
 
-Last updated: 2026-06-16
+Last updated: 2026-08-04

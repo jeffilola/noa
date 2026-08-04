@@ -30,7 +30,8 @@ Two-week cadence for Noa. Lightweight — suitable for solo or pair work.
 | **M15: API scoping tests** | Cross-org integration tests | Planned (#76) |
 | **M16: Ops docs** | Clerk runbook + roadmap docs | Planned (#77) |
 
-View on GitHub: https://github.com/jeffilola/noa/milestones
+View on GitHub: https://github.com/jeffilola/noa/milestones  
+Latest overnight review: [2026-08-04 milestone status](./overnight-2026-08-04.md)
 
 ## Current sprint
 
@@ -38,7 +39,9 @@ View on GitHub: https://github.com/jeffilola/noa/milestones
 
 Focus: [#73](https://github.com/jeffilola/noa/issues/73) — scaffold `apps/mobile`, one signed-in smoke screen, README + test doc.
 
-**Up next (same epic batch):** M13 → M16 per [backlog.md](./backlog.md).
+**Up next (same epic batch):** M13 -> M16 per [backlog.md](./backlog.md).
+
+**Carry-forward review note:** M7-M11 are already merged in PR #57. PR #99 remains the focused M7 holder compliance follow-up for local Docker-backed E2E.
 
 ## Planning checklist (Day 1)
 
@@ -75,4 +78,4 @@ Backlog → Ready → In Progress → Review (PR open) → Done
 3. Close milestone issues on GitHub.
 4. Optional retro.
 
-Last updated: 2026-06-16
+Last updated: 2026-08-04
