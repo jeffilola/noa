@@ -21,15 +21,18 @@
 
 ## Automated test commands
 
-Pending rerun on this branch:
-
 ```bash
-pnpm qa:prepare
-pnpm --filter @noa/api test
-pnpm --filter @noa/web build
+pnpm qa:prepare                         # failed: Docker is not running in this VM
+pnpm install --frozen-lockfile           # passed; node_modules was absent before install
+pnpm --filter @noa/api test             # passed; 12 tests, 0 failed, 10 DB-backed skips
+pnpm --filter @noa/web build            # passed; Next build generated 35 app routes
 ```
 
 `manageCheckRun` is not available in the configured Cursor Automation Tools MCP server for this run.
+
+Build note: the web route list includes `/user/wallet`, `/platform/organizations`, and
+`/integrations-admin/providers`. The holder `/user/compliance` route is still part of the active
+M7 follow-up PR #99 rather than `main`.
 
 ## M7 manual E2E checklist for morning review
 
