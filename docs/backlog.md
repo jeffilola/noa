@@ -35,6 +35,8 @@ Merged in PR #57. Learning records, wallet preview stub, platform org list, inte
 
 Issues #52–#56 (M7), #69–#72 (M8–M11). Demo: [demos/2026-06-11-m7.md](./demos/2026-06-11-m7.md).
 
+Latest overnight verification: [2026-08-06 status](./overnight-2026-08-06.md).
+
 ---
 
 ## Done — Sprint 6 (M6: Site access history)
@@ -98,4 +100,4 @@ Issues #1–#4 merged.
 | `epic:infra` | CI, staging, observability |
 | `epic:quality` | Tests, DoD, tooling |
 
-Last updated: 2026-06-16
+Last updated: 2026-08-06
