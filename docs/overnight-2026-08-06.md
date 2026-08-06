@@ -5,7 +5,7 @@
 - Automation branch: `cursor/noa-milestone-preparation-a3ed`
 - Primary M7-M11 delivery PR: https://github.com/jeffilola/noa/pull/57 (merged)
 - Active M7 follow-up PR: https://github.com/jeffilola/noa/pull/99 (draft, clean, CI `lint` + `build` green as of this run's GitHub check)
-- Latest overnight status PR: pending
+- Latest overnight status PR: https://github.com/jeffilola/noa/pull/120
 - Requested `feature/m7-learning-records`: visible on origin, but M7-M11 already landed through PR #57 and the active M7 closeout branch is PR #99.
 - GitHub issue/milestone creation or closure: not performed by this run; M7-M11 milestones and issues are already closed, and only read-only `gh` access is available here.
 
