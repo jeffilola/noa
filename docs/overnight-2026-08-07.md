@@ -28,15 +28,16 @@
 
 ## Automated test commands
 
-Pending for this run:
-
 ```bash
-pnpm qa:prepare
-pnpm --filter @noa/api test
-pnpm --filter @noa/web build
+pnpm qa:prepare                         # blocked: Docker is not running in this cloud environment
+pnpm install --frozen-lockfile           # passed; needed because node_modules was absent in the fresh checkout
+pnpm --filter @noa/api test             # passed; 12 tests total, 2 passed, 10 DB-backed tests skipped because Postgres was unavailable
+pnpm --filter @noa/web build            # passed; Next.js 16 build completed, with the existing middleware deprecation warning
 ```
 
 `manageCheckRun` is not available in the configured Cursor Automation Tools server for this run.
+
+Note: this branch is equal to `origin/main` plus status docs. The holder `/user/compliance` route is covered by the active M7 follow-up PR #99, whose visible GitHub `lint` and `build` checks are green; review M7 holder compliance behavior from that PR.
 
 ## Prioritized manual E2E for morning review
 
