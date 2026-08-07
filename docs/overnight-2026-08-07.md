@@ -7,7 +7,7 @@
 - Requested M7 branch `feature/m7-learning-records`: `origin/feature/m7-learning-records` remains behind `origin/main` (2 commits unique to that branch, 8 commits behind main).
 - M7-M11 implementation PR: https://github.com/jeffilola/noa/pull/57 (merged)
 - Active M7 holder compliance follow-up: https://github.com/jeffilola/noa/pull/99 (open draft, clean merge state, visible `lint` and `build` checks green)
-- This overnight status PR: pending until this branch is pushed and opened.
+- This overnight status PR: https://github.com/jeffilola/noa/pull/121
 
 ## Milestone status
 
