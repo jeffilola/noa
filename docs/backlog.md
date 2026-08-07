@@ -25,6 +25,8 @@ Legend: **S** / **M** / **L** size · **Epic** tag · Milestone when scheduled
 
 Merged in PR #57. Learning records, wallet preview stub, platform org list, integration test-mode form, CI lint/build split.
 
+Latest overnight status: [overnight-2026-08-07.md](./overnight-2026-08-07.md).
+
 | Milestone | Theme | Test guide |
 |-----------|-------|------------|
 | M7 | Learning records on access decisions | [m7-testing.md](./m7-testing.md) |
@@ -98,4 +100,4 @@ Issues #1–#4 merged.
 | `epic:infra` | CI, staging, observability |
 | `epic:quality` | Tests, DoD, tooling |
 
-Last updated: 2026-06-16
+Last updated: 2026-08-07
