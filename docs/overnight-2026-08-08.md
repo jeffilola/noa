@@ -23,13 +23,12 @@ Automation run: M7 closeout plus stale M8-M11 sprint prompt review.
 
 ## Automated test results
 
-To be filled after this branch is pushed and validation is run:
-
 | Command | Result | Notes |
 |---------|--------|-------|
-| `pnpm qa:prepare` | Pending | Expected to require Docker/Postgres locally. |
-| `pnpm --filter @noa/api test` | Pending | Cloud run result will be noted in the PR comment. |
-| `pnpm --filter @noa/web build` | Pending | Cloud run result will be noted in the PR comment. |
+| `pnpm qa:prepare` | Failed in cloud | Docker is not running in this environment; rerun locally after `docker compose up -d postgres`. |
+| `pnpm install --frozen-lockfile` | Passed | Added because this cloud checkout did not have `node_modules` before validation. |
+| `pnpm --filter @noa/api test` | Passed with DB skips | 12 tests discovered; 2 passed; 10 DB-backed tests skipped because Postgres is unavailable. The M7 `ensureComplianceRecordsForUser` readiness case is one of the DB-backed skipped tests here. |
+| `pnpm --filter @noa/web build` | Passed | Next build completed successfully; route list includes M8-M11 shipped pages such as `/user/wallet`, `/platform/organizations`, and `/integrations-admin/providers`. |
 
 ## Morning manual E2E priority
 
