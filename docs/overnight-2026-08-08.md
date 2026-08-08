@@ -19,7 +19,7 @@ Automation run: M7 closeout plus stale M8-M11 sprint prompt review.
 | M9: Platform admin org list | Merged in PR #57 | https://github.com/jeffilola/noa/pull/57, issue #70 |
 | M10: Integration admin stub | Merged in PR #57 | https://github.com/jeffilola/noa/pull/57, issue #71 |
 | M11: CI quality split | Merged in PR #57 | https://github.com/jeffilola/noa/pull/57, issue #72 |
-| Overnight docs/status | This PR records the 2026-08-08 review state | PR URL added by the automation summary comment |
+| Overnight docs/status | This PR records the 2026-08-08 review state | https://github.com/jeffilola/noa/pull/122 |
 
 ## Automated test results
 
