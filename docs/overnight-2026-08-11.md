@@ -24,13 +24,22 @@ No new M8-M11 implementation branches were created because duplicating already-m
 
 ## Automated validation
 
-Results will be updated after this status document is committed and pushed:
+Before validation, `pnpm install --frozen-lockfile` was required because the cloud workspace started without `node_modules`; it completed successfully with no lockfile changes.
 
 | Command | Result | Notes |
 |---------|--------|-------|
-| `pnpm qa:prepare` | Pending | Expected to require Docker/Postgres. |
-| `pnpm --filter @noa/api test` | Pending | Run after dependency/bootstrap readiness check. |
-| `pnpm --filter @noa/web build` | Pending | Run after API tests. |
+| `pnpm qa:prepare` | Blocked | Docker is not running in this cloud environment. The command exited 1 before Postgres setup. |
+| `pnpm --filter @noa/api test` | Pass | Current branch: 12 tests, 0 failures, 10 DB-backed skips because no database is available. |
+| `pnpm --filter @noa/web build` | Pass | Current branch built successfully; Next reported the existing middleware-to-proxy deprecation warning. |
+
+Additional validation on PR #99 branch (`cursor/noa-milestone-preparation-01f8`):
+
+| Command | Result | Notes |
+|---------|--------|-------|
+| `pnpm install --frozen-lockfile` | Pass | Lockfile unchanged. |
+| `pnpm qa:prepare` | Blocked | Docker is not running in this cloud environment. |
+| `pnpm --filter @noa/api test` | Pass | 13 tests, 0 failures, 11 DB-backed skips; includes the signed-in holder compliance records test path. |
+| `pnpm --filter @noa/web build` | Pass | Build succeeded and included `/user/compliance` in the route list. |
 
 `manageCheckRun` was not available in the configured Cursor Automation Tools MCP server for this run.
 
