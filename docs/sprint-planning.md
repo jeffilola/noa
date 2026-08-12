@@ -30,7 +30,8 @@ Two-week cadence for Noa. Lightweight — suitable for solo or pair work.
 | **M15: API scoping tests** | Cross-org integration tests | Planned (#76) |
 | **M16: Ops docs** | Clerk runbook + roadmap docs | Planned (#77) |
 
-View on GitHub: https://github.com/jeffilola/noa/milestones
+View on GitHub: https://github.com/jeffilola/noa/milestones  
+Latest overnight milestone review: [overnight-2026-08-12.md](./overnight-2026-08-12.md)
 
 ## Current sprint
 
@@ -75,4 +76,4 @@ Backlog → Ready → In Progress → Review (PR open) → Done
 3. Close milestone issues on GitHub.
 4. Optional retro.
 
-Last updated: 2026-06-16
+Last updated: 2026-08-12

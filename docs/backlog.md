@@ -34,6 +34,7 @@ Merged in PR #57. Learning records, wallet preview stub, platform org list, inte
 | M11 | CI lint/build split | [m11-testing.md](./m11-testing.md) |
 
 Issues #52–#56 (M7), #69–#72 (M8–M11). Demo: [demos/2026-06-11-m7.md](./demos/2026-06-11-m7.md).
+Latest overnight review status: [overnight-2026-08-12.md](./overnight-2026-08-12.md).
 
 ---
 
@@ -98,4 +99,4 @@ Issues #1–#4 merged.
 | `epic:infra` | CI, staging, observability |
 | `epic:quality` | Tests, DoD, tooling |
 
-Last updated: 2026-06-16
+Last updated: 2026-08-12
