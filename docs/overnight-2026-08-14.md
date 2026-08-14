@@ -24,13 +24,18 @@ Confirmed shipped scope on `main`:
 
 ## Automated test commands
 
-Validation is pending for this run. Planned commands:
+Initial validation before dependency install failed because `node_modules` was missing (`tsc` and `next` were unavailable). After `pnpm install --frozen-lockfile`, the requested commands produced:
 
 ```bash
-pnpm qa:prepare
-pnpm --filter @noa/api test
-pnpm --filter @noa/web build
+pnpm qa:prepare                         # failed: Docker is not running in this environment
+pnpm --filter @noa/api test             # passed: 12 tests discovered, 2 passed, 10 DB-backed tests skipped
+pnpm --filter @noa/web build            # passed
 ```
+
+Notes:
+
+- `qa:prepare` could not exercise migrations, seeding, or `ensureComplianceRecordsForUser` because Docker/Postgres is unavailable in this runner.
+- The current `main` web build includes the already-merged M8-M11 routes (`/user/wallet`, `/platform/organizations`, `/integrations-admin/providers`) but does not include the active M7 follow-up holder route `/user/compliance`; review PR #99 for that page.
 
 ## Prioritized manual E2E for morning review
 
