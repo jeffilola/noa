@@ -36,6 +36,7 @@ Notes:
 
 - `qa:prepare` could not exercise migrations, seeding, or `ensureComplianceRecordsForUser` because Docker/Postgres is unavailable in this runner.
 - The current `main` web build includes the already-merged M8-M11 routes (`/user/wallet`, `/platform/organizations`, `/integrations-admin/providers`) but does not include the active M7 follow-up holder route `/user/compliance`; review PR #99 for that page.
+- PR #99 worktree validation also ran after `pnpm install --frozen-lockfile`: `pnpm qa:prepare` failed on missing Docker, `pnpm --filter @noa/api test` passed with 13 discovered / 2 passed / 11 DB-backed skipped, and `pnpm --filter @noa/web build` passed with `/user/compliance` in the route list.
 
 ## Prioritized manual E2E for morning review
 
