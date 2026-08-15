@@ -38,6 +38,7 @@ Visible GitHub checks at inspection time:
 
 - [PR #99](https://github.com/jeffilola/noa/pull/99): `lint` success, `build` success, merge state clean.
 - Latest overnight status PR [#127](https://github.com/jeffilola/noa/pull/127): `lint` success, `build` success, merge state clean.
+- This overnight status PR [#128](https://github.com/jeffilola/noa/pull/128): `lint` success, `build` success, label/reminder checks success.
 
 `manageCheckRun` was not available in the Cursor Automation Tools MCP server for this run.
 
