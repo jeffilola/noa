@@ -9,7 +9,7 @@ Branch: `cursor/noa-milestone-preparation-d1d4`
 - The historical `origin/feature/m7-learning-records` branch is behind `main` and was left untouched.
 - The active M7 review item remains [PR #99](https://github.com/jeffilola/noa/pull/99), which restores the holder Training & certs route and dev compliance-record bootstrap coverage.
 - No duplicate M8-M11 feature branches or PRs were created because their issues and milestones are closed.
-- This docs-only status PR: TBD after PR creation.
+- This docs-only status PR: [PR #128](https://github.com/jeffilola/noa/pull/128).
 
 ## PR and milestone status
 
