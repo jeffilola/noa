@@ -16,7 +16,7 @@
 |-------|----|--------|
 | M7-M11 merged milestone batch | https://github.com/jeffilola/noa/pull/57 | Merged |
 | M7 holder compliance follow-up | https://github.com/jeffilola/noa/pull/99 | Open draft, clean, GitHub `lint`/`build` green |
-| 2026-08-17 overnight status | Pending until this docs PR is opened | Docs-only status branch |
+| 2026-08-17 overnight status | https://github.com/jeffilola/noa/pull/130 | Docs-only status branch |
 
 ## Milestone and issue status
 
