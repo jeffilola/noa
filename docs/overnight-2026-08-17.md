@@ -42,21 +42,21 @@
 
 | Command | Result | Notes |
 |---------|--------|-------|
-| `pnpm install --frozen-lockfile` | Pending | To be run after the initial status commit |
-| `pnpm qa:prepare` | Pending | To be run after the initial status commit |
-| `pnpm --filter @noa/api test` | Pending | To be run after the initial status commit |
-| `pnpm --filter @noa/web build` | Pending | To be run after the initial status commit |
+| `pnpm install --frozen-lockfile` | Pass | Dependencies installed from the lockfile |
+| `pnpm qa:prepare` | Blocked | Docker daemon unavailable in this cloud pod |
+| `pnpm --filter @noa/api test` | Pass | 12 tests: 2 pass, 10 DB-backed skips because Postgres is unavailable |
+| `pnpm --filter @noa/web build` | Pass | Next build completed; current `main` includes `/user/wallet`, `/platform/organizations`, and integration admin routes |
 
 ### Active M7 follow-up PR #99
 
-Planned validation in a temporary worktree at `origin/cursor/noa-milestone-preparation-01f8`.
+Validated in a temporary worktree at `origin/cursor/noa-milestone-preparation-01f8`.
 
 | Command | Result | Notes |
 |---------|--------|-------|
-| `pnpm install --frozen-lockfile` | Pending | To be run after the initial status commit |
-| `pnpm qa:prepare` | Pending | To be run after the initial status commit |
-| `pnpm --filter @noa/api test` | Pending | To be run after the initial status commit |
-| `pnpm --filter @noa/web build` | Pending | To be run after the initial status commit |
+| `pnpm install --frozen-lockfile` | Pass | Dependencies installed from the lockfile |
+| `pnpm qa:prepare` | Blocked | Docker daemon unavailable in this cloud pod |
+| `pnpm --filter @noa/api test` | Pass | 13 tests: 2 pass, 11 DB-backed skips; includes `ensureComplianceRecordsForUser` coverage for org access decisions and the signed-in holder path, skipped only because Postgres is unavailable |
+| `pnpm --filter @noa/web build` | Pass | Next build completed and includes `/user/compliance` |
 
 ## M7 manual E2E checklist for morning review
 
