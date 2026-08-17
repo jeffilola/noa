@@ -6,6 +6,7 @@ Short record of what was shown at the end of each sprint or week.
 
 | Date | Sprint / milestone | Note |
 |------|-------------------|------|
+| 2026-06-11 | Sprint 7 · M7 | [2026-06-11-m7.md](./2026-06-11-m7.md) — learning records on access decision panel |
 | 2026-06-10 | Sprint 6 · M6 | [2026-06-10.md](./2026-06-10.md) — access events + org access decision demo |
 
 ## How to add a demo note
