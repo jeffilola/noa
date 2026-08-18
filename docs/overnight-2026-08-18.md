@@ -22,12 +22,20 @@
 
 ## Automated test commands
 
-Results below will be updated after the status branch is committed and pushed.
+```bash
+pnpm install --frozen-lockfile          # passed on status branch
+pnpm qa:prepare                         # blocked: Docker daemon is not running in this environment
+pnpm --filter @noa/api test             # passed on status branch; 12 tests, 2 pass, 10 DB-backed skips
+pnpm --filter @noa/web build            # passed on status branch
+```
+
+Active M7 follow-up [PR #99](https://github.com/jeffilola/noa/pull/99) was also validated in a separate worktree:
 
 ```bash
-pnpm qa:prepare                         # pending
-pnpm --filter @noa/api test             # pending
-pnpm --filter @noa/web build            # pending
+pnpm install --frozen-lockfile          # passed on PR #99 worktree
+pnpm qa:prepare                         # blocked: Docker daemon is not running in this environment
+pnpm --filter @noa/api test             # passed; 13 tests, 2 pass, 11 DB-backed skips including signed-in holder compliance coverage
+pnpm --filter @noa/web build            # passed; build output includes /user/compliance
 ```
 
 ## Prioritized manual E2E for morning review
