@@ -7,7 +7,7 @@
 - Requested M7 branch `feature/m7-learning-records`: present on origin at `ba34cdb`, older than `main`; not revived to avoid duplicating already-merged milestone work.
 - M7-M11 milestone PR: [PR #57](https://github.com/jeffilola/noa/pull/57) merged on 2026-06-19.
 - Active M7 closeout follow-up: [PR #99](https://github.com/jeffilola/noa/pull/99) is open as draft, mergeable, with GitHub `lint`, `build`, `label`, and `remind-issue-link` checks green.
-- Tonight's status PR: pending until this branch is pushed.
+- Tonight's status PR: [PR #131](https://github.com/jeffilola/noa/pull/131).
 - `manageCheckRun`: unavailable in the configured Cursor Automation Tools MCP server for this run.
 
 ## Milestone status
