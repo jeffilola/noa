@@ -7,7 +7,7 @@
 - Requested M7 branch `feature/m7-learning-records`: present on origin at `ba34cdb`, behind the M7-M11 merge on `main`; not pushed or modified by this run.
 - Main milestone PR: https://github.com/jeffilola/noa/pull/57 (merged M7-M11)
 - Active M7 follow-up PR: https://github.com/jeffilola/noa/pull/99 (draft, clean merge state, GitHub `lint` and `build` checks green)
-- Tonight's status PR: pending until this branch is pushed and opened.
+- Tonight's status PR: https://github.com/jeffilola/noa/pull/132
 - GitHub issue/milestone creation or closure: not performed by this run; available `gh` access is read-only and M7-M11 issues are already closed.
 - `manageCheckRun`: not available in the Cursor Automation Tools MCP server for this run.
 
