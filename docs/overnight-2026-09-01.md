@@ -25,13 +25,24 @@ Open roadmap work remains M12-M16: #73, #74, #75, #76, and #77.
 
 ## Automated test commands
 
-Results from this cloud run will be recorded after validation.
+Results from this cloud run:
 
 ```bash
-pnpm install --frozen-lockfile          # pending
-pnpm qa:prepare                         # pending
-pnpm --filter @noa/api test             # pending
-pnpm --filter @noa/web build            # pending
+pnpm install --frozen-lockfile          # passed
+pnpm qa:prepare                         # failed: Docker is not running in this environment
+pnpm --filter @noa/api test             # passed: 12 tests; 2 passed, 10 DB-backed tests skipped
+pnpm --filter @noa/web build            # passed: Next.js build completed, 35 static pages generated
+```
+
+Environment caveat: `pnpm qa:prepare` requires Docker/Postgres and stopped at the expected Docker availability check. The command sequence continued so API tests and the web build could still be verified.
+
+PR #99 branch spot-check (`origin/cursor/noa-milestone-preparation-01f8`) in a temporary worktree:
+
+```bash
+pnpm install --frozen-lockfile          # passed
+pnpm qa:prepare                         # failed: Docker is not running in this environment
+pnpm --filter @noa/api test             # passed: 13 tests; 2 passed, 11 DB-backed tests skipped
+pnpm --filter @noa/web build            # passed: Next.js build completed and included /user/compliance
 ```
 
 ## Manual E2E checklist for morning review
