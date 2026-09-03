@@ -7,7 +7,7 @@
 - M7-M11 implementation PR: https://github.com/jeffilola/noa/pull/57 (merged)
 - Active M7 holder compliance follow-up PR: https://github.com/jeffilola/noa/pull/99 (open draft, clean merge state, visible GitHub `lint` and `build` checks passing)
 - Previous overnight status PR: https://github.com/jeffilola/noa/pull/134 (open)
-- This overnight status PR: pending creation after this document is committed.
+- This overnight status PR: https://github.com/jeffilola/noa/pull/135
 - `manageCheckRun`: unavailable in the configured Cursor Automation Tools namespace for this run.
 
 ## Milestone status
