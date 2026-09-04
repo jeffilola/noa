@@ -19,6 +19,8 @@ Legend: **S** / **M** / **L** size · **Epic** tag · Milestone when scheduled
 **Milestone:** [M12–M16 on GitHub](https://github.com/jeffilola/noa/milestones)  
 **Goal:** Mobile shell, security/compliance workflows, API test coverage, and operator runbooks.
 
+2026-09-04 overnight status: M7-M11 remain merged and closed via PR #57; the only active M7 follow-up remains PR #99 for the holder `/user/compliance` testing-guide path. Current validation is recorded in [overnight-2026-09-04.md](./overnight-2026-09-04.md).
+
 ---
 
 ## Done — Sprint 7–11 (M7–M11)
@@ -33,7 +35,7 @@ Merged in PR #57. Learning records, wallet preview stub, platform org list, inte
 | M10 | Integration admin test-mode form | [m10-testing.md](./m10-testing.md) |
 | M11 | CI lint/build split | [m11-testing.md](./m11-testing.md) |
 
-Issues #52–#56 (M7), #69–#72 (M8–M11). Demo: [demos/2026-06-11-m7.md](./demos/2026-06-11-m7.md).
+Issues #52–#56 (M7), #69–#72 (M8–M11). Demo: [demos/2026-06-11-m7.md](./demos/2026-06-11-m7.md). Latest overnight verification: [overnight-2026-09-04.md](./overnight-2026-09-04.md).
 
 ---
 
@@ -98,4 +100,4 @@ Issues #1–#4 merged.
 | `epic:infra` | CI, staging, observability |
 | `epic:quality` | Tests, DoD, tooling |
 
-Last updated: 2026-06-16
+Last updated: 2026-09-04
