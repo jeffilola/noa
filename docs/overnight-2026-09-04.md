@@ -5,6 +5,7 @@
 - Automation branch: `cursor/noa-milestone-preparation-2e35`
 - Original M7-M11 implementation: PR #57, merged on 2026-06-19.
 - Active M7 holder compliance follow-up: PR #99, open draft, clean merge state.
+- Overnight status docs PR: PR #136, open draft for morning review.
 - Requested feature branches `feature/m7-learning-records` through `feature/m11-ci-quality-split` still exist on origin, but they are stale relative to `main`; their milestone content has already landed through PR #57.
 - GitHub issue/milestone creation or closure was not performed by this run because the available GitHub CLI is read-only and no issue/milestone write tool is configured.
 - `manageCheckRun` is not available in the configured automation tools for this run.
