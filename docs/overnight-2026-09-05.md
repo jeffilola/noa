@@ -7,7 +7,7 @@
 - M7-M11 milestone PR: https://github.com/jeffilola/noa/pull/57 — merged 2026-06-19
 - Active M7 holder-compliance follow-up: https://github.com/jeffilola/noa/pull/99 — open draft, clean merge state, GitHub `lint` and `build` checks green
 - Latest prior overnight status PR: https://github.com/jeffilola/noa/pull/136 — open draft, clean merge state, GitHub `lint` and `build` checks green
-- Tonight's status PR: opened from this branch for this document and the related status links
+- Tonight's status PR: https://github.com/jeffilola/noa/pull/137 — opened from this branch for this document and the related status links
 - `manageCheckRun`: unavailable in the configured Cursor Automation Tools namespace
 
 ## Milestone status
