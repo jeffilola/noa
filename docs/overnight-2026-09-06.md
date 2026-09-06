@@ -9,6 +9,7 @@
 - GitHub issue/milestone creation or closure was not performed because this automation has read-only `gh` access for issues/milestones.
 - `manageCheckRun` was not available in the configured automation toolset.
 - Status PR URL: [PR #138](https://github.com/jeffilola/noa/pull/138)
+- Status PR #138 CI: all four checks passed (`lint`, `build`, `label`, `remind-issue-link`); merge state is clean.
 
 ## Milestone status
 
@@ -38,6 +39,15 @@ pnpm install --frozen-lockfile        # pass
 pnpm qa:prepare                      # blocked: Docker is not running in this cloud VM
 pnpm --filter @noa/api test          # pass; 13 tests, 11 DB-backed skips because Postgres unavailable
 pnpm --filter @noa/web build         # pass; build includes /user/compliance
+```
+
+GitHub checks on PR #138:
+
+```text
+lint                # pass
+build               # pass
+label               # pass
+remind-issue-link   # pass
 ```
 
 ## M7 manual E2E checklist for morning review
