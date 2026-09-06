@@ -8,7 +8,7 @@
 - Requested focused branches for M7-M11 exist on origin, but the corresponding work is already in `main`; no duplicate milestone PRs were opened.
 - GitHub issue/milestone creation or closure was not performed because this automation has read-only `gh` access for issues/milestones.
 - `manageCheckRun` was not available in the configured automation toolset.
-- Status PR URL: to be added after this docs PR is opened.
+- Status PR URL: [PR #138](https://github.com/jeffilola/noa/pull/138)
 
 ## Milestone status
 
