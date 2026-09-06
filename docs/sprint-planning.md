@@ -40,6 +40,8 @@ Focus: [#73](https://github.com/jeffilola/noa/issues/73) — scaffold `apps/mobi
 
 **Up next (same epic batch):** M13 → M16 per [backlog.md](./backlog.md).
 
+**Latest overnight status:** [2026-09-06](./overnight-2026-09-06.md) confirms M7-M11 are already merged, PR #99 remains the active M7 holder compliance follow-up, and local validation is blocked only where Docker/Postgres is unavailable in cloud.
+
 ## Planning checklist (Day 1)
 
 1. **Review** [backlog.md](./backlog.md) and open milestone on GitHub.
@@ -75,4 +77,4 @@ Backlog → Ready → In Progress → Review (PR open) → Done
 3. Close milestone issues on GitHub.
 4. Optional retro.
 
-Last updated: 2026-06-16
+Last updated: 2026-09-06
