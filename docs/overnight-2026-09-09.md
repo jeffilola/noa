@@ -8,7 +8,7 @@
 - Requested M8-M11 feature slices are already present on `main`; no duplicate milestone PRs were opened.
 - GitHub issue/milestone creation or closure was not performed because this automation has read-only `gh` access for issues/milestones.
 - `manageCheckRun` was not available in the configured automation toolset.
-- Status PR URL: pending until this branch is pushed and opened.
+- Status PR URL: [PR #140](https://github.com/jeffilola/noa/pull/140)
 
 ## Milestone status
 
