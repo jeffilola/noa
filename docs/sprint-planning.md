@@ -40,6 +40,8 @@ Focus: [#73](https://github.com/jeffilola/noa/issues/73) — scaffold `apps/mobi
 
 **Up next (same epic batch):** M13 → M16 per [backlog.md](./backlog.md).
 
+Latest overnight verification: [overnight-2026-09-10.md](./overnight-2026-09-10.md).
+
 ## Planning checklist (Day 1)
 
 1. **Review** [backlog.md](./backlog.md) and open milestone on GitHub.
