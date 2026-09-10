@@ -35,6 +35,8 @@ Merged in PR #57. Learning records, wallet preview stub, platform org list, inte
 
 Issues #52–#56 (M7), #69–#72 (M8–M11). Demo: [demos/2026-06-11-m7.md](./demos/2026-06-11-m7.md).
 
+Latest overnight verification: [overnight-2026-09-10.md](./overnight-2026-09-10.md).
+
 ---
 
 ## Done — Sprint 6 (M6: Site access history)
