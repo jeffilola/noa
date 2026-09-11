@@ -3,7 +3,7 @@
 ## Branch and PR status
 
 - Automation branch: `cursor/noa-milestone-preparation-acdf`
-- Status PR: pending at first commit; update after PR creation.
+- Status PR: https://github.com/jeffilola/noa/pull/142
 - M7-M11 delivery PR: https://github.com/jeffilola/noa/pull/57 (merged 2026-06-19)
 - Active M7 holder compliance follow-up: https://github.com/jeffilola/noa/pull/99 (draft, clean merge state, historical `lint` and `build` checks green)
 - M12 mobile smoke screen PR: https://github.com/jeffilola/noa/pull/80 (open, clean merge state, historical `lint` and `build` checks green)
