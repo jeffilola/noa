@@ -3,7 +3,7 @@
 ## Branch and PR status
 
 - Automation branch: `cursor/noa-milestone-preparation-430d`
-- Status PR: pending at initial commit time; this document will be linked from the PR after it opens.
+- Status PR: [#145](https://github.com/jeffilola/noa/pull/145)
 - Main milestone PR: [#57](https://github.com/jeffilola/noa/pull/57) merged M7-M11 into `main`.
 - Active M7 follow-up: [#99](https://github.com/jeffilola/noa/pull/99) restores the holder `/user/compliance` page and remains the PR for M7 closeout review.
 - Requested M8-M11 work: already merged and closed through PR #57, so no duplicate milestone PRs were opened tonight.
