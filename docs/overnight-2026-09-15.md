@@ -18,7 +18,7 @@ No new M8-M11 implementation branches were created because those milestones are 
 |------|----|--------|
 | M7-M11 milestone bundle | [#57](https://github.com/jeffilola/noa/pull/57) | Merged; CI `lint` and `build` passed before merge |
 | M7 holder compliance follow-up | [#99](https://github.com/jeffilola/noa/pull/99) | Open draft; merge state clean; GitHub `lint` and `build` checks green |
-| 2026-09-15 overnight status | TBD | Documentation-only PR from this run |
+| 2026-09-15 overnight status | [#146](https://github.com/jeffilola/noa/pull/146) | Documentation-only PR from this run |
 
 ## Automated validation
 
