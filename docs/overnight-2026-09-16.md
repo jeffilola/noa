@@ -12,7 +12,7 @@ The remaining M7 follow-up for morning review is PR #99, which restores the hold
 |------|--------|------------------|
 | M7-M11 implementation batch | Merged to `main`; issues #52-#56 and #69-#72 are closed | https://github.com/jeffilola/noa/pull/57 |
 | M7 holder compliance follow-up | Open draft, clean, green visible checks; review this before closing the holder gap | https://github.com/jeffilola/noa/pull/99 |
-| Overnight status PR | Pending until this branch is opened | To be filled after PR creation |
+| Overnight status PR | Open for review | https://github.com/jeffilola/noa/pull/147 |
 | Next roadmap | M12-M16 remain open and are the current backlog | #73, #74, #75, #76, #77 |
 
 ## Automated checks run
