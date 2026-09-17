@@ -14,6 +14,8 @@ Two-week cadence for Noa. Lightweight — suitable for solo or pair work.
 **Sprint length:** 2 weeks  
 **WIP limit:** 1–2 issues **In Progress**
 
+Latest overnight status: [2026-09-17](./overnight-2026-09-17.md).
+
 ## Milestones
 
 | Milestone | Target outcome | Status |
@@ -75,4 +77,4 @@ Backlog → Ready → In Progress → Review (PR open) → Done
 3. Close milestone issues on GitHub.
 4. Optional retro.
 
-Last updated: 2026-06-16
+Last updated: 2026-09-17
