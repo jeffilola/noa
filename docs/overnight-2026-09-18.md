@@ -15,7 +15,7 @@
 | M7-M11 milestone batch | [#57](https://github.com/jeffilola/noa/pull/57) | Merged |
 | M7 holder compliance follow-up | [#99](https://github.com/jeffilola/noa/pull/99) | Open draft, clean merge state, historical CI green |
 | M12 mobile smoke screen | [#80](https://github.com/jeffilola/noa/pull/80) | Open, clean merge state |
-| 2026-09-18 overnight status | Pending | This docs-only branch will be opened as a PR after commit/push. |
+| 2026-09-18 overnight status | [#149](https://github.com/jeffilola/noa/pull/149) | Open for review |
 
 No duplicate M8-M11 PRs were created because their implementation and docs are already merged and their issues are closed.
 
