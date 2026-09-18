@@ -15,7 +15,7 @@
 | M7-M11 milestone batch | [#57](https://github.com/jeffilola/noa/pull/57) | Merged |
 | M7 holder compliance follow-up | [#99](https://github.com/jeffilola/noa/pull/99) | Open draft, clean merge state, historical CI green |
 | M12 mobile smoke screen | [#80](https://github.com/jeffilola/noa/pull/80) | Open, clean merge state |
-| 2026-09-18 overnight status | [#149](https://github.com/jeffilola/noa/pull/149) | Open for review |
+| 2026-09-18 overnight status | [#149](https://github.com/jeffilola/noa/pull/149) | Open for review, clean merge state, CI green |
 
 No duplicate M8-M11 PRs were created because their implementation and docs are already merged and their issues are closed.
 
@@ -39,6 +39,7 @@ No duplicate M8-M11 PRs were created because their implementation and docs are a
 | `pnpm install --frozen-lockfile` | Pass | Needed because `node_modules` was absent. |
 | `pnpm --filter @noa/api test` | Pass | 12 tests reported, 10 DB-backed tests skipped because no database was available. |
 | `pnpm --filter @noa/web build` | Pass | First attempt raced before `@noa/shared` was built; rerun after API dependency builds completed successfully. |
+| PR #149 GitHub checks | Pass | `lint`, `build`, `label`, and `remind-issue-link` completed successfully. |
 
 ### PR #99 (`cursor/noa-milestone-preparation-01f8`)
 
