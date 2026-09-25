@@ -37,7 +37,7 @@ PR #99 isolated worktree (`origin/cursor/noa-milestone-preparation-01f8`):
 ```bash
 pnpm install --frozen-lockfile       # passed
 pnpm qa:prepare                     # failed: Docker is not running in this environment
-pnpm --filter @noa/api test         # passed; 13 tests, 11 DB-backed skips including holder compliance record coverage
+pnpm --filter @noa/api test         # passed; 13 tests, 11 DB-backed skips, including the holder compliance record case
 pnpm --filter @noa/web build        # passed; build output included /user/compliance
 ```
 
