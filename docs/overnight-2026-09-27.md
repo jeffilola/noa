@@ -7,14 +7,14 @@
 - Requested `feature/m7-learning-records`: exists on origin at `ba34cdb`, but is an old divergent branch rather than a clean M7 closeout branch. I did not open a duplicate PR from it.
 - M7-M11 milestone slice: already merged in PR #57 and issues #52-#56/#69-#72 are closed.
 - Active M7 follow-up: PR #99 (`M7 closeout: restore holder compliance records page`) remains open as a draft with clean merge state and green visible GitHub checks (`lint`, `build`).
-- Review/status PR for this run: opened from this branch after this document is committed.
+- Review/status PR for this run: https://github.com/jeffilola/noa/pull/156
 - GitHub issue/milestone creation or closure: not performed because this run only has read-only `gh` access for issues/milestones.
 
 ## PR URLs
 
 - M7-M11 merged milestone PR: https://github.com/jeffilola/noa/pull/57
 - Active M7 holder compliance follow-up: https://github.com/jeffilola/noa/pull/99
-- 2026-09-27 overnight status PR: filled in after the PR is opened
+- 2026-09-27 overnight status PR: https://github.com/jeffilola/noa/pull/156
 
 ## Milestone status
 
