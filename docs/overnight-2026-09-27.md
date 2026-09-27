@@ -7,7 +7,7 @@
 - Requested `feature/m7-learning-records`: exists on origin at `ba34cdb`, but is an old divergent branch rather than a clean M7 closeout branch. I did not open a duplicate PR from it.
 - M7-M11 milestone slice: already merged in PR #57 and issues #52-#56/#69-#72 are closed.
 - Active M7 follow-up: PR #99 (`M7 closeout: restore holder compliance records page`) remains open as a draft with clean merge state and green visible GitHub checks (`lint`, `build`).
-- Review/status PR for this run: https://github.com/jeffilola/noa/pull/156
+- Review/status PR for this run: https://github.com/jeffilola/noa/pull/156 with clean merge state and all visible GitHub checks passing (`lint`, `build`, label, issue-link reminder).
 - GitHub issue/milestone creation or closure: not performed because this run only has read-only `gh` access for issues/milestones.
 
 ## PR URLs
@@ -36,6 +36,13 @@ pnpm qa:prepare                         # blocked: Docker is not running in this
 pnpm --filter @noa/api test             # passed; 10 DB-backed tests skipped because Postgres was unavailable
 pnpm --filter @noa/web build            # passed; Next build completed with middleware deprecation warning
 ```
+
+PR #156 GitHub checks:
+
+- `lint`: passed
+- `build`: passed
+- `label`: passed
+- `remind-issue-link`: passed
 
 Active M7 follow-up PR #99 (`origin/cursor/noa-milestone-preparation-01f8`) in `/tmp/noa-pr99`:
 
