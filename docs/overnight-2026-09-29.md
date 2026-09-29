@@ -13,7 +13,7 @@
 |-------|----|
 | M7-M11 merged milestone slice | https://github.com/jeffilola/noa/pull/57 |
 | Active M7 holder compliance follow-up | https://github.com/jeffilola/noa/pull/99 |
-| Current overnight status docs PR | To be filled after this branch opens a PR |
+| Current overnight status docs PR | https://github.com/jeffilola/noa/pull/158 |
 
 ## Milestone status
 
