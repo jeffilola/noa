@@ -16,6 +16,7 @@
 | M9 platform admin org list | Merged | [PR #57](https://github.com/jeffilola/noa/pull/57), issue [#70](https://github.com/jeffilola/noa/issues/70) |
 | M10 integration admin stub | Merged | [PR #57](https://github.com/jeffilola/noa/pull/57), issue [#71](https://github.com/jeffilola/noa/issues/71) |
 | M11 CI quality split | Merged | [PR #57](https://github.com/jeffilola/noa/pull/57), issue [#72](https://github.com/jeffilola/noa/issues/72) |
+| 2026-09-30 status record | Open for review | [PR #159](https://github.com/jeffilola/noa/pull/159) |
 
 ## Automated test results
 
