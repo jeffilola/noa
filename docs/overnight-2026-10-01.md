@@ -16,7 +16,7 @@ Cron run for the M7-M11 overnight sprint prompt.
 |-------|----|--------|
 | M7-M11 merged feature slices | [#57](https://github.com/jeffilola/noa/pull/57) | Merged |
 | M7 holder compliance follow-up | [#99](https://github.com/jeffilola/noa/pull/99) | Open draft; merge state clean; historical `lint` and `build` green |
-| 2026-10-01 overnight rollup | TBD | Documentation-only status PR from this run |
+| 2026-10-01 overnight rollup | [#160](https://github.com/jeffilola/noa/pull/160) | Documentation-only status PR from this run |
 
 ## GitHub issue and milestone status
 
