@@ -7,7 +7,7 @@
 - Requested M7 branch `feature/m7-learning-records`: not reused because M7-M11 are already merged/closed on `main`.
 - M7-M11 GitHub issues/milestones: existing issues #52-#56 and #69-#72 are closed under milestones M7-M11.
 - Active M7 follow-up: PR #99 (`M7 closeout: restore holder compliance records page`) remains open as a draft with clean merge state and historical green `lint`/`build` checks.
-- Today's docs/status PR: pending PR creation from this branch.
+- Today's docs/status PR: https://github.com/jeffilola/noa/pull/162
 
 ## What shipped on main
 
@@ -72,7 +72,7 @@ These steps come from [m7-testing.md](./m7-testing.md). They were not browser-ru
 
 - M7-M11 merged feature bundle: https://github.com/jeffilola/noa/pull/57
 - Active M7 holder compliance follow-up: https://github.com/jeffilola/noa/pull/99
-- 2026-10-03 overnight status PR: pending PR creation from this branch.
+- 2026-10-03 overnight status PR: https://github.com/jeffilola/noa/pull/162
 
 ## Test guides
 
