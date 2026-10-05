@@ -4,6 +4,7 @@
 
 - M7-M11 implementation PR: https://github.com/jeffilola/noa/pull/57 - merged into `main` on 2026-06-19.
 - Current overnight status PR: https://github.com/jeffilola/noa/pull/164.
+- Current overnight status PR CI: 4 checks completed successfully on commit `d922adad4d7b7b31647294bb7c1ce53729868a9d`.
 - M7 issues #52-#56 and M8-M11 issues #69-#72 are already closed.
 - Focused feature branches still exist on origin (`feature/m7-learning-records`, `feature/m8-wallet-pass-preview`, `feature/m9-platform-org-list`, `feature/m10-integration-admin-stub`, `feature/m11-ci-quality-split`), but their work is already present on `main` through PR #57.
 - `manageCheckRun` was requested where possible, but the configured automation toolset does not expose a check-run reporting tool.
@@ -27,6 +28,7 @@
 | `pnpm lint` | Pass | Ran as part of `pnpm lint && pnpm build && pnpm test`. |
 | `pnpm build` | Pass | All workspace build tasks passed. |
 | `pnpm test` | Pass | 10 turbo test tasks passed; API DB-backed tests skipped because Postgres was unavailable. |
+| PR #164 GitHub CI | Pass | 4 checks completed successfully. |
 
 ## M7 E2E checklist from `docs/m7-testing.md`
 
