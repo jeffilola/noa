@@ -24,6 +24,7 @@ Legend: **S** / **M** / **L** size · **Epic** tag · Milestone when scheduled
 ## Done — Sprint 7–11 (M7–M11)
 
 Merged in PR #57. Learning records, wallet preview stub, platform org list, integration test-mode form, CI lint/build split.
+Overnight rerun status: [overnight-2026-10-07.md](./overnight-2026-10-07.md). Active M7 holder compliance follow-up: PR #99.
 
 | Milestone | Theme | Test guide |
 |-----------|-------|------------|
@@ -98,4 +99,4 @@ Issues #1–#4 merged.
 | `epic:infra` | CI, staging, observability |
 | `epic:quality` | Tests, DoD, tooling |
 
-Last updated: 2026-06-16
+Last updated: 2026-10-07
