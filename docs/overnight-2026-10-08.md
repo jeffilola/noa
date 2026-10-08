@@ -15,7 +15,7 @@ No duplicate M8-M11 branches were opened tonight because the work, docs, and Git
 | M9: Platform admin org list | Merged in PR #57 | [#57](https://github.com/jeffilola/noa/pull/57) |
 | M10: Integration admin stub | Merged in PR #57 | [#57](https://github.com/jeffilola/noa/pull/57) |
 | M11: CI quality split | Merged in PR #57; GitHub shows separate `lint` and `build` checks | [#57](https://github.com/jeffilola/noa/pull/57) |
-| Tonight's docs/status update | Pending review | This PR |
+| Tonight's docs/status update | Pending review | [#167](https://github.com/jeffilola/noa/pull/167) |
 
 GitHub issue/milestone mutation was not performed tonight; the available `gh` CLI is read-only, and no write-capable issue or milestone tool is configured for this automation. Existing open issues are M12-M16 (#73-#77).
 
