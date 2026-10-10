@@ -5,7 +5,7 @@
 - Automation branch: `cursor/noa-milestone-preparation-8053`
 - M7-M11 implementation PR: [#57](https://github.com/jeffilola/noa/pull/57) — merged; `lint` and `build` checks were green at merge time.
 - Active M7 closeout follow-up: [#99](https://github.com/jeffilola/noa/pull/99) — open draft, merge state clean, GitHub `lint` and `build` checks green.
-- Current overnight status PR: to be filled after PR creation.
+- Current overnight status PR: [#169](https://github.com/jeffilola/noa/pull/169).
 - Requested feature branches for M7-M11 are not being recreated: their product scope is already on `main` via PR #57, with holder compliance follow-up isolated in PR #99.
 - GitHub issue/milestone mutation was not performed from this run because only read-only `gh` access and PR/comment automation tools were available.
 
